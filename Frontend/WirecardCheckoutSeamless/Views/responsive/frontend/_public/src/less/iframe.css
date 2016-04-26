@@ -1,0 +1,51 @@
+.fieldlabel {
+    float: left;
+    width: 180px;
+    font-weight: bold;
+    color: #333;
+}
+
+.fieldtext {
+    width: 230px;
+    margin-top: 3px;
+    background-color: #fff;
+    border: 1px solid #bbb;
+    font-size: 12px;
+
+}
+
+.fieldselect {
+    font-size: 12px;
+}
+
+.fieldrow-newline {
+    clear: both;
+}
+
+#row-cardholder, #row-expiry, #row-issuedate {
+    display: inline-block;
+    float: left;
+    width: 280px;
+}
+
+
+#row-pan, #row-cvc, #row-issueNumber {
+    display: inline-block;
+    width: 280px;
+}
+
+#row-cardholder .clearer {
+    clear: none;
+}
+
+.error {
+    border: 1px solid #ff0000;
+}
+
+.infobox {
+    padding: 3px;
+}
+
+#paymentdata {
+    width: 650px;
+}
