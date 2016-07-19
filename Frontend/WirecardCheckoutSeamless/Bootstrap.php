@@ -19,6 +19,8 @@
  * agrees to the terms of use. Please do not use this plugin if you do not agree to the terms of use!
  */
 
+require_once __DIR__ . '/Components/CSRFWhitelistAware.php';
+
 /**
  * WirecardCheckoutSeamless Bootstrap class
  *
@@ -102,11 +104,13 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
         self::init();
         //$this->uninstall();
         if (!$this->assertVersionGreaterThen('4.0.0')) {
-            throw new Enlight_Exception('This plugin needs minimum shopware 4.0.0');
+            throw new Enlight_Exception('This plugin needs minimum Shopware 4.0.0');
         }
 
-        if (!$this->assertRequiredPluginsPresent(array('Payment'))) {
-            throw new Enlight_Exception('This plugin requires the plugin payment');
+        if (!$this->assertVersionGreaterThen('5.2.0')) {
+            if (!$this->assertRequiredPluginsPresent(array('Payment'))) {
+                throw new Enlight_Exception('This plugin requires the plugin payment');
+            }
         }
 
         $this->createEvents();

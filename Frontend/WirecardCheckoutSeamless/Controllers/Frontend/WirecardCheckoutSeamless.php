@@ -21,10 +21,12 @@
  * agrees to the terms of use. Please do not use this plugin if you do not agree to the terms of use!
  */
 
+use Shopware\Components\CSRFWhitelistAware;
+
 /**
  * controller class handling Wirecard Checkout Seamless Requests
  */
-class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Controllers_Frontend_Payment
+class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Controllers_Frontend_Payment implements CSRFWhitelistAware
 {
 
     /**
@@ -657,5 +659,11 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
         return $tid;
     }
 
-
+    public function getWhitelistedCSRFActions()
+    {
+        return array(
+            'confirm',
+            'dsStoreReturn'
+        );
+    }
 }
