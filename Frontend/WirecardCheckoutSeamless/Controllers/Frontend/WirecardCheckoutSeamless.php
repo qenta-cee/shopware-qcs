@@ -91,7 +91,7 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
         }
 
         $headerStyle = Shopware()->WirecardCheckoutSeamless()->Config()->WIRECARD_CONFIRM_HEADER_STYLE;
-        $headerTemplate = $headerStyle==1?'frontend/index/index.tpl':'frontend/checkout/finish.tpl';
+        $headerTemplate = $headerStyle==1?'frontend/index/index.tpl':'frontend/checkout/confirm.tpl';
         $this->View()->assign('headerTemplate',$headerTemplate);
         $this->View()->assign('saveOrderUrl', $this->Front()->Router()->assemble(Array('action' => 'saveOrder', 'sUseSSL' => true)));
         $this->View()->assign('checkoutConfirmUrl', $this->Front()->Router()->assemble(Array('controller' => 'checkout', 'action' => 'confirm', 'sUseSSL' => true)));
