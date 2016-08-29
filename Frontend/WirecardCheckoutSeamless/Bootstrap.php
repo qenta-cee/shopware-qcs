@@ -460,6 +460,23 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
                 'order' => ++$i
             )
         );
+
+        $form->setElement(
+            'select',
+            'WIRECARD_CONFIRM_HEADER_STYLE',
+            array(
+                'label' => 'Headerstyle',
+                'value' => 1,
+                'store' => array(
+                    array(1, 'Fett'),
+                    array(2, 'Schmal'),
+                ),
+                'description' => 'Style vom Header beim letzten Schritt in der Bezahlung.',
+                'scope' => \Shopware\Models\Config\Element::SCOPE_SHOP,
+                'required' => false,
+                'order' => ++$i
+            )
+        );
     }
 
     /**

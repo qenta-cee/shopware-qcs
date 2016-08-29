@@ -1,4 +1,4 @@
-{extends file="parent:frontend/index/index.tpl"}
+{extends file=$headerTemplate}
 
 {block name='frontend_index_content_left'}{/block}
 
