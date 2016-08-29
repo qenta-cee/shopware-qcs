@@ -468,10 +468,10 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
                 'label' => 'Headerstyle',
                 'value' => 1,
                 'store' => array(
-                    array(1, 'Fett'),
-                    array(2, 'Schmal'),
+                    array(1, 'Fat'),
+                    array(2, 'Slim'),
                 ),
-                'description' => 'Style vom Header beim letzten Schritt in der Bezahlung.',
+                'description' => 'Style des Header beim letzten Schritt in der Bezahlung.',
                 'scope' => \Shopware\Models\Config\Element::SCOPE_SHOP,
                 'required' => false,
                 'order' => ++$i
@@ -566,6 +566,10 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
                 'KEEP_UNSUCCESSFUL_ORDERS' => Array(
                     'label' => 'Keep orders despite of failed payment',
                     'description' => 'Selecting "Yes", pending orders will remain in the order list even if payment fails. Selecting "No", they are deleted. Note that deleted orders are missing in the order number sequence.'
+                ),
+                'WIRECARD_CONFIRM_HEADER_STYLE' => Array(
+                    'label' => 'Header style',
+                    'description' => 'Style of header within the last step in payment process.'
                 )
             )
         );
