@@ -54,7 +54,7 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
      */
     public function getVersion()
     {
-        return '1.7.12';
+        return '1.7.13';
     }
 
     /**
@@ -354,7 +354,7 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
 
         $form->setElement(
             'text',
-            'SHOP_NAME',
+            'SHOP_PREFIX',
             array(
                 'label' => 'Shop-Präfix im Buchungstext',
                 'value' => '',
@@ -543,7 +543,7 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
                     'label' => 'Automated deposit',
                     'description' => 'Enabling an automated deposit of payments. Please contact our sales teams to activate this feature.'
                 ),
-                'SHOP_NAME' => Array(
+                'SHOP_PREFIX' => Array(
                     'label' => 'Shop prefix in posting text',
                     'description' => 'Reference to your online shop on your consumer\'s invoice, limited to 9 characters (used together with the order number to create the parameter customerStatement).'
                 ),
