@@ -853,7 +853,7 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Models_Config
      */
     public function getShopName()
     {
-        return $this->SHOP_NAME;
+        return $this->SHOP_PREFIX;
     }
 
     /**
