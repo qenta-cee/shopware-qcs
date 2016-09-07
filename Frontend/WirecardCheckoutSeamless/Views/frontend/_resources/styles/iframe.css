@@ -47,5 +47,6 @@
 }
 
 #paymentdata {
-    width: 650px;
+    min-width: 320px;
+    width:100%;
 }

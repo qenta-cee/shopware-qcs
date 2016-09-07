@@ -24,7 +24,7 @@
 {* Main content *}
 {block name="frontend_index_content"}
     <div class="content block">
-        <div id="payment" class="grid_20" style="margin:10px 0 10px 20px;width:959px;">
+        <div id="payment" class="grid_20">
             <h2 class="headingbox_dark largesize">{s name="WirecardCheckoutSeamlessPaymentHeader"}Bitte f&uuml;hren Sie nun die Zahlung durch:{/s}</h2>
 
             {*<div id="payment_loader" class="ajaxSlider" style="height:500px;border:0 none;display:none">*}
