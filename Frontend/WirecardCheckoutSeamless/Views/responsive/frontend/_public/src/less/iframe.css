@@ -47,5 +47,13 @@
 }
 
 #paymentdata {
-    width: 650px;
+    text-align: center;
+    min-width: 320px;
+    width: 100%;
+}
+
+#payment {
+    margin:10px 0 10px 20px;
+    min-width: 320px;
+    width:100%;
 }
