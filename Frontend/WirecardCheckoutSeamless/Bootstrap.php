@@ -191,16 +191,12 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
 
     }
 
-    public function update($oldVersion)
+    public function update($version)
     {
-        Shopware()->DebugLogger()->info("update?");
-
-        if (version_compare($oldVersion, '1.7.0', '<=')) {
+        if (version_compare($version, '1.7.0', '<=')) {
             //removing paymentType click2pay
             Shopware()->Db()->delete('s_core_paymentmeans', 'name = "wirecard_c2p"');
         }
-
-        Shopware()->DebugLogger()->info("waruuuuuuum?");
 
         return $this->install();
     }
