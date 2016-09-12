@@ -47,6 +47,16 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
      */
     const NAME = 'Shopware_5.WirecardCheckoutSeamless';
 
+    public function getCapabilities()
+    {
+        return array(
+            'install' => true,
+            'enable' => true,
+            'update' => true,
+            'secureUninstall' => true
+        );
+    }
+
     /**
      * Returns the version of plugin as string.
      *
@@ -54,7 +64,7 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
      */
     public function getVersion()
     {
-        return '1.7.14';
+        return '1.7.15';
     }
 
     /**
@@ -93,7 +103,6 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
                                 . '<p>If you have no Wirecard account, please register yourself via ' . $copLink . '.</p></div>'
         );
     }
-
 
     /**
      * @return bool
@@ -140,6 +149,26 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
     }
 
     /**
+     * This derived method is called automatically each time the plugin will be reinstalled
+     * (does not delete databases)
+     *
+     * @return array
+     */
+    public function secureUninstall()
+    {
+        if ($this->assertMinimumVersion('5')) {
+            /** @var \Shopware\Components\CacheManager $cacheManager */
+            $cacheManager = $this->get('shopware.cache_manager');
+            $cacheManager->clearThemeCache();
+        }
+
+        return array(
+            'success' => true,
+            'invalidateCache' => array('frontend', 'config', 'template', 'theme')
+        );
+    }
+
+    /**
      * This derived method is called automatically each time the plugin will be uninstalled
      *
      * @return bool
@@ -158,16 +187,8 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
             );
         }
 
-        if ($this->assertMinimumVersion('5')) {
-            /** @var \Shopware\Components\CacheManager $cacheManager */
-            $cacheManager = $this->get('shopware.cache_manager');
-            $cacheManager->clearThemeCache();
-        }
+        return $this->secureUninstall();
 
-        return array(
-            'success' => true,
-            'invalidateCache' => array('frontend', 'config', 'template', 'theme')
-        );
     }
 
     public function update($version)
