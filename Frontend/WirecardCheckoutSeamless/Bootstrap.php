@@ -64,7 +64,7 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
      */
     public function getVersion()
     {
-        return '1.7.16';
+        return '1.7.17';
     }
 
     /**
@@ -156,6 +156,8 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
      */
     public function secureUninstall()
     {
+        Shopware()->DebugLogger()->info("do secure uninstall?");
+
         if ($this->assertMinimumVersion('5')) {
             /** @var \Shopware\Components\CacheManager $cacheManager */
             $cacheManager = $this->get('shopware.cache_manager');
@@ -191,12 +193,16 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
 
     }
 
-    public function update($version)
+    public function update($oldVersion)
     {
-        if (version_compare($version, '1.7.0', '<=')) {
+        Shopware()->DebugLogger()->info("update?");
+
+        if (version_compare($oldVersion, '1.7.0', '<=')) {
             //removing paymentType click2pay
             Shopware()->Db()->delete('s_core_paymentmeans', 'name = "wirecard_c2p"');
         }
+
+        Shopware()->DebugLogger()->info("waruuuuuuum?");
 
         return $this->install();
     }
@@ -280,6 +286,19 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
                  'description' => 'Benachrichtigung per E-Mail über Zahlungen Ihrer Kunden, falls ein Kommunikationsproblem zwischen Wirecard und Ihrem Onlineshop aufgetreten ist. Bitte kontaktieren Sie unsere Sales-Teams um dieses Feature freizuschalten.',
                  'required' => false,
                  'order' => ++$i
+            )
+        );
+
+        $form->setElement(
+            'checkbox',
+            'PAYOLUTION_TERMS',
+            array(
+                'label' => 'Payolution Kondition',
+                'value' => 1,
+                'description' => 'Consumer must accept payolution terms during the checkout process.',
+                'scope' => \Shopware\Models\Config\Element::SCOPE_SHOP,
+                'required' => false,
+                'order' => ++$i
             )
         );
 
@@ -535,6 +554,10 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
                 'CONFIRM_MAIL' => Array(
                     'label' => 'Notification e-mail',
                     'description' => 'Receiving notification by e-mail regarding the orders of your consumers if an error occurred in the communication between Wirecard and your online shop. Please contact our sales teams to activate this feature.'
+                ),
+                'PAYOLUTION_TERMS' => Array(
+                    'label' => 'Payolution terms',
+                    'description' => 'Consumer must accept payolution terms during the checkout process.'
                 ),
                 'PCI3_DSS_SAQ_A_ENABLE'       => Array(
                     'label'       => 'SAQ A compliance',
@@ -819,7 +842,7 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
                 // Looking for user data
                 $user = Shopware()->Session()->sOrderVariables['sUserData'];
                 if (is_null($user)
-                    || !isset($user['additional']['user']['birthday']) // No birthday given
+                  || !isset($user['additional']['user']['birthday']) // No birthday given
                 ) {
                     return true;
                 }
@@ -877,6 +900,8 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
                     $view->addTemplateDir($this->Path() . 'Views/');
                     $view->extendsTemplate('frontend/checkout/wirecard.tpl');
                 }
+
+                $view->payolutionTerms = Shopware()->WirecardCheckoutSeamless()->Config()->PAYOLUTION_TERMS;
 
                 // Output of common errors
                 if (null != Shopware()->WirecardCheckoutSeamless()->wirecard_action) {

@@ -498,6 +498,30 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Models_Config
                 'name' => 'WirecardMessageActionPending',
                 'value' => 'Your financial institution has not yet approved your payment.'
             ),
+            array(
+                'namespace' => 'engine/Shopware/Plugins/Community/Frontend/WirecardCheckoutSeamless/Views/responsive/checkout',
+                'locale' => '1',
+                'name' => 'WirecardCheckoutSeamlessPayolutionTermsHeader',
+                'value' => 'Payolution Konditionen'
+            ),
+            array(
+                'namespace' => 'engine/Shopware/Plugins/Community/Frontend/WirecardCheckoutSeamless/Views/responsive/checkout',
+                'locale' => '2',
+                'name' => 'WirecardCheckoutSeamlessPayolutionTermsHeader',
+                'value' => 'Payolution Terms'
+            ),
+            array(
+                'namespace' => 'engine/Shopware/Plugins/Community/Frontend/WirecardCheckoutSeamless/Views/responsive/checkout',
+                'locale' => '1',
+                'name' => 'WirecardCheckoutSeamlessPayolutionConsent',
+                'value' => 'Mit der Übermittlung jener Daten an payolution, die für die Abwicklung von Zahlungen mit Kauf auf Rechnung und die Identitäts- und Bonitätsprüfung erforderlich sind, bin ich einverstanden. Meine Einwilligung kann ich jederzeit mit Wirkung für die Zukunft widerrufen.'
+            ),
+            array(
+                'namespace' => 'engine/Shopware/Plugins/Community/Frontend/WirecardCheckoutSeamless/Views/responsive/checkout',
+                'locale' => '2',
+                'name' => 'WirecardCheckoutSeamlessPayolutionConsent',
+                'value' => 'I agree that the data which are necessary for the liquidation of purchase on account and which are used to complete the identy and credit check are transmitted to payolution. My can be revoked at any time with effect for the future.'
+            )
 
         );
     }
@@ -556,7 +580,6 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Models_Config
             'description' => 'iDEAL',
             'call' => WirecardCEE_QMore_PaymentType::IDL,
             'translation' => Array('description' => 'Wirecard iDEAL', 'additionalDescription' => '')
-
         );
         $pm[] = array(
             'name' => 'giropay',
@@ -678,21 +701,18 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Models_Config
             'call' => WirecardCEE_QMore_PaymentType::CCARD_MOTO,
             'translation' => Array('description' => 'Wirecard Credit Card MOTO', 'additionalDescription' => '')
         );
-
         $pm[] = array(
             'name' => 'tatrapay',
             'description' => 'TatraPay',
             'call' => WirecardCEE_QMore_PaymentType::TATRAPAY,
             'translation' => Array('description' => 'Wirecard TatraPay', 'additionalDescription' => '')
         );
-
         $pm[] = array(
             'name' => 'epay',
             'description' => 'ePay.bg',
             'call' => WirecardCEE_QMore_PaymentType::EPAYBG,
             'translation' => Array('description' => 'Wirecard ePay.bg', 'additionalDescription' => '')
         );
-
         $pm[] = array(
             'name' => 'voucher',
             'description' => 'Gutschein',
