@@ -64,7 +64,7 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
      */
     public function getVersion()
     {
-        return '1.7.15';
+        return '1.7.16';
     }
 
     /**
@@ -819,18 +819,18 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
                 // Looking for user data
                 $user = Shopware()->Session()->sOrderVariables['sUserData'];
                 if (is_null($user)
-                  || !isset($user['billingaddress']['birthday']) // No birthday given
+                    || !isset($user['additional']['user']['birthday']) // No birthday given
                 ) {
                     return true;
                 }
 
                 // is birthday a valid date
-                $date = explode("-", $user['billingaddress']['birthday']);
+                $date = explode("-", $user['additional']['user']['birthday']);
                 if (false === checkdate($date[1], $date[2], $date[0])) {
                     return true;
                 }
                 // Is customer to be of legal age
-                if ((time() - strtotime($user['billingaddress']['birthday'] . ' +18 years')) < 0) {
+                if ((time() - strtotime($user['additional']['user']['birthday'] . ' +18 years')) < 0) {
                     return true;
                 }
             }
