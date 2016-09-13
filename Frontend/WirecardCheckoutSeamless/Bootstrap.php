@@ -156,8 +156,6 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
      */
     public function secureUninstall()
     {
-        Shopware()->DebugLogger()->info("do secure uninstall?");
-
         if ($this->assertMinimumVersion('5')) {
             /** @var \Shopware\Components\CacheManager $cacheManager */
             $cacheManager = $this->get('shopware.cache_manager');
