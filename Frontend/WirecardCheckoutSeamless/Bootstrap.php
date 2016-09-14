@@ -64,7 +64,7 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
      */
     public function getVersion()
     {
-        return '1.7.16';
+        return '1.7.17';
     }
 
     /**
@@ -280,6 +280,32 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
                  'description' => 'Benachrichtigung per E-Mail über Zahlungen Ihrer Kunden, falls ein Kommunikationsproblem zwischen Wirecard und Ihrem Onlineshop aufgetreten ist. Bitte kontaktieren Sie unsere Sales-Teams um dieses Feature freizuschalten.',
                  'required' => false,
                  'order' => ++$i
+            )
+        );
+
+        $form->setElement(
+            'checkbox',
+            'PAYOLUTION_TERMS',
+            array(
+                'label' => 'Payolution Kondition',
+                'value' => 1,
+                'description' => 'Consumer must accept payolution terms during the checkout process.',
+                'scope' => \Shopware\Models\Config\Element::SCOPE_SHOP,
+                'required' => false,
+                'order' => ++$i
+            )
+        );
+
+        $form->setElement(
+            'text',
+            'PAYOLUTION_MID',
+            array(
+                'label' => 'Payolution mID',
+                'value' => '',
+                'description' => 'Your payolution merchant ID, non-base64-encoded.',
+                'scope' => \Shopware\Models\Config\Element::SCOPE_SHOP,
+                'required' => false,
+                'order' => ++$i
             )
         );
 
@@ -535,6 +561,14 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
                 'CONFIRM_MAIL' => Array(
                     'label' => 'Notification e-mail',
                     'description' => 'Receiving notification by e-mail regarding the orders of your consumers if an error occurred in the communication between Wirecard and your online shop. Please contact our sales teams to activate this feature.'
+                ),
+                'PAYOLUTION_TERMS' => Array(
+                    'label' => 'Payolution terms',
+                    'description' => 'Consumer must accept payolution terms during the checkout process.'
+                ),
+                'PAYOLUTION_MID' => Array(
+                    'label' => 'Payolution mID',
+                    'description' => 'Your payolution merchant ID, non-base64-encoded.'
                 ),
                 'PCI3_DSS_SAQ_A_ENABLE'       => Array(
                     'label'       => 'SAQ A compliance',
@@ -819,7 +853,7 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
                 // Looking for user data
                 $user = Shopware()->Session()->sOrderVariables['sUserData'];
                 if (is_null($user)
-                    || !isset($user['additional']['user']['birthday']) // No birthday given
+                  || !isset($user['additional']['user']['birthday']) // No birthday given
                 ) {
                     return true;
                 }
@@ -838,6 +872,23 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
         return false;
     }
 
+
+    /**
+     * return encoded mId for PayolutionLink
+     *
+     * @return string
+     */
+    public function getPayolutionLink()
+    {
+        $mid = Shopware()->WirecardCheckoutSeamless()->Config()->PAYOLUTION_MID;
+        if (strlen($mid) === 0) {
+            return false;
+        }
+
+        $mId = urlencode(base64_encode($mid));
+
+        return $mId;
+    }
 
     /**
      * Display additional data for seamless payment methods and
@@ -876,6 +927,13 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
                 } else {
                     $view->addTemplateDir($this->Path() . 'Views/');
                     $view->extendsTemplate('frontend/checkout/wirecard.tpl');
+                }
+
+                $view->wcsPayolutionTerms = Shopware()->WirecardCheckoutSeamless()->Config()->PAYOLUTION_TERMS;
+
+                if ($this->getPayolutionLink()) {
+                    $view->wcsPayolutionLink1 = '<a id="wcs-payolutionlink" href="https://payment.payolution.com/payolution-payment/infoport/dataprivacyconsent?mId=' . $this->getPayolutionLink() . '" target="_blank">';
+                    $view->wcsPayolutionLink2 = '</a>';
                 }
 
                 // Output of common errors
