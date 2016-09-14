@@ -308,7 +308,7 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
                 'order' => ++$i
             )
         );
-        
+
         $form->setElement(
             'checkbox',
             'PCI3_DSS_SAQ_A_ENABLE',
@@ -881,8 +881,8 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
     public function getPayolutionLink()
     {
         $mid = Shopware()->WirecardCheckoutSeamless()->Config()->PAYOLUTION_MID;
-        if ($mid === '') {
-            return '';
+        if (strlen($mid) === 0) {
+            return false;
         }
 
         $mId = urlencode(base64_encode($mid));
@@ -929,11 +929,11 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
                     $view->extendsTemplate('frontend/checkout/wirecard.tpl');
                 }
 
-                $view->payolutionTerms = Shopware()->WirecardCheckoutSeamless()->Config()->PAYOLUTION_TERMS;
+                $view->wcsPayolutionTerms = Shopware()->WirecardCheckoutSeamless()->Config()->PAYOLUTION_TERMS;
 
-                if ($this->getPayolutionLink() !== '') {
-                    $view->payolutionLink1 = '<a id="wcs-payolutionlink" href="https://payment.payolution.com/payolution-payment/infoport/dataprivacyconsent?mId=' . $this->getPayolutionLink() . '" target="_blank">';
-                    $view->payolutionLink2 = '</a>';
+                if ($this->getPayolutionLink()) {
+                    $view->wcsPayolutionLink1 = '<a id="wcs-payolutionlink" href="https://payment.payolution.com/payolution-payment/infoport/dataprivacyconsent?mId=' . $this->getPayolutionLink() . '" target="_blank">';
+                    $view->wcsPayolutionLink2 = '</a>';
                 }
 
                 // Output of common errors

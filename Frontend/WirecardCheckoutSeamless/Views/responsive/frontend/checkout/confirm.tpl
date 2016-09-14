@@ -9,12 +9,6 @@
         var wirecardDatastorageReadUrl = {$wirecardDatastorageReadUrl|json_encode};
         var noPaymentdataMessage = {$noPaymentdataMessage|json_encode};
         var agbErrorMessage = {$confirmErrorAGB|json_encode};
-        document.getElementById('wcs-payolutionlink').onclick=function(event){
-            event.preventDefault();
-            event.stopPropagation();
-            window.open(document.getElementById('wcs-payolutionlink').href);
-            return false;
-        }
     </script>
 {/block}
 
@@ -301,7 +295,7 @@
 {/block}
 
 {block name='frontend_checkout_confirm_information_wrapper' append}
-    {if $payolutionTerms}
+    {if $wcsPayolutionTerms}
         {if $sUserData.additional.payment.name == 'wirecard_invoice' || {$sUserData.additional.payment.name} == 'wirecard_installment'}
             <div class="information--panel-item">
                 <div class="tos--panel panel has--border">
@@ -316,15 +310,15 @@
                         </span>
                                 <span class="block column--label">
                             <label for="wcsPayolutionTermsChecked">
-                                {if !$payolutionLink1}
+                                {if $wcsPayolutionLink1}
                                     {s name="WirecardCheckoutSeamlessPayolutionConsent1"}Mit der Übermittlung jener Daten an payolution, die für die Abwicklung von Zahlungen mit Kauf auf Rechnung und die Identitäts- und Bonitätsprüfung erforderlich sind, bin ich einverstanden. Meine {/s}
+                                    {$wcsPayolutionLink1}
                                     {s name="WirecardCheckoutSeamlessPayoltuionLink"}Bewilligung{/s}
+                                    {$wcsPayolutionLink2}
                                     {s name="WirecardCheckoutSeamlessPayolutionConsent2"} kann ich jederzeit mit Wirkung für die Zukunft widerrufen.{/s}
                                 {else}
                                     {s name="WirecardCheckoutSeamlessPayolutionConsent1"}Mit der Übermittlung jener Daten an payolution, die für die Abwicklung von Zahlungen mit Kauf auf Rechnung und die Identitäts- und Bonitätsprüfung erforderlich sind, bin ich einverstanden. Meine {/s}
-                                    {$payolutionLink1}
                                     {s name="WirecardCheckoutSeamlessPayoltuionLink"}Bewilligung{/s}
-                                    {$payolutionLink2}
                                     {s name="WirecardCheckoutSeamlessPayolutionConsent2"} kann ich jederzeit mit Wirkung für die Zukunft widerrufen.{/s}
                                 {/if}
                             </label>
