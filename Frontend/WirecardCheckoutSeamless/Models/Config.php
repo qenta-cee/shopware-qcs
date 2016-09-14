@@ -513,16 +513,39 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Models_Config
             array(
                 'namespace' => 'engine/Shopware/Plugins/Community/Frontend/WirecardCheckoutSeamless/Views/responsive/checkout',
                 'locale' => '1',
-                'name' => 'WirecardCheckoutSeamlessPayolutionConsent',
-                'value' => 'Mit der Übermittlung jener Daten an payolution, die für die Abwicklung von Zahlungen mit Kauf auf Rechnung und die Identitäts- und Bonitätsprüfung erforderlich sind, bin ich einverstanden. Meine Einwilligung kann ich jederzeit mit Wirkung für die Zukunft widerrufen.'
+                'name' => 'WirecardCheckoutSeamlessPayolutionConsent1',
+                'value' => 'Mit der Übermittlung jener Daten an payolution, die für die Abwicklung von Zahlungen mit Kauf auf Rechnung und die Identitäts- und Bonitätsprüfung erforderlich sind, bin ich einverstanden. Meine '
             ),
             array(
                 'namespace' => 'engine/Shopware/Plugins/Community/Frontend/WirecardCheckoutSeamless/Views/responsive/checkout',
                 'locale' => '2',
-                'name' => 'WirecardCheckoutSeamlessPayolutionConsent',
-                'value' => 'I agree that the data which are necessary for the liquidation of purchase on account and which are used to complete the identy and credit check are transmitted to payolution. My can be revoked at any time with effect for the future.'
-            )
-
+                'name' => 'WirecardCheckoutSeamlessPayolutionConsent1',
+                'value' => 'I agree that the data which are necessary for the liquidation of purchase on account and which are used to complete the identy and credit check are transmitted to payolution. My '
+            ),
+            array(
+                'namespace' => 'engine/Shopware/Plugins/Community/Frontend/WirecardCheckoutSeamless/Views/responsive/checkout',
+                'locale' => '1',
+                'name' => 'WirecardCheckoutSeamlessPayolutionConsent2',
+                'value' => ' kann ich jederzeit mit Wirkung für die Zukunft widerrufen.'
+            ),
+            array(
+                'namespace' => 'engine/Shopware/Plugins/Community/Frontend/WirecardCheckoutSeamless/Views/responsive/checkout',
+                'locale' => '2',
+                'name' => 'WirecardCheckoutSeamlessPayolutionConsent2',
+                'value' => ' can be revoked at any time with effect for the future.'
+            ),
+            array(
+                'namespace' => 'engine/Shopware/Plugins/Community/Frontend/WirecardCheckoutSeamless/Views/responsive/checkout',
+                'locale' => '1',
+                'name' => 'WirecardCheckoutSeamlessPayolutionLink',
+                'value' => 'Bewilligung'
+            ),
+            array(
+                'namespace' => 'engine/Shopware/Plugins/Community/Frontend/WirecardCheckoutSeamless/Views/responsive/checkout',
+                'locale' => '2',
+                'name' => 'WirecardCheckoutSeamlessPayolutionLink',
+                'value' => 'consent'
+            ),
         );
     }
 

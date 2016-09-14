@@ -297,6 +297,19 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
         );
 
         $form->setElement(
+            'text',
+            'PAYOLUTION_MID',
+            array(
+                'label' => 'Payolution mID',
+                'value' => '',
+                'description' => 'Your payolution merchant ID, non-base64-encoded.',
+                'scope' => \Shopware\Models\Config\Element::SCOPE_SHOP,
+                'required' => false,
+                'order' => ++$i
+            )
+        );
+        
+        $form->setElement(
             'checkbox',
             'PCI3_DSS_SAQ_A_ENABLE',
             array(
@@ -552,6 +565,10 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
                 'PAYOLUTION_TERMS' => Array(
                     'label' => 'Payolution terms',
                     'description' => 'Consumer must accept payolution terms during the checkout process.'
+                ),
+                'PAYOLUTION_MID' => Array(
+                    'label' => 'Payolution mID',
+                    'description' => 'Your payolution merchant ID, non-base64-encoded.'
                 ),
                 'PCI3_DSS_SAQ_A_ENABLE'       => Array(
                     'label'       => 'SAQ A compliance',
@@ -857,6 +874,23 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
 
 
     /**
+     * return encoded mId for PayolutionLink
+     *
+     * @return string
+     */
+    public function getPayolutionLink()
+    {
+        $mid = Shopware()->WirecardCheckoutSeamless()->Config()->PAYOLUTION_MID;
+        if ($mid === '') {
+            return '';
+        }
+
+        $mId = urlencode(base64_encode($mid));
+
+        return $mId;
+    }
+
+    /**
      * Display additional data for seamless payment methods and
      * payment methods with required
      *
@@ -896,6 +930,11 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
                 }
 
                 $view->payolutionTerms = Shopware()->WirecardCheckoutSeamless()->Config()->PAYOLUTION_TERMS;
+
+                if ($this->getPayolutionLink() !== '') {
+                    $view->payolutionLink1 = '<a id="wcs-payolutionlink" href="https://payment.payolution.com/payolution-payment/infoport/dataprivacyconsent?mId=' . $this->getPayolutionLink() . '" target="_blank">';
+                    $view->payolutionLink2 = '</a>';
+                }
 
                 // Output of common errors
                 if (null != Shopware()->WirecardCheckoutSeamless()->wirecard_action) {
