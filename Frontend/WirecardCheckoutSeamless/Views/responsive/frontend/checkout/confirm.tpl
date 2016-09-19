@@ -6,9 +6,40 @@
         <script type='text/javascript' src="{$wirecardJavascript}"></script>
     {/if}
     <script type="text/javascript">
+
         var wirecardDatastorageReadUrl = {$wirecardDatastorageReadUrl|json_encode};
         var noPaymentdataMessage = {$noPaymentdataMessage|json_encode};
         var agbErrorMessage = {$confirmErrorAGB|json_encode};
+
+        window.onload = function() {
+            $(document).ready(function() {
+                wcscheckBirthday();
+            });
+        };
+
+        function wcscheckBirthday() {
+            $('.is--primary').attr('disabled', false);
+            var m = $('#wcs-month').val();
+            var d = $('#wcs-day').val();
+
+            var dateStr = $('#wcs-year').val() + '-' + m + '-' + d;
+            var minAge = 18;
+
+            var birthdate = new Date(dateStr);
+            var year = birthdate.getFullYear();
+            var today = new Date();
+            var limit = new Date((today.getFullYear() - minAge), today.getMonth(), today.getDate());
+            if (birthdate < limit) {
+                $('#wcs-birthdate').val(dateStr);
+                $('.is--primary').attr('disabled', false);
+            }
+            else {
+                $('#wcs-birthdate').val("");
+                if($('#wcs-day').is(":visible") == true ) {
+                    $('.is--primary').attr('disabled', true);
+                }
+            }
+        }
     </script>
 {/block}
 
@@ -41,6 +72,78 @@
 {/block}
 
 {block name='frontend_checkout_confirm_product_table' prepend}
+    {if $sUserData.additional.payment.name == 'wirecard_invoice' || $sUserData.additional.payment.name == 'wirecard_installment'}
+        <div class="information--panel-item">
+            <div class="tos--panel panel has--border">
+                <div class="panel--title primary is--underline" name="birthdate">{s name="WirecardCheckoutSeamlessBirthday"}Geburtsdatum{/s}</div>
+                <div class="panel--body is--wide">
+                    <div class="row">
+                        <input type="hidden" name="birthdate" id="wcs-birthdate" value="" />
+                        <div class="col-xs-1">
+                            <select name="days" id="wcs-day" class="form-control days input-sm" onchange="wcscheckBirthday()" required>
+                                <option value="">-</option>
+                                {foreach from=$wcsDays item=v}
+                                    <option value="{$v}" {if ($wcsBDay == $v)}selected="selected"{/if}>{$v}&nbsp;&nbsp;</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                        <div class="col-xs-1">
+                            <select name="months" id="wcs-month" class="form-control months input-sm" onchange="wcscheckBirthday()" required>
+                                <option value="">-</option>
+                                {foreach from=$wcsMonths key=k item=v}
+                                    <option value="{$k}" {if ($wcsBMonth == $k)}selected="selected"{/if}>{$v}&nbsp;&nbsp;</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                        <div class="col-xs-1">
+                            <select name="years" id="wcs-year" class="form-control years input-sm" onchange="wcscheckBirthday()" required>
+                                <option value="">-</option>
+                                {foreach from=$wcsYears item=v}
+                                    <option value="{$v}" {if ($wcsBYear == $v)}selected="selected"{/if}>{$v}&nbsp;&nbsp;</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                    </div>
+                    {s name="WirecardCheckoutSeamlessBirthdayInformation"}Sie müssen mindestens 18 Jahre alt sein, um dieses Zahlungsmittel nutzen zu können.{/s}
+                </div>
+            </div>
+        </div>
+    {/if}
+    {if $wcsPayolutionTerms}
+        {if $sUserData.additional.payment.name == 'wirecard_invoice' || {$sUserData.additional.payment.name} == 'wirecard_installment'}
+            <div class="information--panel-item">
+                <div class="tos--panel panel has--border">
+                    <div class="panel--title primary is--underline">
+                        {s name="WirecardCheckoutSeamlessPayolutionTermsHeader"}Payolution Konditionen{/s}
+                    </div>
+                    <div class="panel--body is--wide">
+                        <ul class="list--checkbox list--unstyled">
+                            <li class="block-group row--tos">
+                        <span class="block column--checkbox">
+                            <input type="checkbox" required="required" aria-required="true" id="wcsPayolutionTermsChecked" name="wcsPayolutionTermsChecked">
+                        </span>
+                                <span class="block column--label">
+                            <label for="wcsPayolutionTermsChecked">
+                                {if $wcsPayolutionLink1}
+                                    {s name="WirecardCheckoutSeamlessPayolutionConsent1"}Mit der Übermittlung jener Daten an payolution, die für die Abwicklung von Zahlungen mit Kauf auf Rechnung und die Identitäts- und Bonitätsprüfung erforderlich sind, bin ich einverstanden. Meine {/s}
+                                    {$wcsPayolutionLink1}
+                                    {s name="WirecardCheckoutSeamlessPayoltuionLink"}Bewilligung{/s}
+                                    {$wcsPayolutionLink2}
+                                    {s name="WirecardCheckoutSeamlessPayolutionConsent2"} kann ich jederzeit mit Wirkung für die Zukunft widerrufen.{/s}
+                                {else}
+                                    {s name="WirecardCheckoutSeamlessPayolutionConsent1"}Mit der Übermittlung jener Daten an payolution, die für die Abwicklung von Zahlungen mit Kauf auf Rechnung und die Identitäts- und Bonitätsprüfung erforderlich sind, bin ich einverstanden. Meine {/s}
+                                    {s name="WirecardCheckoutSeamlessPayoltuionLink"}Bewilligung{/s}
+                                    {s name="WirecardCheckoutSeamlessPayolutionConsent2"} kann ich jederzeit mit Wirkung für die Zukunft widerrufen.{/s}
+                                {/if}
+                            </label>
+                        </span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        {/if}
+    {/if}
     {if $wirecardAdditional eq 'financialInstitutions'}
         <div class="panel has--border is--rounded" id="wd_payment_fields">
             <div class="panel--title is--underline">
@@ -292,42 +395,4 @@
         </span>
     {/if}
 
-{/block}
-
-{block name='frontend_checkout_confirm_information_wrapper' append}
-    {if $wcsPayolutionTerms}
-        {if $sUserData.additional.payment.name == 'wirecard_invoice' || {$sUserData.additional.payment.name} == 'wirecard_installment'}
-            <div class="information--panel-item">
-                <div class="tos--panel panel has--border">
-                    <div class="panel--title primary is--underline">
-                        {s name="WirecardCheckoutSeamlessPayolutionTermsHeader"}Payolution Konditionen{/s}
-                    </div>
-                    <div class="panel--body is--wide">
-                        <ul class="list--checkbox list--unstyled">
-                            <li class="block-group row--tos">
-                        <span class="block column--checkbox">
-                            <input type="checkbox" required="required" aria-required="true" id="wcsPayolutionTermsChecked" name="wcsPayolutionTermsChecked">
-                        </span>
-                                <span class="block column--label">
-                            <label for="wcsPayolutionTermsChecked">
-                                {if $wcsPayolutionLink1}
-                                    {s name="WirecardCheckoutSeamlessPayolutionConsent1"}Mit der Übermittlung jener Daten an payolution, die für die Abwicklung von Zahlungen mit Kauf auf Rechnung und die Identitäts- und Bonitätsprüfung erforderlich sind, bin ich einverstanden. Meine {/s}
-                                    {$wcsPayolutionLink1}
-                                    {s name="WirecardCheckoutSeamlessPayoltuionLink"}Bewilligung{/s}
-                                    {$wcsPayolutionLink2}
-                                    {s name="WirecardCheckoutSeamlessPayolutionConsent2"} kann ich jederzeit mit Wirkung für die Zukunft widerrufen.{/s}
-                                {else}
-                                    {s name="WirecardCheckoutSeamlessPayolutionConsent1"}Mit der Übermittlung jener Daten an payolution, die für die Abwicklung von Zahlungen mit Kauf auf Rechnung und die Identitäts- und Bonitätsprüfung erforderlich sind, bin ich einverstanden. Meine {/s}
-                                    {s name="WirecardCheckoutSeamlessPayoltuionLink"}Bewilligung{/s}
-                                    {s name="WirecardCheckoutSeamlessPayolutionConsent2"} kann ich jederzeit mit Wirkung für die Zukunft widerrufen.{/s}
-                                {/if}
-                            </label>
-                        </span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        {/if}
-    {/if}
 {/block}
