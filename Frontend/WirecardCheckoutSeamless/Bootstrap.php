@@ -845,32 +845,42 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
     {
         if ($args->getReturn() == true) {
             return true;
-        } else {
-            self::init();
-            $parameter = $args->getArgs();
-            $payment = Shopware()->WirecardCheckoutSeamless()->Config()->getPaymentMethodName($parameter[0]);
-            if (0 == strcmp($payment, 'wirecard_invoice') || 0 == strcmp($payment, 'wirecard_installment')) {
-                // Looking for user data
-                $user = Shopware()->Session()->sOrderVariables['sUserData'];
-                if (is_null($user)
-                  || !isset($user['additional']['user']['birthday']) // No birthday given
-                ) {
-                    return true;
-                }
+        }
 
-                // is birthday a valid date
-                $date = explode("-", $user['additional']['user']['birthday']);
-                if (false === checkdate($date[1], $date[2], $date[0])) {
+        self::init();
+        $parameter = $args->getArgs();
+        $payment = Shopware()->WirecardCheckoutSeamless()->getPaymentMethods()->getPaymentMethodName($parameter[0]);
+        if (0 == strcmp($payment, 'wirecard_invoice') || 0 == strcmp($payment, 'wirecard_installment')) {
+            // Looking for user data
+            $user = Shopware()->Session()->sOrderVariables['sUserData'];
+            if (is_null($user)) {
+                return true;
+            }
+
+            if ($this->assertMinimumVersion('5.2')) {
+                if (!isset($user['additional']['user']['birthday'])) {
                     return true;
                 }
-                // Is customer to be of legal age
-                if ((time() - strtotime($user['additional']['user']['birthday'] . ' +18 years')) < 0) {
+                $userDate = $user['additional']['user']['birthday'];
+            } else {
+                if (!isset($user['billingaddress']['birthday'])) {
                     return true;
                 }
+                $userDate = $user['billingaddress']['birthday'];
+            }
+
+            $date = explode("-", $userDate);
+            if (false === checkdate($date[1], $date[2], $date[0])) {
+                return true;
+            }
+            // Is customer to be of legal age
+            if ((time() - strtotime($userDate . ' +18 years')) < 0) {
+                return true;
             }
         }
         return false;
     }
+
 
 
     /**
