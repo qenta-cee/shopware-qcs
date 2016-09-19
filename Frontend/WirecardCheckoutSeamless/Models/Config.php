@@ -546,6 +546,30 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Models_Config
                 'name' => 'WirecardCheckoutSeamlessPayolutionLink',
                 'value' => 'consent'
             ),
+            array(
+                'namespace' => 'engine/Shopware/Plugins/Community/Frontend/WirecardCheckoutSeamless/Views/responsive/checkout',
+                'locale' => '1',
+                'name' => 'WirecardCheckoutSeamlessBirthday',
+                'value' => 'Geburtsdatum'
+            ),
+            array(
+                'namespace' => 'engine/Shopware/Plugins/Community/Frontend/WirecardCheckoutSeamless/Views/responsive/checkout',
+                'locale' => '2',
+                'name' => 'WirecardCheckoutSeamlessBirthday',
+                'value' => 'Date of birth'
+            ),
+            array(
+                'namespace' => 'engine/Shopware/Plugins/Community/Frontend/WirecardCheckoutSeamless/Views/responsive/checkout',
+                'locale' => '1',
+                'name' => 'WirecardCheckoutSeamlessBirthdayInformation',
+                'value' => 'Sie müssen mindestens 18 Jahre alt sein, um dieses Zahlungsmittel nutzen zu können.'
+            ),
+            array(
+                'namespace' => 'engine/Shopware/Plugins/Community/Frontend/WirecardCheckoutSeamless/Views/responsive/checkout',
+                'locale' => '2',
+                'name' => 'WirecardCheckoutSeamlessBirthdayInformation',
+                'value' => 'You must be at least 18 years of age to use this payment method.'
+            ),
         );
     }
 
