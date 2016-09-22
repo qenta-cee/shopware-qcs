@@ -1,75 +1,75 @@
 {namespace name='frontend/WirecardCheckoutSeamless/payment'}
 
 {if $sUserData.additional.payment.name == 'wirecard_invoice' }
-<script type="text/javascript">
-	window.onload = function() {
-		$(document).ready(function() {
-			checkbirthday();
-		});
-	};
+	<script type="text/javascript">
+		window.onload = function() {
+			$(document).ready(function() {
+				checkbirthday();
+			});
+		};
 
-	function checkbirthday() {
-		var m = $('#wcs-month').val();
-		var d = $('#wcs-day').val();
+		function checkbirthday() {
+			var m = $('#wcs-month').val();
+			var d = $('#wcs-day').val();
 
-		var dateStr = $('#wcs-year').val() + '-' + m + '-' + d;
-		var minAge = 18;
+			var dateStr = $('#wcs-year').val() + '-' + m + '-' + d;
+			var minAge = 18;
 
-		var birthdate = new Date(dateStr);
-		var year = birthdate.getFullYear();
-		var today = new Date();
-		var limit = new Date((today.getFullYear() - minAge), today.getMonth(), today.getDate());
-		if (birthdate < limit) {
-			$('#wcs-birthdate').val(dateStr);
-			$('#wcsPayolutionAging').hide();
-			$('.is--primary').attr('disabled', false);
-		}
-		else {
-			$('#wcs-birthdate').val("");
-			if($('#wcs-day').is(":visible") == true ) {
-				$('#wcsPayolutionAging').show();
-				$('.is--primary').attr('disabled', true);
+			var birthdate = new Date(dateStr);
+			var year = birthdate.getFullYear();
+			var today = new Date();
+			var limit = new Date((today.getFullYear() - minAge), today.getMonth(), today.getDate());
+			if (birthdate < limit) {
+				$('#wcs-birthdate').val(dateStr);
+				$('#wcsPayolutionAging').hide();
+				$('.is--primary').attr('disabled', false);
+			}
+			else {
+				$('#wcs-birthdate').val("");
+				if($('#wcs-day').is(":visible") == true ) {
+					$('#wcsPayolutionAging').show();
+					$('.is--primary').attr('disabled', true);
+				}
 			}
 		}
-	}
-</script>
+	</script>
 
-<div class="payment--form-group">
-	<div class="payment--selection-label is--underline" name="birthdate">{s name="WirecardCheckoutSeamlessBirthday"}Geburtsdatum{/s}</div>
 	<div class="payment--form-group">
-		<div class="row">
-			<input type="hidden" name="birthdate" id="wcs-birthdate" value="" />
-			<div class="column--quantity">
-				<select name="days" id="wcs-day" class="form-control days input-sm" onchange="checkbirthday();" required>
-					<option value="">-</option>
-					{foreach from=$days item=v}
-						<option value="{$v}" {if ($bDay == $v)}selected="selected"{/if}>{$v}&nbsp;&nbsp;</option>
-					{/foreach}
-				</select>
+		<div class="payment--selection-label is--underline" name="birthdate">{s name="WirecardCheckoutSeamlessBirthday"}Geburtsdatum{/s}</div>
+		<div class="payment--form-group">
+			<div class="row">
+				<input type="hidden" name="birthdate" id="wcs-birthdate" value="" />
+				<div class="column--quantity">
+					<select name="days" id="wcs-day" class="form-control days input-sm" onchange="checkbirthday();" required>
+						<option value="">-</option>
+						{foreach from=$days item=v}
+							<option value="{$v}" {if ($bDay == $v)}selected="selected"{/if}>{$v}&nbsp;&nbsp;</option>
+						{/foreach}
+					</select>
+				</div>
+				<div class="column--quantity">
+					<select name="months" id="wcs-month" class="form-control months input-sm" onchange="checkbirthday()" required>
+						<option value="">-</option>
+						{foreach from=$months item=v}
+							<option value="{$v}" {if ($bMonth == $v)}selected="selected"{/if}>{$v}&nbsp;&nbsp;</option>
+						{/foreach}
+					</select>
+				</div>
+				<div class="column--quantity">
+					<select name="years" id="wcs-year" class="form-control years input-sm" onchange="checkbirthday()" required>
+						<option value="">-</option>
+						{foreach from=$years item=v}
+							<option value="{$v}" {if ($bYear == $v)}selected="selected"{/if}>{$v}&nbsp;&nbsp;</option>
+						{/foreach}
+					</select>
+				</div>
 			</div>
-			<div class="column--quantity">
-				<select name="months" id="wcs-month" class="form-control months input-sm" onchange="checkbirthday()" required>
-					<option value="">-</option>
-					{foreach from=$months key=k item=v}
-						<option value="{$k}" {if ($bMonth == $k)}selected="selected"{/if}>{$v}&nbsp;&nbsp;</option>
-					{/foreach}
-				</select>
-			</div>
-			<div class="column--quantity">
-				<select name="years" id="wcs-year" class="form-control years input-sm" onchange="checkbirthday()" required>
-					<option value="">-</option>
-					{foreach from=$years item=v}
-						<option value="{$v}" {if ($bYear == $v)}selected="selected"{/if}>{$v}&nbsp;&nbsp;</option>
-					{/foreach}
-				</select>
-			</div>
-		</div>
-		<div class="clear" style="content:''; clear:both; float:none;"></div>
-		<span id="wcsPayolutionAging" style="color:red;font-weight:bold;display:none;">
+			<div class="clear" style="content:''; clear:both; float:none;"></div>
+			<span id="wcsPayolutionAging" style="color:red;font-weight:bold;display:none;">
 		{s name="WirecardCheckoutSeamlessBirthdayInformation"}Sie müssen mindestens 18 Jahre alt sein, um dieses Zahlungsmittel nutzen zu können.{/s}
 		</span>
+		</div>
 	</div>
-</div>
 {/if}
 {if $wcsPayolutionTerms && $sUserData.additional.payment.name == 'wirecard_invoice' }
 	<div class="payment--form-group">

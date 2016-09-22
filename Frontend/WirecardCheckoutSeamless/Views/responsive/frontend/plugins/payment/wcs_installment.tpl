@@ -50,8 +50,8 @@
 				<div class="column--quantity">
 					<select name="months" id="wcs-month" class="form-control months input-sm" onchange="checkbirthday()" required>
 						<option value="">-</option>
-						{foreach from=$months key=k item=v}
-							<option value="{$k}" {if ($bMonth == $k)}selected="selected"{/if}>{$v}&nbsp;&nbsp;</option>
+						{foreach from=$months item=v}
+							<option value="{$v}" {if ($bMonth == $v)}selected="selected"{/if}>{$v}&nbsp;&nbsp;</option>
 						{/foreach}
 					</select>
 				</div>

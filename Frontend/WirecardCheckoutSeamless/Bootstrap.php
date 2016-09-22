@@ -64,7 +64,7 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
      */
     public function getVersion()
     {
-        return '1.7.20';
+        return '1.7.18';
     }
 
     /**
@@ -679,13 +679,6 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
             'onPreDispatch'
         );
 
-        // Check while listing payment methods
-        $this->subscribeEvent(
-            'sAdmin::sManageRisks::after',
-            'wRiskWirecardCheckoutSeamless',
-            0
-        );
-
         // not used, order email could be suppressed
 //        $this->subscribeEvent(
 //            'Shopware_Modules_Order_SendMail_Send',
@@ -766,13 +759,13 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
             $oPayment = $this->Payments()->findOneBy(array('name' => $prefixName . $pm['name']));
             if(!$oPayment) {
                 $payment = array(
-                    'name' => $prefixName . $pm['name'],
-                    'description' => $prefixDescription . $pm['description'],
-                    'action' => self::CONTROLLER,
-                    'active' => (isset($pm['active'])) ? (int)$pm['active'] : 0,
-                    'position' => self::STARTPOSITION + $pos,
-                    'pluginID' => $this->getId(),
-                    'additionalDescription' => ''
+                        'name' => $prefixName . $pm['name'],
+                        'description' => $prefixDescription . $pm['description'],
+                        'action' => self::CONTROLLER,
+                        'active' => (isset($pm['active'])) ? (int)$pm['active'] : 0,
+                        'position' => self::STARTPOSITION + $pos,
+                        'pluginID' => $this->getId(),
+                        'additionalDescription' => ''
                 );
                 if (isset($pm['template']) && !is_null($pm['template'])) {
                     $payment['template'] = $pm['template'];
@@ -783,7 +776,6 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
                     $oPayment->setTemplate($pm['template']);
                 }
             }
-
 
             $aTranslations[$oPayment->getId()] = $pm['translation'];
         }
@@ -837,61 +829,6 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
         Shopware()->Template()->addTemplateDir(dirname(__FILE__) . '/Views/');
         return dirname(__FILE__) . '/Controllers/Frontend/' . self::CONTROLLER . '.php';
     }
-
-
-    /**
-     * Riskmanagement: Don't show payment type invoice if
-     * shipping and billing address are different or the customer
-     * not to be of legal age
-     * The payment method is displayed if return value is TRUE
-     *
-     * @param Enlight_Hook_HookArgs $args
-     *
-     * @return bool
-     */
-    public function wRiskWirecardCheckoutSeamless(Enlight_Hook_HookArgs $args)
-    {
-        if ($args->getReturn() == true) {
-            return true;
-        }
-        else
-        {
-            self::init();
-            $parameter = $args->getArgs();
-            $payment = Shopware()->WirecardCheckoutSeamless()->Config()->getPaymentMethodName($parameter[0]);
-            if (0 == strcmp($payment, 'wirecard_invoice') || 0 == strcmp($payment, 'wirecard_installment')) {
-                // Looking for user data
-                $user = Shopware()->Session()->sOrderVariables['sUserData'];
-                if (is_null($user)) {
-                    return true;
-                }
-
-                if ($this->assertMinimumVersion('5.2')) {
-                    if (!isset($user['additional']['user']['birthday'])) {
-                        return false;
-                    }
-                    $userDate = $user['additional']['user']['birthday'];
-                } else {
-                    if (!isset($user['billingaddress']['birthday'])) {
-                        return false;
-                    }
-                    $userDate = $user['billingaddress']['birthday'];
-                }
-
-                $date = explode("-", $userDate);
-                if (false === checkdate($date[1], $date[2], $date[0])) {
-                    return false;
-                }
-                // Is customer to be of legal age
-                if ((time() - strtotime($userDate . ' +18 years')) < 0) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-
 
     /**
      * return encoded mId for PayolutionLink
@@ -949,12 +886,18 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
                     $view->extendsTemplate('frontend/checkout/wirecard.tpl');
                 }
 
+                $view->wcsPayolutionTerms = Shopware()->WirecardCheckoutSeamless()->Config()->PAYOLUTION_TERMS;
+
+                if ($this->getPayolutionLink()) {
+                    $view->wcsPayolutionLink1 = '<a id="wcs-payolutionlink" href="https://payment.payolution.com/payolution-payment/infoport/dataprivacyconsent?mId=' . $this->getPayolutionLink() . '" target="_blank">';
+                    $view->wcsPayolutionLink2 = '</a>';
+                }
+
                 $view->years = range(date('Y'), date('Y') - 100);
                 $view->days = range(1, 31);
                 $view->months = range(1, 12);
 
                 $user = Shopware()->Session()->sOrderVariables['sUserData'];
-
                 $birth = null;
 
                 if ($this->assertMinimumVersion('5.2')) {
@@ -967,9 +910,8 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
                     }
                 }
 
-                if ($birth == null) {
-                    $birthday = array('-', '-', '-');
-                } else {
+                $birthday = array('-', '-', '-');
+                if ($birth != null) {
                     $birthday = explode('-', $birth);
                 }
 
@@ -977,17 +919,6 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
                 $view->bMonth = $birthday[1];
                 $view->bDay = $birthday[2];
 
-                $view->wcsPayolutionTerms = Shopware()->WirecardCheckoutSeamless()->Config()->PAYOLUTION_TERMS;
-
-                if ($this->getPayolutionLink()) {
-                    $view->wcsPayolutionLink1 = '<a id="wcs-payolutionlink" href="https://payment.payolution.com/payolution-payment/infoport/dataprivacyconsent?mId=' . $this->getPayolutionLink() . '" target="_blank">';
-                    $view->wcsPayolutionLink2 = '</a>';
-                }
-
-                // Output of common errors
-                if (null != Shopware()->WirecardCheckoutPage()->wirecard_action) {
-                    self::showErrorMessages($view);
-                }
                 break;
             case 'confirm':
                 self::init();
