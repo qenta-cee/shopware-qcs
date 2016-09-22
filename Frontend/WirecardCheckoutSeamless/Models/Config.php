@@ -499,73 +499,73 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Models_Config
                 'value' => 'Your financial institution has not yet approved your payment.'
             ),
             array(
-                'namespace' => 'engine/Shopware/Plugins/Community/Frontend/WirecardCheckoutSeamless/Views/responsive/checkout',
+                'namespace' => 'frontend/WirecardCheckoutSeamless/payment',
                 'locale' => '1',
                 'name' => 'WirecardCheckoutSeamlessPayolutionTermsHeader',
                 'value' => 'Payolution Konditionen'
             ),
             array(
-                'namespace' => 'engine/Shopware/Plugins/Community/Frontend/WirecardCheckoutSeamless/Views/responsive/checkout',
+                'namespace' => 'frontend/WirecardCheckoutSeamless/payment',
                 'locale' => '2',
                 'name' => 'WirecardCheckoutSeamlessPayolutionTermsHeader',
                 'value' => 'Payolution Terms'
             ),
             array(
-                'namespace' => 'engine/Shopware/Plugins/Community/Frontend/WirecardCheckoutSeamless/Views/responsive/checkout',
+                'namespace' => 'frontend/WirecardCheckoutSeamless/payment',
                 'locale' => '1',
                 'name' => 'WirecardCheckoutSeamlessPayolutionConsent1',
                 'value' => 'Mit der Übermittlung jener Daten an payolution, die für die Abwicklung von Zahlungen mit Kauf auf Rechnung und die Identitäts- und Bonitätsprüfung erforderlich sind, bin ich einverstanden. Meine '
             ),
             array(
-                'namespace' => 'engine/Shopware/Plugins/Community/Frontend/WirecardCheckoutSeamless/Views/responsive/checkout',
+                'namespace' => 'frontend/WirecardCheckoutSeamless/payment',
                 'locale' => '2',
                 'name' => 'WirecardCheckoutSeamlessPayolutionConsent1',
                 'value' => 'I agree that the data which are necessary for the liquidation of purchase on account and which are used to complete the identy and credit check are transmitted to payolution. My '
             ),
             array(
-                'namespace' => 'engine/Shopware/Plugins/Community/Frontend/WirecardCheckoutSeamless/Views/responsive/checkout',
+                'namespace' => 'frontend/WirecardCheckoutSeamless/payment',
                 'locale' => '1',
                 'name' => 'WirecardCheckoutSeamlessPayolutionConsent2',
                 'value' => ' kann ich jederzeit mit Wirkung für die Zukunft widerrufen.'
             ),
             array(
-                'namespace' => 'engine/Shopware/Plugins/Community/Frontend/WirecardCheckoutSeamless/Views/responsive/checkout',
+                'namespace' => 'frontend/WirecardCheckoutSeamless/payment',
                 'locale' => '2',
                 'name' => 'WirecardCheckoutSeamlessPayolutionConsent2',
                 'value' => ' can be revoked at any time with effect for the future.'
             ),
             array(
-                'namespace' => 'engine/Shopware/Plugins/Community/Frontend/WirecardCheckoutSeamless/Views/responsive/checkout',
+                'namespace' => 'frontend/WirecardCheckoutSeamless/payment',
                 'locale' => '1',
                 'name' => 'WirecardCheckoutSeamlessPayolutionLink',
                 'value' => 'Bewilligung'
             ),
             array(
-                'namespace' => 'engine/Shopware/Plugins/Community/Frontend/WirecardCheckoutSeamless/Views/responsive/checkout',
+                'namespace' => 'frontend/WirecardCheckoutSeamless/payment',
                 'locale' => '2',
                 'name' => 'WirecardCheckoutSeamlessPayolutionLink',
                 'value' => 'consent'
             ),
             array(
-                'namespace' => 'engine/Shopware/Plugins/Community/Frontend/WirecardCheckoutSeamless/Views/responsive/checkout',
+                'namespace' => 'frontend/WirecardCheckoutSeamless/payment',
                 'locale' => '1',
                 'name' => 'WirecardCheckoutSeamlessBirthday',
                 'value' => 'Geburtsdatum'
             ),
             array(
-                'namespace' => 'engine/Shopware/Plugins/Community/Frontend/WirecardCheckoutSeamless/Views/responsive/checkout',
+                'namespace' => 'frontend/WirecardCheckoutSeamless/payment',
                 'locale' => '2',
                 'name' => 'WirecardCheckoutSeamlessBirthday',
                 'value' => 'Date of birth'
             ),
             array(
-                'namespace' => 'engine/Shopware/Plugins/Community/Frontend/WirecardCheckoutSeamless/Views/responsive/checkout',
+                'namespace' => 'frontend/WirecardCheckoutSeamless/payment',
                 'locale' => '1',
                 'name' => 'WirecardCheckoutSeamlessBirthdayInformation',
                 'value' => 'Sie müssen mindestens 18 Jahre alt sein, um dieses Zahlungsmittel nutzen zu können.'
             ),
             array(
-                'namespace' => 'engine/Shopware/Plugins/Community/Frontend/WirecardCheckoutSeamless/Views/responsive/checkout',
+                'namespace' => 'frontend/WirecardCheckoutSeamless/payment',
                 'locale' => '2',
                 'name' => 'WirecardCheckoutSeamlessBirthdayInformation',
                 'value' => 'You must be at least 18 years of age to use this payment method.'
@@ -607,162 +607,189 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Models_Config
         $pm[] = array(
             'name' => 'ccard',
             'description' => 'Kreditkarte',
+            'template' => '',
             'call' => WirecardCEE_QMore_PaymentType::CCARD,
             'translation' => Array('description' => 'Wirecard Credit Card', 'additionalDescription' => '')
         );
         $pm[] = array(
             'name' => 'maestro',
             'description' => 'Maestro SecureCode',
+            'template' => '',
             'call' => WirecardCEE_QMore_PaymentType::CCARD,
             'translation' => Array('description' => 'Wirecard Maestro SecureCode', 'additionalDescription' => '')
         );
         $pm[] = array(
             'name' => 'eps',
             'description' => 'eps Online-&Uuml;berweisung',
+            'template' => '',
             'call' => WirecardCEE_QMore_PaymentType::EPS,
             'translation' => Array('description' => 'Wirecard eps Online Bank Transfer', 'additionalDescription' => '')
         );
         $pm[] = array(
             'name' => 'ideal',
             'description' => 'iDEAL',
+            'template' => '',
             'call' => WirecardCEE_QMore_PaymentType::IDL,
             'translation' => Array('description' => 'Wirecard iDEAL', 'additionalDescription' => '')
         );
         $pm[] = array(
             'name' => 'giropay',
             'description' => 'giropay',
+            'template' => '',
             'call' => WirecardCEE_QMore_PaymentType::GIROPAY,
             'translation' => Array('description' => 'Wirecard giropay', 'additionalDescription' => '')
         );
         $pm[] = array(
             'name' => 'sofortueberweisung',
             'description' => 'sofort&uuml;berweisung (PIN/TAN)',
+            'template' => '',
             'call' => WirecardCEE_QMore_PaymentType::SOFORTUEBERWEISUNG,
             'translation' => Array('description' => 'Wirecard sofortbanking (PIN/TAN)', 'additionalDescription' => '')
         );
         $pm[] = array(
             'name' => 'bancontact_mistercash',
             'description' => 'Bancontact/Mister Cash',
+            'template' => '',
             'call' => WirecardCEE_QMore_PaymentType::BMC,
             'translation' => Array('description' => 'Wirecard Bancontact/Mister Cash', 'additionalDescription' => '')
         );
         $pm[] = array(
             'name' => 'przelewy24',
             'description' => 'Przelewy24',
+            'template' => '',
             'call' => WirecardCEE_QMore_PaymentType::P24,
             'translation' => Array('description' => 'Wirecard Przelewy24', 'additionalDescription' => '')
         );
         $pm[] = array(
             'name' => 'moneta',
             'description' => 'moneta.ru',
+            'template' => '',
             'call' => WirecardCEE_QMore_PaymentType::MONETA,
             'translation' => Array('description' => 'Wirecard moneta.ru', 'additionalDescription' => '')
         );
         $pm[] = array(
             'name' => 'poli',
             'description' => 'POLi',
+            'template' => '',
             'call' => WirecardCEE_QMore_PaymentType::POLI,
             'translation' => Array('description' => 'Wirecard POLi', 'additionalDescription' => '')
         );
         $pm[] = array(
             'name' => 'pbx',
             'description' => 'paybox',
+            'template' => '',
             'call' => WirecardCEE_QMore_PaymentType::PBX,
             'translation' => Array('description' => 'Wirecard paybox', 'additionalDescription' => '')
         );
         $pm[] = array(
             'name' => 'psc',
             'description' => 'paysafecard / Cash-Ticket',
+            'template' => '',
             'call' => WirecardCEE_QMore_PaymentType::PSC,
             'translation' => Array('description' => 'Wirecard paysafecard / Cash-Ticket', 'additionalDescription' => '')
         );
         $pm[] = array(
             'name' => 'quick',
             'description' => '@Quick',
+            'template' => '',
             'call' => WirecardCEE_QMore_PaymentType::QUICK,
             'translation' => Array('description' => 'Wirecard @Quick', 'additionalDescription' => '')
         );
         $pm[] = array(
             'name' => 'paypal',
             'description' => 'PayPal',
+            'template' => '',
             'call' => WirecardCEE_QMore_PaymentType::PAYPAL,
             'translation' => Array('description' => 'Wirecard PayPal', 'additionalDescription' => '')
         );
         $pm[] = array(
             'name' => 'elv',
             'description' => 'Lastschriftverfahren',
+            'template' => '',
             'call' => WirecardCEE_QMore_PaymentType::ELV,
             'translation' => Array('description' => 'Wirecard Direct Debit', 'additionalDescription' => '')
         );
         $pm[] = array(
             'name' => 'sepa-dd',
             'description' => 'SEPA Lastschrift',
+            'template' => '',
             'call' => WirecardCEE_QMore_PaymentType::SEPADD,
             'translation' => Array('description' => 'Wirecard SEPA Direct Debit', 'additionalDescription' => '')
         );
         $pm[] = array(
             'name' => 'invoice',
             'description' => 'Rechnung',
+            'template' => 'wcs_invoice.tpl',
             'call' => WirecardCEE_QMore_PaymentType::INVOICE,
             'translation' => Array('description' => 'Wirecard Invoice', 'additionalDescription' => '')
         );
         $pm[] = array(
             'name' => 'installment',
             'description' => 'Ratenzahlung',
+            'template' => 'wcs_installment.tpl',
             'call' => WirecardCEE_QMore_PaymentType::INSTALLMENT,
             'translation' => Array('description' => 'Wirecard Installment', 'additionalDescription' => '')
         );
         $pm[] = array(
             'name' => 'mpass',
             'description' => 'mpass',
+            'template' => '',
             'call' => WirecardCEE_QMore_PaymentType::MPASS,
             'translation' => Array('description' => 'Wirecard mpass', 'additionalDescription' => '')
         );
         $pm[] = array(
             'name' => 'skrilldirect',
             'description' => 'Skrill Direct',
+            'template' => '',
             'call' => WirecardCEE_QMore_PaymentType::SKRILLDIRECT,
             'translation' => Array('description' => 'Wirecard Skrill Direct', 'additionalDescription' => '')
         );
         $pm[] = array(
             'name' => 'skrillwallet',
             'description' => 'Skrill Digital Wallet',
+            'template' => '',
             'call' => WirecardCEE_QMore_PaymentType::SKRILLWALLET,
             'translation' => Array('description' => 'Wirecard Skrill Digital Wallet', 'additionalDescription' => '')
         );
         $pm[] = array(
             'name' => 'ekonto',
             'description' => 'eKonto',
+            'template' => '',
             'call' => WirecardCEE_QMore_PaymentType::EKONTO,
             'translation' => Array('description' => 'Wirecard eKonto', 'additionalDescription' => '')
         );
         $pm[] = array(
             'name' => 'trustly',
             'description' => 'Trustly',
+            'template' => '',
             'call' => WirecardCEE_QMore_PaymentType::TRUSTLY,
             'translation' => Array('description' => 'Wirecard Trustly', 'additionalDescription' => '')
         );
         $pm[] = array(
             'name' => 'ccard-moto',
             'description' => 'MOTO-Zahlungen',
+            'template' => '',
             'call' => WirecardCEE_QMore_PaymentType::CCARD_MOTO,
             'translation' => Array('description' => 'Wirecard Credit Card MOTO', 'additionalDescription' => '')
         );
         $pm[] = array(
             'name' => 'tatrapay',
             'description' => 'TatraPay',
+            'template' => '',
             'call' => WirecardCEE_QMore_PaymentType::TATRAPAY,
             'translation' => Array('description' => 'Wirecard TatraPay', 'additionalDescription' => '')
         );
         $pm[] = array(
             'name' => 'epay',
             'description' => 'ePay.bg',
+            'template' => '',
             'call' => WirecardCEE_QMore_PaymentType::EPAYBG,
             'translation' => Array('description' => 'Wirecard ePay.bg', 'additionalDescription' => '')
         );
         $pm[] = array(
             'name' => 'voucher',
             'description' => 'Gutschein',
+            'template' => '',
             'call' => WirecardCEE_QMore_PaymentType::VOUCHER,
             'translation' => Array('description' => 'Wirecard Voucher', 'additionalDescription' => '')
         );
