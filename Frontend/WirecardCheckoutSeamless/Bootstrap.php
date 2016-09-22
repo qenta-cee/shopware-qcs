@@ -64,7 +64,7 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
      */
     public function getVersion()
     {
-        return '1.7.18';
+        return '1.7.20';
     }
 
     /**
@@ -759,13 +759,13 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
             $oPayment = $this->Payments()->findOneBy(array('name' => $prefixName . $pm['name']));
             if(!$oPayment) {
                 $payment = array(
-                        'name' => $prefixName . $pm['name'],
-                        'description' => $prefixDescription . $pm['description'],
-                        'action' => self::CONTROLLER,
-                        'active' => (isset($pm['active'])) ? (int)$pm['active'] : 0,
-                        'position' => self::STARTPOSITION + $pos,
-                        'pluginID' => $this->getId(),
-                        'additionalDescription' => ''
+                    'name' => $prefixName . $pm['name'],
+                    'description' => $prefixDescription . $pm['description'],
+                    'action' => self::CONTROLLER,
+                    'active' => (isset($pm['active'])) ? (int)$pm['active'] : 0,
+                    'position' => self::STARTPOSITION + $pos,
+                    'pluginID' => $this->getId(),
+                    'additionalDescription' => ''
                 );
                 if (isset($pm['template']) && !is_null($pm['template'])) {
                     $payment['template'] = $pm['template'];
