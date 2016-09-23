@@ -193,6 +193,7 @@ var wirecardPayment = {
                 $(contentArea).append('<p>' + message + '</p>');
                 break;
             case 'CLEAR':
+                container.css('display', "none");
                 $(contentArea).empty();
                 break;
             case 'NEW':
