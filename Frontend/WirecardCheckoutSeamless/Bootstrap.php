@@ -64,7 +64,7 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
      */
     public function getVersion()
     {
-        return '1.7.21';
+        return '1.7.22';
     }
 
     /**
@@ -524,6 +524,19 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
                 'order' => ++$i
             )
         );
+
+        $form->setElement(
+            'checkbox',
+            'SEND_PENDING_MAILS',
+            array(
+                'label' => 'Mail für Pendingstatus versenden',
+                'value' => 0,
+                'description' => 'Falls "Ja" gesetzt ist, werden Mails zu noch nicht bestätigten Zahlungen verschickt.',
+                'scope' => \Shopware\Models\Config\Element::SCOPE_SHOP,
+                'required' => false,
+                'order' => ++$i
+            )
+        );
     }
 
     /**
@@ -625,6 +638,10 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
                 'WIRECARD_CONFIRM_HEADER_STYLE' => Array(
                     'label' => 'Header style',
                     'description' => 'Style of header within the last step in payment process.'
+                ),
+                'SEND_PENDING_MAILS' => Array(
+                    'label' => 'Send Pendingstate mails',
+                    'description' => 'Selecting "Yes", mails will be sent for pending orders'
                 )
             )
         );
@@ -679,11 +696,16 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
             'onPreDispatch'
         );
 
-        // not used, order email could be suppressed
-//        $this->subscribeEvent(
-//            'Shopware_Modules_Order_SendMail_Send',
-//            'sendOrderEmail'
-//        );
+        // Prevent ordermail after pending
+        $this->subscribeEvent(
+            'Shopware_Modules_Order_SendMail_Send',
+            'defineSending'
+        );
+
+        $this->subscribeEvent(
+            'Shopware_Controllers_Backend_OrderState_Notify',
+            'sendStateNotify'
+        );
 
         // Cronjob: delete old log files
         $this->subscribeEvent('WirecardCEEDeleteLog', 'onRun');
@@ -702,6 +724,11 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
             'Theme_Compiler_Collect_Plugin_Javascript',
             'addJsFiles'
         );
+
+        /*$this->subscribeEvent(
+            'Shopware_Modules_Order_SendMail_Create',
+            'test'
+        );*/
     }
 
     /**
@@ -845,6 +872,16 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
         $mId = urlencode(base64_encode($mid));
 
         return $mId;
+    }
+
+    /**
+     * set confirmmail after ordercreation false
+     * @param Enlight_Event_EventArgs $args
+     * @return bool
+     */
+    public function defineSending(Enlight_Event_EventArgs $args)
+    {
+        return false;
     }
 
     /**
