@@ -302,7 +302,6 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
 
                     $update['orderNumber'] = $return->getOrderNumber();
                     $update['session'] = '';
-                    $context['sOrderNumber'] = $sOrderVariables['sOrderNumber'];
                     $context['sOrderDay'] = date("d.m.Y");
                     $context['sOrderTime'] = date("H:i");
 
@@ -315,6 +314,7 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
                             true
                         );
                         $orderId = $data['orderId'];
+                        $context['sOrderNumber'] = Shopware()->Session()->sOrderVariables['sOrderNumber'];
 
                         // Sending confirm mail for successfull order after pending
                         $mail = Shopware()->TemplateMail()->createMail('sORDER', $context);
@@ -330,8 +330,6 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
                         }
                     }
                     else {
-                        $this->View()->specificMessage = 'Da läuft was!';
-
                         $site = Shopware()->Shop();
                         $repository = Shopware()->Models()->getRepository('Shopware\Models\Shop\Currency');
                         if (($currency = $this->Request()->getParam('__currency')) !== null) {
@@ -346,6 +344,7 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
                         );
                         $orderId = $update['orderId'];
 
+                        $context['sOrderNumber'] = Shopware()->Session()->sOrderVariables['sOrderNumber'];
                         // Sending confirm mail for successfull order
                         $mail = Shopware()->TemplateMail()->createMail('sORDER', $context);
                         $mail->addTo($userData['additional']['user']['email']);

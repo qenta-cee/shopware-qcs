@@ -1,3 +1,4 @@
+{namespace name='frontend/payment_wirecard/index'}
 {extends file="frontend/index/index.tpl"}
 
 {block name='frontend_index_content_left'}{/block}
