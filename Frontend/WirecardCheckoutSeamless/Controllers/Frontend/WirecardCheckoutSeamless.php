@@ -260,15 +260,13 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
 
             $update['state'] = strtolower($return->getPaymentState());
 
-            //Data for confirm mail
+            // data for confirm mail
             $sOrderVariables = Shopware()->Session()->sOrderVariables;
             $userData = Shopware()->Session()->sOrderVariables['sUserData'];
             $basketData = Shopware()->Session()->sOrderVariables['sBasket'];
 
             $shop = Shopware()->Shop();
             $mainShop = $shop->getMain() !== null ? $shop->getMain() : $shop;
-
-            //whats with basketData?
             $details = $basketData['content'];
 
             $context = array(
@@ -325,10 +323,14 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
                         try {
                             $mail->send();
                         } catch (\Exception $e) {
-                            //TODO: Handle email sending failure
+                            $variables = Shopware()->Session()->offsetGet('sOrderVariables');
+                            $variables['sOrderNumber'] = $context['sOrderNumber'];
+                            $variables['confirmMailDeliveryFailed'] = true;
+                            Shopware()->Session()->offsetSet('sOrderVariables', $variables);
                         }
                     }
                     else {
+                        $this->View()->specificMessage = 'Da läuft was!';
 
                         $site = Shopware()->Shop();
                         $repository = Shopware()->Models()->getRepository('Shopware\Models\Shop\Currency');
@@ -351,7 +353,10 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
                         try {
                             $mail->send();
                         } catch (\Exception $e) {
-                            //TODO: Handle email sending failure
+                            $variables = Shopware()->Session()->offsetGet('sOrderVariables');
+                            $variables['sOrderNumber'] = $context['sOrderNumber'];
+                            $variables['confirmMailDeliveryFailed'] = true;
+                            Shopware()->Session()->offsetSet('sOrderVariables', $variables);
                         }
                     }
 
@@ -405,7 +410,10 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
                             try {
                                 $mail->send();
                             } catch (\Exception $e) {
-                                //TODO: Handle email sending failure
+                                $variables = Shopware()->Session()->offsetGet('sOrderVariables');
+                                $variables['sOrderNumber'] = $sOrderVariables['sOrderNumber'];
+                                $variables['confirmMailDeliveryFailed'] = true;
+                                Shopware()->Session()->offsetSet('sOrderVariables', $variables);
                             }
                         }
                     }
@@ -454,7 +462,10 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
                             try {
                                 $mail->send();
                             } catch (\Exception $e) {
-                                //TODO: Handle email sending failure
+                                $variables = Shopware()->Session()->offsetGet('sOrderVariables');
+                                $variables['sOrderNumber'] = $context['sOrderNumber'];
+                                $variables['confirmMailDeliveryFailed'] = true;
+                                Shopware()->Session()->offsetSet('sOrderVariables', $variables);
                             }
                         }
                         $update['session'] = '';

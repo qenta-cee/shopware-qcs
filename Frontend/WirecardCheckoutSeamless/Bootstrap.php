@@ -725,10 +725,6 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
             'addJsFiles'
         );
 
-        /*$this->subscribeEvent(
-            'Shopware_Modules_Order_SendMail_Create',
-            'test'
-        );*/
     }
 
     /**
@@ -1044,6 +1040,9 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
 
             case 'finish':
                 self::init();
+                $variables = Shopware()->Session()->offsetGet('sOrderVariables');
+                $confirmMailFailed = false;
+                $confirmMailFailed = $variables['confirmMailDeliveryFailed'];
                 $view->addTemplateDir($this->Path() . 'Views/common/');
                 if (Shopware()->Shop()->getTemplate()->getVersion() >= 3) {
                     $view->addTemplateDir($this->Path() . 'Views/responsive/');
@@ -1053,6 +1052,7 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
                 }
 
                 $view->pendingPayment = $args->getSubject()->Request()->get('pending');
+                $view->confirmMailFailed = $confirmMailFailed;
                 break;
             default:
                 return;
