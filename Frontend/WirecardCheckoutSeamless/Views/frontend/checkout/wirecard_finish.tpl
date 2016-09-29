@@ -1,3 +1,4 @@
+{namespace name='frontend/checkout/wirecard_finish'}
 {extends file="frontend/checkout/finish.tpl"}
 
 {block name="frontend_index_header_css_screen" append}

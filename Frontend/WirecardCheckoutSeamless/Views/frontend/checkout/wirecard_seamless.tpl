@@ -1,3 +1,4 @@
+{namespace name='frontend/checkout/wirecard_seamless'}
 {extends file=$headerTemplate}
 
 {block name='frontend_index_content_left'}{/block}

@@ -1,4 +1,4 @@
-
+{namespace name='frontend/checkout/return'}
 {extends file="frontend/index/index.tpl"}
 
 {block name='frontend_index_content_left'}{/block}
