@@ -64,7 +64,7 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
      */
     public function getVersion()
     {
-        return '1.7.22';
+        return '1.7.23';
     }
 
     /**
@@ -982,6 +982,12 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
                 }
 
                     Shopware()->WirecardCheckoutSeamless()->storageId = Shopware()->WirecardCheckoutSeamless()->Datastorage()->getStorageId();
+                }
+
+                $view->oldShopVersion = false;
+
+                if (!$this->assertMinimumVersion('5')) {
+                    $view->oldShopVersion = true;
                 }
 
                 $view->paymentTypeName = Shopware()->WirecardCheckoutSeamless()->getPaymentShortName();
