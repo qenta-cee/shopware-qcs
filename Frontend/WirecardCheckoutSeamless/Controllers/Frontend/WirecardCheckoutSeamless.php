@@ -392,9 +392,15 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
                             $existingOrder = Shopware()->Models()->getRepository('Shopware\Models\Order\Order')->findByNumber($sOrderVariables['sOrderNumber']);
                             $status = $existingOrder[0]->getPaymentStatus();
 
+                            $orderDate = 'dd.mm.yyyy';
+
+                            if($details != null){
+                                $orderDate = $details[0]['datum'];
+                            }
                             $sOrder = array(
                                 'ordernumber' => $sOrderVariables['sOrderNumber'],
-                                'status_description' => $status->getName()
+                                'status_description' => $status->getName(),
+                                'ordertime' => $orderDate
                             );
 
                             $pendingContext = array(
@@ -443,10 +449,15 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
                             Shopware()->Models()->flush();
 
                             $status = $existingOrder[0]->getPaymentStatus();
+                            $orderDate = 'dd.mm.yyyy';
 
+                            if($details != null){
+                                $orderDate = $details[0]['datum'];
+                            }
                             $sOrder = array(
                                 'ordernumber' => $sOrderVariables['sOrderNumber'],
-                                'status_description' => $status->getName()
+                                'status_description' => $status->getName(),
+                                'ordertime' => $orderDate
                             );
 
                             $pendingContext = array (
