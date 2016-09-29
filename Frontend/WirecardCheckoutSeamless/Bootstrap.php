@@ -801,9 +801,8 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
             }
 
             $aTranslations[$oPayment->getId()] = $pm['translation'];
-            $translation->write(2, "config_payment", $oPayment->getId(), array('description' => $pm['translation']['description']), true);
         }
-        //$translation->write(2, 'config_payment', 1, $aTranslations,0);
+        $translation->write(2, 'config_payment', 1, $aTranslations,0);
     }
 
     /**
