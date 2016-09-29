@@ -2,7 +2,9 @@
 {extends file="parent:frontend/checkout/confirm.tpl"}
 
 {block name="frontend_index_header_javascript" append}
-
+    <script type="text/javascript">
+        var oldShopVersion = {$oldShopVersion};
+    </script>
     {if $wirecardAdditional eq 'seamless'}
         <script type='text/javascript' src="{$wirecardJavascript}"></script>
     {/if}

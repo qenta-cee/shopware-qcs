@@ -18,23 +18,26 @@ var wirecardPayment = {
 
         this.checkoutForm.bind('submit.wirecardChechoutValidator', { self: this }, function(event) {
             var self = event.data.self;
-            var agbCheck = $('#sAGB');
-            if ($(agbCheck).length)
-            {
-                if (!$(agbCheck).prop('checked'))
-                {
-                    $("label[for='sAGB']").addClass('has--error');
-                    self.showError(agbErrorMessage, 'NEW');
-                    $('html, body').animate({scrollTop:0}, 'slow');
-                    event.preventDefault();
-                } else {
-                    $("label[for='sAGB']").removeClass('has--error');
-                    self.showError('', 'CLEAR');
+            if(oldShopVersion) {
+                var agbCheck = $('#sAGB');
+                if ($(agbCheck).length) {
+                    if (!$(agbCheck).prop('checked')) {
+                        $("label[for='sAGB']").addClass('has--error');
+                        self.showError(agbErrorMessage, 'NEW');
+                        $('html, body').animate({scrollTop: 0}, 'slow');
+                        event.preventDefault();
+                    } else {
+                        $("label[for='sAGB']").removeClass('has--error');
+                        self.showError('', 'CLEAR');
+                    }
                 }
             }
 
             if (!self.checkoutSubmit()) {
                 event.preventDefault();
+            }
+            else {
+                self.showError('', 'CLEAR');
             }
         });
 
