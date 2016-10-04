@@ -64,7 +64,7 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
      */
     public function getVersion()
     {
-        return '1.7.23';
+        return '1.7.24';
     }
 
     /**
