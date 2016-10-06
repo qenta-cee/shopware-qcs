@@ -146,6 +146,9 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
             'confirm' => $confirmUrl
         );
 
+        if(strlen($_SESSION["wcs_redirect_url"]))
+            die(json_encode(array('redirectUrl' => $_SESSION["wcs_redirect_url"], 'useIframe' => true)));
+
         // Set customer data like name, address
         $response = Shopware()->WirecardCheckoutSeamless()->Seamless()->getResponse(
             $paymentType,
@@ -179,7 +182,7 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
             );
             die($dataFail);
         }
-
+        $_SESSION["wcs_redirect_url"] = $response->getRedirectUrl();
         die(json_encode(array('redirectUrl' => $response->getRedirectUrl(), 'useIframe' => true)));
     }
 
@@ -506,6 +509,9 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
      */
     public function returnAction()
     {
+        if(strlen($_SESSION["wcs_redirect_url"]))
+            unset($_SESSION["wcs_redirect_url"]);
+
         // Get data saved by wirecard callback
         $sql = Shopware()->Db()->select()
             ->from('wirecard_checkout_seamless')

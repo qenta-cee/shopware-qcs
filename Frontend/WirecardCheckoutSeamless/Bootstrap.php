@@ -64,7 +64,7 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
      */
     public function getVersion()
     {
-        return '1.7.24';
+        return '1.7.25';
     }
 
     /**
@@ -537,6 +537,19 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
                 'order' => ++$i
             )
         );
+
+        $form->setElement(
+            'checkbox',
+            'ENABLE_DUPLICATE_REQUEST_CHECK',
+            array(
+                'label' => 'Überprüfung auf doppelte Anfragen',
+                'value' => 0,
+                'description' => 'Überprüfung auf mehrfache Anfragen seitens Ihres Kunden.',
+                'scope' => \Shopware\Models\Config\Element::SCOPE_SHOP,
+                'required' => false,
+                'order' => ++$i
+            )
+        );
     }
 
     /**
@@ -642,6 +655,10 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
                 'SEND_PENDING_MAILS' => Array(
                     'label' => 'Send Pendingstate mails',
                     'description' => 'Selecting "Yes", mails will be sent for pending orders'
+                ),
+                'ENABLE_DUPLICATE_REQUEST_CHECK' => Array(
+                    'label' => 'Check for duplicate requests',
+                    'description' => 'Checking duplicate requests made by your consumer.'
                 )
             )
         );

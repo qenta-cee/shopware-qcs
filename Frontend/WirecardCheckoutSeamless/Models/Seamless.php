@@ -131,7 +131,14 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Models_Seamless
             ->setServiceUrl(Shopware()->WirecardCheckoutSeamless()->Config()->service_url)
             ->setConsumerData($this->getConsumerData($paymentType));
 
-        $init->generateCustomerStatement(Shopware()->WirecardCheckoutSeamless()->Config()->getShopName());
+        if(Shopware()->WirecardCheckoutSeamless()->Config()->ENABLE_DUPLICATE_REQUEST_CHECK)
+            $init->setDuplicateRequestCheck(true);
+
+        $init->generateCustomerStatement(
+            Shopware()->WirecardCheckoutSeamless()->Config()->getShopName(),
+            Shopware()->WirecardCheckoutSeamless()->wWirecardCheckoutSeamlessId
+        );
+
 
         Shopware()->WirecardCheckoutSeamless()->Log()->Debug(__METHOD__ . ':' . print_r($init->getRequestData(),true));
 
