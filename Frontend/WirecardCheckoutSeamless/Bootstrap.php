@@ -713,12 +713,6 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
             'onPreDispatch'
         );
 
-        // Prevent ordermail after pending
-        $this->subscribeEvent(
-            'Shopware_Modules_Order_SendMail_Send',
-            'defineSending'
-        );
-
         $this->subscribeEvent(
             'Shopware_Controllers_Backend_OrderState_Notify',
             'sendStateNotify'
@@ -740,6 +734,12 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
         $this->subscribeEvent(
             'Theme_Compiler_Collect_Plugin_Javascript',
             'addJsFiles'
+        );
+
+        // Prevent ordermail after pending
+        $this->subscribeEvent(
+            'Shopware_Modules_Order_SendMail_Send',
+            'defineSending'
         );
 
     }
@@ -888,13 +888,20 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
     }
 
     /**
-     * set confirmmail after ordercreation false
+     * set confirmmail after ordercreation false (only for WirecardCheckoutSeamless)
      * @param Enlight_Event_EventArgs $args
      * @return bool
      */
     public function defineSending(Enlight_Event_EventArgs $args)
     {
-        return false;
+        $userData = Shopware()->Session()->sOrderVariables['sUserData'];
+        $additional = $userData['additional'];
+        $paymentaction = $additional['payment']['action'];
+
+        //only prevent confirmationmail for WirecardCheckoutSeamless payment action
+        if($paymentaction == 'WirecardCheckoutSeamless') {
+            return false;
+        }
     }
 
     /**

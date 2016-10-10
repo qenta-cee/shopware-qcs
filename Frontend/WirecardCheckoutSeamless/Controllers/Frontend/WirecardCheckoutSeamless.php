@@ -308,16 +308,18 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
                     $context['sOrderDay'] = date("d.m.Y");
                     $context['sOrderTime'] = date("H:i");
 
+                    $orderNumber = 0;
                     // pending url, we already have an order id, just update the payment state
                     if ($data['orderId']) {
                         $this->savePaymentStatus(
                             $data['transactionId'],
                             $paymentUniqueId,
                             Shopware()->WirecardCheckoutSeamless()->Config()->getPaymentStatusId('success'),
-                            true
+                            false
                         );
+                        //never send mail automatic
                         $orderId = $data['orderId'];
-                        $context['sOrderNumber'] = Shopware()->Session()->sOrderVariables['sOrderNumber'];
+                        $context['sOrderNumber'] = $data['orderId'];
 
                         // Sending confirm mail for successfull order after pending
                         $mail = Shopware()->TemplateMail()->createMail('sORDER', $context);
@@ -343,7 +345,8 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
                         $update['orderId'] = $this->saveOrder(
                             $transactionId,
                             $paymentUniqueId,
-                            Shopware()->WirecardCheckoutSeamless()->Config()->getPaymentStatusId('success')
+                            Shopware()->WirecardCheckoutSeamless()->Config()->getPaymentStatusId('success'),
+                            false
                         );
                         $orderId = $update['orderId'];
 
@@ -387,9 +390,10 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
                         $update['orderId'] = $this->saveOrder(
                             $transactionId,
                             $paymentUniqueId,
-                            Shopware()->WirecardCheckoutSeamless()->Config()->getPaymentStatusId('pending')
+                            Shopware()->WirecardCheckoutSeamless()->Config()->getPaymentStatusId('pending'),
+                            false
                         );
-
+                        //do not send automatic mail for ordercreation
                         //only send pendingmail if configured
                         if(Shopware()->WirecardCheckoutSeamless()->Config()->SEND_PENDING_MAILS) {
                             $existingOrder = Shopware()->Models()->getRepository('Shopware\Models\Order\Order')->findByNumber($sOrderVariables['sOrderNumber']);
@@ -444,10 +448,17 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
                             $this->savePaymentStatus(
                                 $data['transactionId'],
                                 $paymentUniqueId,
-                                Shopware()->WirecardCheckoutSeamless()->Config()->getPaymentStatusId('failure')
+                                Shopware()->WirecardCheckoutSeamless()->Config()->getPaymentStatusId('failure'),
+                                false
                             );
                         } else if($existingOrder[0] instanceof \Shopware\Models\Order\Order) {
                             Shopware()->WirecardCheckoutSeamless()->Log()->Debug(__METHOD__ . ': failure: delete order: ' . $data['orderId']);
+                            $this->savePaymentStatus(
+                                $data['transactionId'],
+                                $paymentUniqueId,
+                                Shopware()->WirecardCheckoutSeamless()->Config()->getPaymentStatusId('failure'),
+                                false
+                            );
                             Shopware()->Models()->remove($existingOrder[0]);
                             Shopware()->Models()->flush();
 
