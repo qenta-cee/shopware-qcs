@@ -470,7 +470,7 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
                             }
                             $sOrder = array(
                                 'ordernumber' => $sOrderVariables['sOrderNumber'],
-                                'status_description' => $status->getName(),
+                                'status_description' => 'failure',
                                 'ordertime' => $orderDate
                             );
 
