@@ -281,14 +281,16 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
                 'sShippingCosts' => $sOrderVariables['sShippingcosts'],
                 'sAmount'        => $sOrderVariables['sAmount'],
                 'sAmountNet'     => $sOrderVariables['sAmountNet'],
+                'sDispatch'      => $sOrderVariables['sDispatch'],
 
                 'sOrderNumber' => $sOrderVariables['sOrderNumber'],
                 'sComment'     => $sOrderVariables['sComment'],
-                'sCurrency'    => $sOrderVariables['sSYSTEM']->sCurrency['currency'],
+                'sCurrency'    => Shopware()->System()->sCurrency['currency'],
                 'sLanguage'    => $shop->getId(),
 
                 'sSubShop'     => $mainShop->getId(),
-                'sNet'    => $sOrderVariables['sNet'],
+                'sNet'    => !$userData['additional']['show_net'],
+                'sEsd'     => $userData['additional']['payment']['esdactive'],
                 'sTaxRates'      => $sOrderVariables['sTaxRates'],
             );
 
