@@ -278,17 +278,19 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
                 'shippingaddress' => $userData['shippingaddress'],
                 'additional'      => $userData['additional'],
 
-                'sShippingCosts' => $sOrderVariables['sShippingcosts'],
-                'sAmount'        => $sOrderVariables['sAmount'],
-                'sAmountNet'     => $sOrderVariables['sAmountNet'],
+                'sShippingCosts' => $sOrderVariables['sShippingcosts'] . ' ' .Shopware()->Shop()->getCurrency()->getCurrency(),
+                'sAmount'        => $sOrderVariables['sAmount'] . ' ' .Shopware()->Shop()->getCurrency()->getCurrency(),
+                'sAmountNet'     => $sOrderVariables['sAmountNet'] . ' ' .Shopware()->Shop()->getCurrency()->getCurrency(),
+                'sDispatch'      => $sOrderVariables['sDispatch'],
 
                 'sOrderNumber' => $sOrderVariables['sOrderNumber'],
                 'sComment'     => $sOrderVariables['sComment'],
-                'sCurrency'    => $sOrderVariables['sSYSTEM']->sCurrency['currency'],
+                'sCurrency'    => Shopware()->Shop()->getCurrency()->getCurrency(),
                 'sLanguage'    => $shop->getId(),
 
                 'sSubShop'     => $mainShop->getId(),
-                'sNet'    => $sOrderVariables['sNet'],
+                'sNet'    => !$userData['additional']['show_net'],
+                'sEsd'     => $userData['additional']['payment']['esdactive'],
                 'sTaxRates'      => $sOrderVariables['sTaxRates'],
             );
 
@@ -320,6 +322,11 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
                         //never send mail automatic
                         $orderId = $data['orderId'];
                         $context['sOrderNumber'] = $data['orderId'];
+                        $context['sShippingCosts'] = $sOrderVariables['sShippingcosts'] . ' ' .Shopware()->Shop()->getCurrency()->getCurrency();
+                        $context['sAmount'] = $sOrderVariables['sAmount'] . ' ' .Shopware()->Shop()->getCurrency()->getCurrency();
+                        $context['sAmountNet'] = $sOrderVariables['sAmountNet'] . ' ' .Shopware()->Shop()->getCurrency()->getCurrency();
+                        $context['sCurrency'] = Shopware()->Shop()->getCurrency()->getCurrency();
+
 
                         // Sending confirm mail for successfull order after pending
                         $mail = Shopware()->TemplateMail()->createMail('sORDER', $context);
@@ -351,6 +358,12 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
                         $orderId = $update['orderId'];
 
                         $context['sOrderNumber'] = Shopware()->Session()->sOrderVariables['sOrderNumber'];
+
+                        $context['sShippingCosts'] = $sOrderVariables['sShippingcosts'] . ' ' .Shopware()->Shop()->getCurrency()->getCurrency();
+                        $context['sAmount'] = $sOrderVariables['sAmount'] . ' ' .Shopware()->Shop()->getCurrency()->getCurrency();
+                        $context['sAmountNet'] = $sOrderVariables['sAmountNet'] . ' ' .Shopware()->Shop()->getCurrency()->getCurrency();
+                        $context['sCurrency'] = Shopware()->Shop()->getCurrency()->getCurrency();
+
                         // Sending confirm mail for successfull order
                         $mail = Shopware()->TemplateMail()->createMail('sORDER', $context);
                         $mail->addTo($userData['additional']['user']['email']);
@@ -459,10 +472,12 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
                                 Shopware()->WirecardCheckoutSeamless()->Config()->getPaymentStatusId('failure'),
                                 false
                             );
+
+                            $status = $existingOrder[0]->getPaymentStatus();
+
                             Shopware()->Models()->remove($existingOrder[0]);
                             Shopware()->Models()->flush();
 
-                            $status = $existingOrder[0]->getPaymentStatus();
                             $orderDate = 'dd.mm.yyyy';
 
                             if($details != null){
@@ -470,7 +485,7 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
                             }
                             $sOrder = array(
                                 'ordernumber' => $sOrderVariables['sOrderNumber'],
-                                'status_description' => 'failure',
+                                'status_description' => $status->getName(),
                                 'ordertime' => $orderDate
                             );
 
