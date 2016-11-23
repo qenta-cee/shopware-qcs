@@ -331,6 +331,9 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
                         // Sending confirm mail for successfull order after pending
                         $mail = Shopware()->TemplateMail()->createMail('sORDER', $context);
                         $mail->addTo($userData['additional']['user']['email']);
+                        if(!Shopware()->Config()->get('sNO_ORDER_MAIL')) {
+                            $mail->addBcc(Shopware()->Config()->get('mail'));
+                        }
 
                         try {
                             $mail->send();
@@ -367,6 +370,9 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
                         // Sending confirm mail for successfull order
                         $mail = Shopware()->TemplateMail()->createMail('sORDER', $context);
                         $mail->addTo($userData['additional']['user']['email']);
+                        if(!Shopware()->Config()->get('sNO_ORDER_MAIL')) {
+                            $mail->addBcc(Shopware()->Config()->get('mail'));
+                        }
 
                         try {
                             $mail->send();
@@ -497,6 +503,9 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
                             // Sending confirm mail for failed order after pending
                             $mail = Shopware()->TemplateMail()->createMail('sORDERSTATEMAIL4', $pendingContext);
                             $mail->addTo($userData['additional']['user']['email']);
+                            if(!Shopware()->Config()->get('sNO_ORDER_MAIL')) {
+                                $mail->addBcc(Shopware()->Config()->get('mail'));
+                            }
 
                             try {
                                 $mail->send();
