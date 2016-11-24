@@ -120,6 +120,8 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Models_Seamless
         foreach ($params as $k => $v)
             $init->$k = $v;
 
+        $userData = Shopware()->Session()->sOrderVariables['sUserData'];
+
         $init->setAmount($amount)
             ->setCurrency($currencyShortName)
             ->setPaymentType($paymentType)
@@ -129,6 +131,7 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Models_Seamless
             ->setCancelUrl($urls['cancel'])
             ->setFailureUrl($urls['failure'])
             ->setServiceUrl(Shopware()->WirecardCheckoutSeamless()->Config()->service_url)
+            ->createConsumerMerchantCrmId($userData['additional']['user']['email'])
             ->setConsumerData($this->getConsumerData($paymentType));
 
         if(Shopware()->WirecardCheckoutSeamless()->Config()->ENABLE_DUPLICATE_REQUEST_CHECK)
