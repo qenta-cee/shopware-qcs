@@ -248,6 +248,8 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
                 ->where('uniqueId = ?', array($paymentUniqueId));
             $data = Shopware()->Db()->fetchRow($sql);
 
+            $orderId = $data['orderId'];
+
             $sessionData = unserialize(base64_decode($data['session']));
             if(!is_array($sessionData)) {
                 Shopware()->WirecardCheckoutSeamless()->Log()->Debug(__METHOD__ . ':Validation error: invalid session data');
@@ -384,8 +386,8 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
                         }
                     }
 
-                    if (Shopware()->WirecardCheckoutSeamless()->Config()->saveReturnValues()) {
-                        $this->saveComments($return, $orderId);
+                    if (Shopware()->WirecardCheckoutSeamless()->Config()->saveReturnValues() > 1) {
+                        $this->saveComments($return->getReturned() , $orderId);
                     }
                     break;
 
@@ -503,9 +505,6 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
                             // Sending confirm mail for failed order after pending
                             $mail = Shopware()->TemplateMail()->createMail('sORDERSTATEMAIL4', $pendingContext);
                             $mail->addTo($userData['additional']['user']['email']);
-                            if(!Shopware()->Config()->get('sNO_ORDER_MAIL')) {
-                                $mail->addBcc(Shopware()->Config()->get('mail'));
-                            }
 
                             try {
                                 $mail->send();
@@ -719,10 +718,10 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
      *
      * @internal param null $transactionId
      */
-    protected function saveComments(WirecardCEE_QMore_Return_Success $return = null, $orderNumber = null)
+    protected function saveComments(array $returnValues = null, $orderNumber = null)
     {
         $comments = array();
-        foreach ($return->getReturned() as $name => $value) {
+        foreach ($returnValues as $name => $value) {
             if ($name == 'sCoreId' || $name == 'wWirecardCheckoutSeamlessId') {
                 continue;
             }
