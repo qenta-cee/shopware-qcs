@@ -64,7 +64,7 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
      */
     public function getVersion()
     {
-        return '1.7.26';
+        return '1.8.0';
     }
 
     /**
@@ -897,9 +897,10 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
         $userData = Shopware()->Session()->sOrderVariables['sUserData'];
         $additional = $userData['additional'];
         $paymentaction = $additional['payment']['action'];
+        $sPaymentstate = Shopware()->Session()->sPaymentstate;
 
         //only prevent confirmationmail for WirecardCheckoutSeamless payment action
-        if($paymentaction == 'WirecardCheckoutSeamless') {
+        if($paymentaction == 'WirecardCheckoutSeamless' && $sPaymentstate !== 'success') {
             return false;
         }
     }
