@@ -1066,7 +1066,8 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Models_Config
      */
     public function saveReturnValues()
     {
-        return intval($this->WIRECARD_SAVERESPONSE) > 1;
+        $saveresponse = $this->WIRECARD_SAVERESPONSE;
+        return $saveresponse;
     }
 
     /**
