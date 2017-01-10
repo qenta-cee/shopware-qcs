@@ -3,10 +3,6 @@
 
 {block name='frontend_index_content_left'}{/block}
 
-{block name='frontend_index_breadcrumb'}
-    <hr class="clear"/>
-{/block}
-
 {block name="frontend_index_header_javascript_jquery_lib" append}
     <script type="text/javascript">
         var wirecardSaveOrderUrl = {$saveOrderUrl|json_encode};

@@ -1,7 +1,7 @@
 # Wirecard Checkout Seamless plugin for Shopware
 
 [![License](https://img.shields.io/badge/license-GPLv2-blue.svg)](https://raw.githubusercontent.com/wirecard/Shopware-WCS/master/LICENSE)
-[![Shopware](https://img.shields.io/badge/Shopware-v5.2.11-green.svg)](https://www.shopware.com/)
+[![Shopware](https://img.shields.io/badge/Shopware-v5.2.13-green.svg)](https://www.shopware.com/)
 [![PHP v7](https://img.shields.io/badge/php-v7-yellow.svg)](http://www.php.net)
 
 Wirecard Checkout Seamless plugin for Shopware. 
@@ -32,4 +32,3 @@ Wirecard Checkout Seamless offers:
 - Web interface for managing payments (approvals, cancelations, credits, etc.).
 - Benefit from Wirecard Bank´s license to conclude credit card acceptance contracts (acquiring) and issue credit cards.
 - With Wirecard Collecting only a single contract is required for payouts within various payment methods.
-- Support of recurring payments (subscriptions, one-click checkout).

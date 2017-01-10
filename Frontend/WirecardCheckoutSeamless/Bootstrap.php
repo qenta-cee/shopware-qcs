@@ -64,7 +64,7 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
      */
     public function getVersion()
     {
-        return '1.8.0';
+        return '1.8.1';
     }
 
     /**
@@ -105,13 +105,12 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
     }
 
     /**
-     * @return bool
+     * @return array
      * @throws Enlight_Exception
      */
     public function install()
     {
         self::init();
-        //$this->uninstall();
         if (!$this->assertVersionGreaterThen('4.0.0')) {
             throw new Enlight_Exception('This plugin needs minimum Shopware 4.0.0');
         }
@@ -171,7 +170,7 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
     /**
      * This derived method is called automatically each time the plugin will be uninstalled
      *
-     * @return bool
+     * @return array
      */
     public function uninstall()
     {
