@@ -97,7 +97,7 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Models_Datastorage
             if (strlen(trim($config->IFRAME_CSS_URL)))
                 $dataStorageInit->setIframeCssUrl(trim($config->IFRAME_CSS_URL));
 
-            $dataStorageInit->setCreditCardCardholderNameField($config->CREDITCARD_SHOWCARDHOLDER);
+            $dataStorageInit->setCreditCardShowCardholderNameField($config->CREDITCARD_SHOWCARDHOLDER);
             $dataStorageInit->setCreditCardShowCvcField($config->CREDITCARD_SHOWCVC);
             $dataStorageInit->setCreditCardShowIssueDateField($config->CREDITCARD_SHOWISSUEDATE);
             $dataStorageInit->setCreditCardShowIssueNumberField($config->CREDITCARD_SHOWISSUENUMBER);
