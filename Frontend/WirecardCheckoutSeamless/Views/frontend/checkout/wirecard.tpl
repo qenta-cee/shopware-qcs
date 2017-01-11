@@ -45,7 +45,7 @@
 </div>
 {/block}
 
-{block name='frontend_checkout_confirm_payment' append}
+{block name='frontend_checkout_confirm_information_payment' append}
     {if $wirecardAdditional eq 'financialInstitutions'}
     <div id="paymentOptions">
         <div class="grid_16 first">
