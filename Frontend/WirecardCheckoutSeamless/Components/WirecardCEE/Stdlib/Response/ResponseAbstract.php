@@ -30,6 +30,9 @@
  * Please do not use the plugin if you do not agree to these terms of use!
  */
 
+
+use GuzzleHttp\Message\Response;
+
 /**
  * @name WirecardCEE_Stdlib_Response_ResponseAbstract
  * @category WirecardCEE
@@ -93,11 +96,13 @@ abstract class WirecardCEE_Stdlib_Response_ResponseAbstract
     /**
      * base constructor for Response objects
      *
-     * @param Zend_Http_Response $response
+     * @param ResponseInterface $response
+     *
+     * @throws WirecardCEE_Stdlib_Exception_InvalidResponseException
      */
     public function __construct($response)
     {
-        if ($response instanceof Zend_Http_Response) {
+        if ($response instanceof Response) {
             $this->_response = WirecardCEE_Stdlib_SerialApi::decode($response->getBody());
         } elseif (is_array($response)) {
             $this->_response = $response;

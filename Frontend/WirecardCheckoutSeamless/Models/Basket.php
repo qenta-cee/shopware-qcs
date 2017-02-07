@@ -63,7 +63,7 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Models_Basket
             return NULL;
         }
 
-        Shopware()->WirecardCheckoutSeamless()->Log()->Info('ID: ' . Shopware()->SessionID());
+        Shopware()->Pluginlogger()->info('WirecardCheckoutSeamless: ID: ' . Shopware()->SessionID());
         $sql = Shopware()->Db()->select()
             ->from('s_order_basket')
             ->where('sessionID = ?', array(Shopware()->SessionID()));

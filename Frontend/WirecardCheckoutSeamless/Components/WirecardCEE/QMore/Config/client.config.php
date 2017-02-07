@@ -36,12 +36,6 @@ return Array(
     'BACKEND_URL'      => 'https://checkout.wirecard.com/seamless/backend',
     'MODULE_NAME'      => 'WirecardCEE_QMore',
     'MODULE_VERSION'   => '3.3.0',
-    'DEPENDENCIES' => array(
-        'FRAMEWORK_NAME' => 'Zend Framework',
-        'FRAMEWORK_VERSION' => Array(
-            'MINIMUM' => '1.11.10',
-            'CURRENT' => Zend_Version::VERSION
-        ),
-    ),
+    'DEPENDENCIES'     => array(),
     'USE_DEBUG'        => false
 );
