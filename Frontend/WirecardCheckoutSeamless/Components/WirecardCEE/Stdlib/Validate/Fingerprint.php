@@ -37,7 +37,7 @@
  * @package WirecardCEE_Stdlib
  * @subpackage Validate
  */
-class WirecardCEE_Stdlib_Validate_Fingerprint extends Zend_Validate_Abstract
+class WirecardCEE_Stdlib_Validate_Fingerprint extends WirecardCEE_Stdlib_Validate_ValidateAbstract
 {
 
     /**
@@ -275,7 +275,7 @@ class WirecardCEE_Stdlib_Validate_Fingerprint extends Zend_Validate_Abstract
     /**
      * Is validator check valid?
      *
-     * @see Zend_Validate_Interface::isValid()
+     * @see WirecardCEE_Stdlib_Validate_Interface::isValid()
      */
     public function isValid($value, $context = null)
     {

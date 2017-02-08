@@ -177,8 +177,7 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
             }
             Shopware()->WirecardCheckoutSeamless()->wirecard_action = 'failure';
             Shopware()->WirecardCheckoutSeamless()->wirecard_message = implode(', ', $msg);
-            Shopware()->WirecardCheckoutSeamless()->Log()->Err(
-                'Message: ' . Shopware()->WirecardCheckoutSeamless()->wirecard_message
+            Shopware()->Pluginlogger()->error('WirecardCheckoutSeamless: Message: ' . Shopware()->WirecardCheckoutSeamless()->wirecard_message
             );
             die($dataFail);
         }
@@ -223,7 +222,7 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
 
             $post = $this->processHTTPRequest();
 
-            Shopware()->WirecardCheckoutSeamless()->Log()->Debug(__METHOD__ . ':' . print_r($post, 1));
+            Shopware()->Pluginlogger()->info('WirecardCheckoutSeamless: '. __METHOD__ . ':' . print_r($post, 1));
 
             $return = WirecardCEE_QMore_ReturnFactory::getInstance(
                 $post,
@@ -240,7 +239,7 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
             $transactionId = $this->Request()->getParam($sTransactionIdField, $paymentUniqueId);
 
             if (!$return->validate()) {
-                Shopware()->WirecardCheckoutSeamless()->Log()->Debug(__METHOD__ . ':Validation error: invalid response');
+                Shopware()->Pluginlogger()->info('WirecardCheckoutSeamless: '. __METHOD__ . ':Validation error: invalid response');
                 print \WirecardCEE_QMore_ReturnFactory::generateConfirmResponseString('Validation error: invalid response');
                 return;
             }
@@ -254,7 +253,7 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
 
             $sessionData = unserialize(base64_decode($data['session']));
             if(!is_array($sessionData)) {
-                Shopware()->WirecardCheckoutSeamless()->Log()->Debug(__METHOD__ . ':Validation error: invalid session data');
+                Shopware()->Pluginlogger()->info('WirecardCheckoutSeamless: '. __METHOD__ . ':Validation error: invalid session data');
                 print \WirecardCEE_QMore_ReturnFactory::generateConfirmResponseString('Validation error: invalid session data');
                 return;
             }
@@ -446,12 +445,12 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
                         $existingOrder = Shopware()->Models()->getRepository('Shopware\Models\Order\Order')->findByNumber($data['orderId']);
 
                         if(($existingOrder[0] instanceof \Shopware\Models\Order\Order) && $existingOrder[0]->getPaymentStatus()->getId() !== Shopware()->WirecardCheckoutSeamless()->Config()->getPaymentStatusId('pending')) {
-                            Shopware()->WirecardCheckoutSeamless()->Log()->Debug(__METHOD__ . ': failure: do not modify payment status as the order is in a final state');
+                            Shopware()->Pluginlogger()->info('WirecardCheckoutSeamless: '.__METHOD__ . ': failure: do not modify payment status as the order is in a final state');
                             break;
                         }
 
                         if(Shopware()->WirecardCheckoutSeamless()->Config()->keep_unsuccessful_orders) {
-                            Shopware()->WirecardCheckoutSeamless()->Log()->Debug(__METHOD__ . ': failure: update order state: ' . $data['orderId']);
+                            Shopware()->Pluginlogger()->info('WirecardCheckoutSeamless: '.__METHOD__ . ': failure: update order state: ' . $data['orderId']);
                             $this->savePaymentStatus(
                                 $data['transactionId'],
                                 $paymentUniqueId,
@@ -459,7 +458,7 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
                                 false
                             );
                         } else if($existingOrder[0] instanceof \Shopware\Models\Order\Order) {
-                            Shopware()->WirecardCheckoutSeamless()->Log()->Debug(__METHOD__ . ': failure: delete order: ' . $data['orderId']);
+                            Shopware()->Pluginlogger()->info('WirecardCheckoutSeamless: '.__METHOD__ . ': failure: delete order: ' . $data['orderId']);
                             $this->savePaymentStatus(
                                 $data['transactionId'],
                                 $paymentUniqueId,
@@ -516,7 +515,7 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
             );
 
         } catch (Exception $e) {
-            Shopware()->WirecardCheckoutSeamless()->Log()->Debug(__METHOD__ . ':' . $e->getMessage());
+            Shopware()->Pluginlogger()->info('WirecardCheckoutSeamless: '.__METHOD__ . ':' . $e->getMessage());
             print WirecardCEE_QMore_ReturnFactory::generateConfirmResponseString(htmlspecialchars($e->getMessage()));
             return;
         }
@@ -587,7 +586,7 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
             }
 
         } catch (Exception $e) {
-            Shopware()->WirecardCheckoutSeamless()->Log()->Err(__METHOD__ . ':' . $e->getMessage());
+            Shopware()->Pluginlogger()->error('WirecardCheckoutSeamless: '.__METHOD__ . ':' . $e->getMessage());
 
             /** @var Enlight_Components_Snippet_Namespace ns */
             $ns = Shopware()->Snippets()->getNamespace('engine/Shopware/Plugins/Community/Frontend/WirecardCheckoutSeamless/Views/frontend/checkout/wirecard');
@@ -619,19 +618,19 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
                     $this->getCurrencyShortName()
                 )
             ) {
-                Shopware()->WirecardCheckoutSeamless()->Log()->Debug('Hash could not be verified');
+                Shopware()->Pluginlogger()->warning('WirecardCheckoutSeamless: Hash could not be verified');
                 // Restore old basket
                 if (false == Shopware()->WirecardCheckoutSeamless()->Basket()->setSerializedBasket($result->basket)) {
-                    Shopware()->WirecardCheckoutSeamless()->Log()->Debug('Restoring basket');
+                    Shopware()->Pluginlogger()->info('WirecardCheckoutSeamless: Restoring basket');
                     $status = Shopware()->WirecardCheckoutSeamless()->Config()->getPaymentStatusId('checkup');
                 }
                 else {
-                    Shopware()->WirecardCheckoutSeamless()->Log()->Debug('Something is wrong - check order!');
+                    Shopware()->Pluginlogger()->warning('WirecardCheckoutSeamless: Something is wrong - check order!');
                     $status = Shopware()->WirecardCheckoutSeamless()->Config()->getPaymentStatusId('success');
                 }
             } // Normal order
             else {
-                Shopware()->WirecardCheckoutSeamless()->Log()->Debug('save successfully order');
+                Shopware()->Pluginlogger()->info('WirecardCheckoutSeamless: save successfully order');
                 $status = Shopware()->WirecardCheckoutSeamless()->Config()->getPaymentStatusId(
                     strtolower($result['state'])
                 );
@@ -659,7 +658,7 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
             }
         } // Under normal conditions this should not happen - maybe if the callback failed
         else {
-            Shopware()->WirecardCheckoutSeamless()->Log()->Debug('save unsuccessfully order');
+            Shopware()->Pluginlogger()->info('WirecardCheckoutSeamless: save unsuccessfully order');
             $transactionId = (empty($result->transactionId)) ? Shopware()->SessionID() : $result->transactionId;
             $update['orderId'] = $this->saveOrder(
                 $transactionId,
@@ -715,10 +714,10 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
         }
 
         $field = Shopware()->WirecardCheckoutSeamless()->Config()->getReturnField();
-        Shopware()->WirecardCheckoutSeamless()->Log()->Debug('Comment field:' . $field);
+        Shopware()->Pluginlogger()->info('WirecardCheckoutSeamless: Comment field:' . $field);
         if ($field == 'internalcomment') {
 
-            Shopware()->WirecardCheckoutSeamless()->Log()->Debug('Saving internal comment');
+            Shopware()->Pluginlogger()->info('WirecardCheckoutSeamless: Saving internal comment');
             Shopware()->Db()->update(
                 's_order',
                 array($field => implode("\n", $comments)),
@@ -731,7 +730,7 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
                 ->where('ordernumber = ?', array($orderNumber));
             $orderId = Shopware()->Db()->fetchOne($sql);
 
-            Shopware()->WirecardCheckoutSeamless()->Log()->Debug('Saving attribute');
+            Shopware()->Pluginlogger()->info('WirecardCheckoutSeamless: Saving attribute');
             Shopware()->Db()->update(
                 's_order_attributes',
                 array($field => implode("\n", $comments)),
@@ -745,10 +744,10 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
      */
     public function dsStoreReturnAction()
     {
-        Shopware()->WirecardCheckoutSeamless()->Log()->Debug('Called: dsStoreReturnAction');
+        Shopware()->Pluginlogger()->info('WirecardCheckoutSeamless: Called: dsStoreReturnAction');
         $post = $this->processHTTPRequest();
         if (empty($post['response'])) {
-            Shopware()->WirecardCheckoutSeamless()->Log()->Err('dsStoreReturnAction: Parameter not found');
+            Shopware()->Pluginlogger()->error('WirecardCheckoutSeamless: dsStoreReturnAction: Parameter not found');
             die('Parameter not found');
         }
 
@@ -762,8 +761,8 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
         $this->View()->wirecardResponse = (true == get_magic_quotes_gpc()) ? $post['response'] : addslashes(
             $post['response']
         );
-        Shopware()->WirecardCheckoutSeamless()->Log()->Debug(
-            'Response: ' . print_r($this->View()->wirecardResponse, 1)
+        Shopware()->Pluginlogger()->info(
+            'WirecardCheckoutSeamless: Response: ' . print_r($this->View()->wirecardResponse, 1)
         );
 
     }

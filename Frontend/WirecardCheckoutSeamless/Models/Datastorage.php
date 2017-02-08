@@ -128,11 +128,11 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Models_Datastorage
         		}
                 Shopware()->WirecardCheckoutSeamless()->wirecard_action = 'error_init';
                 Shopware()->WirecardCheckoutSeamless()->wirecard_message = implode(', ', $msg);
-                Shopware()->WirecardCheckoutSeamless()->Log()->Err(__METHOD__ . ':' . implode(', ', $msg));
+                Shopware()->Pluginlogger()->error('WirecardCheckoutSeamless: '.__METHOD__ . ':' . implode(', ', $msg));
             }
         } catch (Exception $e) {
             if ($e instanceof WirecardCEE_Stdlib_Exception_ExceptionInterface) {
-                Shopware()->WirecardCheckoutSeamless()->Log()->Err(__METHOD__ . ':' . $e->getMessage());
+                Shopware()->Pluginlogger()->error('WirecardCheckoutSeamless: '.__METHOD__ . ':' . $e->getMessage());
                 Shopware()->WirecardCheckoutSeamless()->wirecard_action = 'error_init';
                 Shopware()->WirecardCheckoutSeamless()->wirecard_message = $e->getMessage();
             } else {
@@ -166,7 +166,7 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Models_Datastorage
             return $dataStorageRead->read(Shopware()->WirecardCheckoutSeamless()->storageId);
         } catch (Exception $e) {
             if ($e instanceof WirecardCEE_Stdlib_Exception_ExceptionInterface) {
-            Shopware()->WirecardCheckoutSeamless()->Log()->Err('DataStorage Read: ' . $e->getMessage());
+                Shopware()->Pluginlogger()->error('WirecardCheckoutSeamless: DataStorage Read: ' . $e->getMessage());
             throw new Enlight_Exception('DataStorage: ' . $e->getMessage());
             } else {
                 throw $e;

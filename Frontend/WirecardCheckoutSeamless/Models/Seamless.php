@@ -112,7 +112,7 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Models_Seamless
      */
     public function getResponse($paymentType, $amount, $currencyShortName, $urls, $params = array())
     {
-        Shopware()->WirecardCheckoutSeamless()->Log()->Debug($urls['confirm']);
+        Shopware()->Pluginlogger()->info('WirecardCheckoutSeamless: '.$urls['confirm']);
 
         $init = $this->initPayment($urls['confirm']);
 
@@ -143,12 +143,12 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Models_Seamless
         );
 
 
-        Shopware()->WirecardCheckoutSeamless()->Log()->Debug(__METHOD__ . ':' . print_r($init->getRequestData(),true));
+        Shopware()->Pluginlogger()->info('WirecardCheckoutSeamless: '.__METHOD__ . ':' . print_r($init->getRequestData(),true));
 
         try {
             return $init->initiate();
         } catch (\Exception $e) {
-            Shopware()->WirecardCheckoutSeamless()->Log()->Err(__METHOD__ . ':' . $e->getMessage());
+            Shopware()->Pluginlogger()->error('WirecardCheckoutSeamless: '.__METHOD__ . ':' . $e->getMessage());
             Shopware()->WirecardCheckoutSeamless()->wirecard_action = 'failure';
             Shopware()->WirecardCheckoutSeamless()->wirecard_message = $e->getMessage();
     	}
@@ -208,7 +208,7 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Models_Seamless
             }
 
         }
-        Shopware()->WirecardCheckoutSeamless()->Log()->Debug(__METHOD__ . ':' . print_r($consumerData,true));
+        Shopware()->Pluginlogger()->info('WirecardCheckoutSeamless: '.__METHOD__ . ':' . print_r($consumerData,true));
         return $consumerData;
     }
 

@@ -898,16 +898,6 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Models_Config
     }
 
     /**
-     * Returns the log type defined in plugin config
-     *
-     * @return string
-     */
-    public function logType()
-    {
-        return strtolower($this->__get('WIRECARD_LOG'));
-    }
-
-    /**
      * Returns static WirecardCheckoutSeamless parameter
      *
      * @return array
@@ -1030,18 +1020,6 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Models_Config
     public function getPaymentMethodId($name = '')
     {
         return array_search($name, $this->getPaymentMethods());
-    }
-
-    /**
-     * Returns directory for log file entries
-     * Logs are written by Zend_Log
-     *
-     * @see Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Models_Log
-     * @return string
-     */
-    public function getLogDirectory()
-    {
-        return dirname(__FILE__) . '/../log/';
     }
 
     /**
