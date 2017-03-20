@@ -368,7 +368,7 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
                     }
 
                     if (Shopware()->WirecardCheckoutSeamless()->Config()->saveReturnValues() > 1) {
-                        $this->saveComments($return->getReturned() , $orderId);
+                        $this->saveComments($return , $orderId);
                     }
                     break;
 
@@ -430,6 +430,9 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
                                 $variables['sOrderNumber'] = $sOrderVariables['sOrderNumber'];
                                 $variables['confirmMailDeliveryFailed'] = true;
                                 Shopware()->Session()->offsetSet('sOrderVariables', $variables);
+                            }
+                            if (Shopware()->WirecardCheckoutSeamless()->Config()->saveReturnValues() > 1) {
+                                $this->saveComments($return , $orderId);
                             }
                         }
                     }
@@ -703,15 +706,23 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
      *
      * @internal param null $transactionId
      */
-    protected function saveComments(array $returnValues = null, $orderNumber = null)
+    protected function saveComments(WirecardCEE_Stdlib_Return_ReturnAbstract $return = null, $orderNumber = null)
     {
         $comments = array();
-        foreach ($returnValues as $name => $value) {
-            if ($name == 'sCoreId' || $name == 'wWirecardCheckoutSeamlessId') {
+        $comments[] = "------- Wirecard Response Data --------";
+        $gatewayReferenceNumber ='';
+        foreach ($return->getReturned() as $name => $value) {
+            if ($name == 'sCoreId' || $name == 'wWirecardCheckoutPageId') {
                 continue;
             }
-            $comments[] = "$name: $value";
+            if($name == 'gatewayReferenceNumber'){
+                $gatewayReferenceNumber = $value;
+            }
+            $comments[] = sprintf('%s: %s', $name, $value);
         }
+        $comments[] = "---------------------------------------";
+
+
 
         $field = Shopware()->WirecardCheckoutSeamless()->Config()->getReturnField();
         Shopware()->Pluginlogger()->info('WirecardCheckoutSeamless: Comment field:' . $field);
@@ -723,8 +734,7 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
                 array($field => implode("\n", $comments)),
                 'ordernumber = \'' . $orderNumber . '\''
             );
-        }
-        else {
+        } else {
             $sql = Shopware()->Db()->select()
                 ->from('s_order', array('id'))
                 ->where('ordernumber = ?', array($orderNumber));
