@@ -431,9 +431,9 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
                                 $variables['confirmMailDeliveryFailed'] = true;
                                 Shopware()->Session()->offsetSet('sOrderVariables', $variables);
                             }
-                            if (Shopware()->WirecardCheckoutSeamless()->Config()->saveReturnValues() > 1) {
-                                $this->saveComments($return , $orderId);
-                            }
+                        }
+                        if (Shopware()->WirecardCheckoutSeamless()->Config()->saveReturnValues() > 1) {
+                            $this->saveComments($return , $orderId);
                         }
                     }
                     break;
