@@ -23,7 +23,7 @@ var wirecardPayment = {
     {
         var paymentInformation = {};
         $("#wd_payment_fields").find(":input").each(function() {
-            if(this.name == "paymentType" && ($(this).val() == 'maestro' || $(this).val() == 'ccard-moto'))
+            if(this.name == "paymentType" && $(this).val() == 'ccard-moto')
             {
                 //overwrite paymentType with ccard
                 paymentInformation[this.name] = 'ccard';

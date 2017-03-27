@@ -615,7 +615,7 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Models_Config
             'name' => 'maestro',
             'description' => 'Maestro SecureCode',
             'template' => '',
-            'call' => WirecardCEE_QMore_PaymentType::CCARD,
+            'call' => WirecardCEE_QMore_PaymentType::MAESTRO,
             'translation' => Array('description' => 'Wirecard Maestro SecureCode', 'additionalDescription' => '')
         );
         $pm[] = array(

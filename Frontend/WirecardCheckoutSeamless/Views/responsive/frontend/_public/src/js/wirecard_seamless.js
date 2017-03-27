@@ -47,6 +47,8 @@ var wirecardPayment = {
                 this.pci3Iframes.ccard = wdcee.buildIframeCreditCard('wirecardccardIframeContainer', '700px', '200px');
             } else if ($('#wirecardccard-motoIframeContainer').length > 0) {
                 this.pci3Iframes.ccard = wdcee.buildIframeCreditCard('wirecardccard-motoIframeContainer', '700px', '200px');
+            } else if ($('#wirecardmaestroIframeContainer').length > 0) {
+                this.pci3Iframes.maestro = wdcee.buildIframeMaestro('wirecardmaestroIframeContainer', '700px', '200px');
             }
         }
     },
@@ -117,7 +119,7 @@ var wirecardPayment = {
     {
         var paymentInformation = {};
         $("#wd_payment_fields").find(":input").each(function() {
-            if(this.name == "paymentType" && ($(this).val() == 'maestro' || $(this).val() == 'ccard-moto'))
+            if(this.name == "paymentType" && $(this).val() == 'ccard-moto')
             {
                 //overwrite paymentType with ccard
                 paymentInformation[this.name] = 'ccard';
