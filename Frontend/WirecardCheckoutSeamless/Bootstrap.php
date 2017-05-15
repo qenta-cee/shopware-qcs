@@ -84,9 +84,16 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
      */
     public function getInfo()
     {
+    	$shopversion = Shopware::VERSION;
+
+	    // Since Shopware 5.2.22 there is no possibility getting versionnumber
+    	if ($shopversion == '') {
+    		$shopversion = '>5.2.22';
+	    }
+
         $copLink = '<a href="https://checkout.wirecard.com/cop/'
             . '?shopsystem=Shopware'
-            . '&shopversion=' . \Shopware::VERSION
+            . '&shopversion=' . $shopversion
             . '&integration=WCS'
             . '&pluginversion=' . $this->getVersion()
             . '" target="_blank">Wirecard Checkout Portal</a>';
@@ -111,15 +118,19 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
     public function install()
     {
         self::init();
-        if (!$this->assertVersionGreaterThen('4.0.0')) {
-            throw new Enlight_Exception('This plugin needs minimum Shopware 4.0.0');
-        }
 
-        if (!$this->assertVersionGreaterThen('5.2.0')) {
-            if (!$this->assertRequiredPluginsPresent(array('Payment'))) {
-                throw new Enlight_Exception('This plugin requires the plugin payment');
+	    // Shopversion is not available for latest Shopwareversion
+	    if (Shopware::VERSION != '') {
+	        if (!$this->assertMinimumVersion('4.0.0')) {
+                throw new Enlight_Exception('This plugin needs minimum Shopware 4.0.0');
             }
-        }
+
+            if (!$this->assertMinimumVersion('5.2.0')) {
+                if (!$this->assertRequiredPluginsPresent(array('Payment'))) {
+                    throw new Enlight_Exception('This plugin requires the plugin payment');
+                }
+            }
+	    }
 
         $this->createEvents();
         $this->createPayments();
