@@ -202,7 +202,9 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Models_Seamless
             $consumerData = $consumerData->addAddressInformation($this->getAddress('billing'));
             $consumerData = $consumerData->addAddressInformation($this->getAddress('shipping'));
 
-            $birthday = $this->getDateObject(Shopware()->WirecardCheckoutSeamless()->getUser('billingaddress')->birthday);
+            $userData = Shopware()->Session()->sOrderVariables['sUserData'];
+            $birthday = $userData['additional']['user']['birthday'];
+            $birthday = $this->getDateObject($birthday);
             if (FALSE !== $birthday) {
                 $consumerData = $consumerData->setBirthDate($birthday);
             }

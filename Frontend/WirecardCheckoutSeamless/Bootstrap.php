@@ -931,6 +931,14 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
                 }
 
                 $view->wcsPayolutionTerms = Shopware()->WirecardCheckoutSeamless()->Config()->PAYOLUTION_TERMS;
+                $user = Shopware()->Session()->sOrderVariables['sUserData'];
+                $birth = null;
+
+                if (!is_null($user) && isset($user['additional']['user']['birthday'])) {
+                    $birth = $user['additional']['user']['birthday'];
+                } else if (!is_null($user) && isset($user['billingaddress']['birthday'])) {
+                    $birth = $user['billingaddress']['birthday'];
+                }
 
                 if ($this->getPayolutionLink()) {
                     $view->wcsPayolutionLink1 = '<a id="wcs-payolutionlink" href="https://payment.payolution.com/payolution-payment/infoport/dataprivacyconsent?mId=' . $this->getPayolutionLink() . '" target="_blank">';
@@ -940,19 +948,6 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
                 $view->years = range(date('Y'), date('Y') - 100);
                 $view->days = range(1, 31);
                 $view->months = range(1, 12);
-
-                $user = Shopware()->Session()->sOrderVariables['sUserData'];
-                $birth = null;
-
-                if ($this->assertMinimumVersion('5.2')) {
-                    if (!is_null($user) && isset($user['additional']['user']['birthday'])) {
-                        $birth = $user['additional']['user']['birthday'];
-                    }
-                } else {
-                    if (!is_null($user) && isset($user['billingaddress']['birthday'])) {
-                        $birth = $user['billingaddress']['birthday'];
-                    }
-                }
 
                 $birthday = array('-', '-', '-');
                 if ($birth != null) {
