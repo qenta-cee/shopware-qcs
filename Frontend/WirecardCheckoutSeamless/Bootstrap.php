@@ -86,7 +86,7 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
     {
     	$shopversion = Shopware::VERSION;
 
-	    // Since Shopware 5.2.22 there is no possibility getting versionnumber
+	    // In Shopware 5.2.22 there is no possibility getting shopware version
     	if ($shopversion == '') {
     		$shopversion = '>5.2.21';
 	    }
@@ -130,7 +130,9 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
                     throw new Enlight_Exception('This plugin requires the plugin payment');
                 }
             }
-	    }
+	    } else {
+	        throw new Enlight_Exception('Unknown/Unsupported Shopware version. Please update to a supported version.');
+        }
 
         $this->createEvents();
         $this->createPayments();
