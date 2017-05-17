@@ -61,7 +61,6 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Models_Config
         'ccard-moto',
         'maestro',
         'pbx',
-        'elv',
         'sepa-dd',
         'giropay',
         'voucher'
@@ -281,66 +280,6 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Models_Config
                 'locale' => '2',
                 'name' => 'WirecardPayboxNumber',
                 'value' => 'paybox number'
-            ),
-            array(
-                'namespace' => 'frontend/checkout/wirecard',
-                'locale' => '1',
-                'name' => 'WirecardELVBank',
-                'value' => 'Name der Bank'
-            ),
-            array(
-                'namespace' => 'frontend/checkout/wirecard',
-                'locale' => '2',
-                'name' => 'WirecardELVBank',
-                'value' => 'Bank name'
-            ),
-            array(
-                'namespace' => 'frontend/checkout/wirecard',
-                'locale' => '1',
-                'name' => 'WirecardELVCountry',
-                'value' => 'Land'
-            ),
-            array(
-                'namespace' => 'frontend/checkout/wirecard',
-                'locale' => '2',
-                'name' => 'WirecardELVCountry',
-                'value' => 'Country'
-            ),
-            array(
-                'namespace' => 'frontend/checkout/wirecard',
-                'locale' => '1',
-                'name' => 'WirecardELVBLZ',
-                'value' => 'Bankleitzahl'
-            ),
-            array(
-                'namespace' => 'frontend/checkout/wirecard',
-                'locale' => '2',
-                'name' => 'WirecardELVBLZ',
-                'value' => 'Bank sorting code'
-            ),
-            array(
-                'namespace' => 'frontend/checkout/wirecard',
-                'locale' => '1',
-                'name' => 'WirecardELVAccount',
-                'value' => 'Kontoinhaber'
-            ),
-            array(
-                'namespace' => 'frontend/checkout/wirecard',
-                'locale' => '2',
-                'name' => 'WirecardELVAccount',
-                'value' => 'Account owner'
-            ),
-            array(
-                'namespace' => 'frontend/checkout/wirecard',
-                'locale' => '1',
-                'name' => 'WirecardELVAccountNumber',
-                'value' => 'Kontonummer'
-            ),
-            array(
-                'namespace' => 'frontend/checkout/wirecard',
-                'locale' => '2',
-                'name' => 'WirecardELVAccountNumber',
-                'value' => 'Account number'
             ),
             array(
                 'namespace' => 'frontend/checkout/wirecard',
@@ -641,17 +580,17 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Models_Config
         );
         $pm[] = array(
             'name' => 'sofortueberweisung',
-            'description' => 'sofort&uuml;berweisung (PIN/TAN)',
+            'description' => 'SOFORT &Uuml;berweisung',
             'template' => '',
             'call' => WirecardCEE_QMore_PaymentType::SOFORTUEBERWEISUNG,
-            'translation' => Array('description' => 'Wirecard sofortbanking (PIN/TAN)', 'additionalDescription' => '')
+            'translation' => Array('description' => 'Wirecard SOFORT banking', 'additionalDescription' => '')
         );
         $pm[] = array(
             'name' => 'bancontact_mistercash',
-            'description' => 'Bancontact/Mister Cash',
+            'description' => 'Bancontact',
             'template' => '',
             'call' => WirecardCEE_QMore_PaymentType::BMC,
-            'translation' => Array('description' => 'Wirecard Bancontact/Mister Cash', 'additionalDescription' => '')
+            'translation' => Array('description' => 'Wirecard Bancontact', 'additionalDescription' => '')
         );
         $pm[] = array(
             'name' => 'przelewy24',
@@ -683,17 +622,10 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Models_Config
         );
         $pm[] = array(
             'name' => 'psc',
-            'description' => 'paysafecard / Cash-Ticket',
+            'description' => 'paysafecard',
             'template' => '',
             'call' => WirecardCEE_QMore_PaymentType::PSC,
-            'translation' => Array('description' => 'Wirecard paysafecard / Cash-Ticket', 'additionalDescription' => '')
-        );
-        $pm[] = array(
-            'name' => 'quick',
-            'description' => '@Quick',
-            'template' => '',
-            'call' => WirecardCEE_QMore_PaymentType::QUICK,
-            'translation' => Array('description' => 'Wirecard @Quick', 'additionalDescription' => '')
+            'translation' => Array('description' => 'Wirecard paysafecard', 'additionalDescription' => '')
         );
         $pm[] = array(
             'name' => 'paypal',
@@ -701,13 +633,6 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Models_Config
             'template' => '',
             'call' => WirecardCEE_QMore_PaymentType::PAYPAL,
             'translation' => Array('description' => 'Wirecard PayPal', 'additionalDescription' => '')
-        );
-        $pm[] = array(
-            'name' => 'elv',
-            'description' => 'Lastschriftverfahren',
-            'template' => '',
-            'call' => WirecardCEE_QMore_PaymentType::ELV,
-            'translation' => Array('description' => 'Wirecard Direct Debit', 'additionalDescription' => '')
         );
         $pm[] = array(
             'name' => 'sepa-dd',
@@ -718,31 +643,17 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Models_Config
         );
         $pm[] = array(
             'name' => 'invoice',
-            'description' => 'Rechnung',
+            'description' => 'Kauf auf Rechnung',
             'template' => 'wcs_invoice.tpl',
             'call' => WirecardCEE_QMore_PaymentType::INVOICE,
             'translation' => Array('description' => 'Wirecard Invoice', 'additionalDescription' => '')
         );
         $pm[] = array(
             'name' => 'installment',
-            'description' => 'Ratenzahlung',
+            'description' => 'Kauf auf Raten',
             'template' => 'wcs_installment.tpl',
             'call' => WirecardCEE_QMore_PaymentType::INSTALLMENT,
             'translation' => Array('description' => 'Wirecard Installment', 'additionalDescription' => '')
-        );
-        $pm[] = array(
-            'name' => 'mpass',
-            'description' => 'mpass',
-            'template' => '',
-            'call' => WirecardCEE_QMore_PaymentType::MPASS,
-            'translation' => Array('description' => 'Wirecard mpass', 'additionalDescription' => '')
-        );
-        $pm[] = array(
-            'name' => 'skrilldirect',
-            'description' => 'Skrill Direct',
-            'template' => '',
-            'call' => WirecardCEE_QMore_PaymentType::SKRILLDIRECT,
-            'translation' => Array('description' => 'Wirecard Skrill Direct', 'additionalDescription' => '')
         );
         $pm[] = array(
             'name' => 'skrillwallet',
@@ -767,10 +678,10 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Models_Config
         );
         $pm[] = array(
             'name' => 'ccard-moto',
-            'description' => 'MOTO-Zahlungen',
+            'description' => 'Kreditkarte - Post / Telefonbestellung',
             'template' => '',
             'call' => WirecardCEE_QMore_PaymentType::CCARD_MOTO,
-            'translation' => Array('description' => 'Wirecard Credit Card MOTO', 'additionalDescription' => '')
+            'translation' => Array('description' => 'Wirecard Credit Card - Mail Order and Telephone Order', 'additionalDescription' => '')
         );
         $pm[] = array(
             'name' => 'tatrapay',

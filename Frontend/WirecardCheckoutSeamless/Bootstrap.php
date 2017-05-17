@@ -229,6 +229,13 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
             $em->flush();
         }
 
+        if (version_compare($version, '1.10.0', '<=')) {
+            Shopware()->Db()->delete('s_core_paymentmeans', 'name = "wirecard_quick"');
+            Shopware()->Db()->delete('s_core_paymentmeans', 'name = "wirecard_elv"');
+            Shopware()->Db()->delete('s_core_paymentmeans', 'name = "wirecard_mpass"');
+            Shopware()->Db()->delete('s_core_paymentmeans', 'name = "wirecard_skrilldirect"');
+        }
+
         return $this->install();
     }
 
