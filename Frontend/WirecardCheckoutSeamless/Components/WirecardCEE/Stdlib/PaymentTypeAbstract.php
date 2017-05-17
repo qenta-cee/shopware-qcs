@@ -81,13 +81,13 @@ abstract class WirecardCEE_Stdlib_PaymentTypeAbstract
         'ARZ|AAB'       => 'Austrian Anadi Bank AG',
         'ARZ|BAF'       => '&Auml;rztebank',
         'BA-CA'         => 'Bank Austria',
-        'ARZ|BCS'       => 'Bankhaus Carl Sp&auml;ngler &amp; Co. AG',
-        'ARZ|BSS'       => 'Bankhaus Schelhammer &amp; Schattera AG',
+        'ARZ|BCS'       => 'Bankhaus Carl Sp&auml;ngler & Co. AG',
+        'ARZ|BSS'       => 'Bankhaus Schelhammer & Schattera AG',
         'Bawag|B'       => 'BAWAG P.S.K. AG',
         'ARZ|BKS'       => 'BKS Bank AG',
         'ARZ|BKB'       => 'Br&uuml;ll Kallmus Bank AG',
         'ARZ|BTV'       => 'BTV VIER L&Auml;NDER BANK',
-        'ARZ|CBGG'      => 'Capital Bank Grawe Gruppe AB',
+        'ARZ|CBGG'      => 'Capital Bank Grawe Gruppe AG',
         'ARZ|VB'        => 'Volksbank Gruppe',
         'ARZ|DB'        => 'Dolomitenbank',
         'Bawag|E'       => 'Easybank AG',
@@ -119,16 +119,16 @@ abstract class WirecardCEE_Stdlib_PaymentTypeAbstract
      * @todo would be nice to get this values directly from the server so the data is in sync
      */
     protected static $_idl_financial_institutions = Array(
-        'ABNAMROBANK' => 'ABN AMRO Bank',
-        'ASNBANK'     => 'ASN Bank',
-        'BUNQ'        => 'Bunq Bank',
-        'INGBANK'     => 'ING',
-        'KNAB'        => 'knab',
-        'RABOBANK'    => 'Rabobank',
-        'SNSBANK'     => 'SNS Bank',
-        'REGIOBANK'   => 'RegioBank',
-        'TRIODOSBANK' => 'Triodos Bank',
-        'VANLANSCHOT' => 'Van Lanschot Bankiers'
+        'ABNAMROBANK' =>'ABN AMRO Bank',
+        'ASNBANK'     =>'ASN Bank',
+        'BUNQ'        =>'Bunq Bank',
+        'INGBANK'     =>'ING',
+        'KNAB'        =>'knab',
+        'RABOBANK'    =>'Rabobank',
+        'SNSBANK'     =>'SNS Bank',
+        'REGIOBANK'   =>'RegioBank',
+        'TRIODOSBANK' =>'Triodos Bank',
+        'VANLANSCHOT' =>'Van Lanschot Bankiers'
     );
 
 

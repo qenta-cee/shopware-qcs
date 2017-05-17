@@ -140,10 +140,11 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Models_Seamless
         if(Shopware()->WirecardCheckoutSeamless()->Config()->ENABLE_DUPLICATE_REQUEST_CHECK)
             $init->setDuplicateRequestCheck(true);
 
-        $init->generateCustomerStatement(
-            Shopware()->WirecardCheckoutSeamless()->Config()->getShopName(),
-            Shopware()->WirecardCheckoutSeamless()->wWirecardCheckoutSeamlessId
-        );
+        $customerStatement = sprintf( '%9s', substr(Shopware()->WirecardCheckoutSeamless()->Config()->getShopName(), -9));
+        if ($paymentType != WirecardCEE_QMore_PaymentType::POLI){
+            $customerStatement .= ' '.Shopware()->WirecardCheckoutSeamless()->wWirecardCheckoutSeamlessId;
+        }
+        $init->setCustomerStatement($customerStatement);
 
         Shopware()->Pluginlogger()->info('WirecardCheckoutSeamless: '.__METHOD__ . ':' . print_r($init->getRequestData(),true));
 
