@@ -64,7 +64,7 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
      */
     public function getVersion()
     {
-        return '1.9.2';
+        return '1.10.0';
     }
 
     /**
@@ -88,7 +88,7 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
 
 	    // Since Shopware 5.2.22 there is no possibility getting versionnumber
     	if ($shopversion == '') {
-    		$shopversion = '>5.2.22';
+    		$shopversion = '>5.2.21';
 	    }
 
         $copLink = '<a href="https://checkout.wirecard.com/cop/'
@@ -100,8 +100,8 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
 
         return array(
             'version' => $this->getVersion(),
-            'autor' => 'Wirecard Central Eastern Europe GmbH',
-            'copyright' => 'Wirecard Central Eastern Europe GmbH',
+            'autor' => 'Wirecard',
+            'copyright' => 'Wirecard',
             'label' => $this->getLabel(),
             'support' => 'http://www.wirecard.at/en/get-in-contact/',
             'link' => 'http://www.wirecard.at',
@@ -455,6 +455,19 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
         );
 
         $form->setElement(
+            'checkbox',
+            'SEND_BASKET_DATA',
+            array(
+                'label' => 'Warenkorbdaten des Konsumenten mitsenden',
+                'value' => 0,
+                'scope' => \Shopware\Models\Config\Element::SCOPE_SHOP,
+                'description' => 'Weiterleitung des Warenkorbs des Kunden an den Finanzdienstleister.',
+                'required' => false,
+                'order' => ++$i
+            )
+        );
+
+        $form->setElement(
             'select',
             'WIRECARD_SAVERESPONSE',
             array(
@@ -630,6 +643,10 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
                 'SEND_ADDITIONAL_DATA' => Array(
                     'label' => 'Forward consumer data',
                     'description' => 'Forwarding shipping and billing data about your consumer to the respective financial service provider.'
+                ),
+                'SEND_BASKET_DATA' => Array(
+                    'label' => 'Forward basket data',
+                    'description' => 'Forwarding basket data to the respective financial service provider.'
                 ),
                 'WIRECARD_SAVERESPONSE' => Array(
                     'label' => 'Save payment process results',

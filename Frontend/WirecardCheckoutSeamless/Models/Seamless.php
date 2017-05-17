@@ -134,6 +134,9 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Models_Seamless
             ->createConsumerMerchantCrmId($userData['additional']['user']['email'])
             ->setConsumerData($this->getConsumerData($paymentType));
 
+        if(Shopware()->WirecardCheckoutSeamless()->Config()->SEND_BASKET_DATA) {
+            $init->setBasket($this->getShoppingBasket());
+        }
         if(Shopware()->WirecardCheckoutSeamless()->Config()->ENABLE_DUPLICATE_REQUEST_CHECK)
             $init->setDuplicateRequestCheck(true);
 
@@ -141,7 +144,6 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Models_Seamless
             Shopware()->WirecardCheckoutSeamless()->Config()->getShopName(),
             Shopware()->WirecardCheckoutSeamless()->wWirecardCheckoutSeamlessId
         );
-
 
         Shopware()->Pluginlogger()->info('WirecardCheckoutSeamless: '.__METHOD__ . ':' . print_r($init->getRequestData(),true));
 
@@ -219,6 +221,43 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Models_Seamless
         return $consumerData;
     }
 
+    /**
+     * Returns basket including basket items
+     *
+     * @return WirecardCEE_Stdlib_Basket
+     */
+    protected function getShoppingBasket()
+    {
+        $basket = new WirecardCEE_Stdlib_Basket();
+        $basketContent = Shopware()->Session()->sOrderVariables['sBasket'];
+
+        // Shopware uses fix precision (2) for number_format
+        foreach ( $basketContent['content'] as $cart_item_key => $cart_item) {
+            $item = new WirecardCEE_Stdlib_Basket_Item($cart_item['articleID']);
+            $item->setUnitGrossAmount($cart_item['price'])
+                 ->setUnitNetAmount(number_format($cart_item['netprice'], 2, '.', ''))
+                 ->setUnitTaxAmount(number_format($cart_item['price'] - $cart_item['netprice'], 2, '.', ''))
+                 ->setUnitTaxRate($cart_item['tax_rate'])
+                 ->setDescription( substr( strip_tags( $cart_item['additional_details']['description']), 0, 127 ) )
+                 ->setName($cart_item['additional_details']['articleName'])
+                 ->setImageUrl( isset($cart_item['image']) ? $cart_item['image']['source'] : '' );
+
+            $basket->addItem( $item, $cart_item['quantity']);
+        }
+
+        if (isset($basketContent['sShippingcosts']) && $basketContent['sShippingcosts'] > 0) {
+            $item = new WirecardCEE_Stdlib_Basket_Item('shipping');
+            $item->setUnitGrossAmount($basketContent['sShippingcostsWithTax'])
+                 ->setUnitNetAmount($basketContent['sShippingcostsNet'])
+                 ->setUnitTaxRate($basketContent['sShippingcostsTax'])
+                 ->setUnitTaxAmount($basketContent['sShippingcostsWithTax'] - $basketContent['sShippingcostsNet'])
+                 ->setName('Shipping')
+                 ->setDescription('Shipping');
+            $basket->addItem($item);
+        }
+
+        return $basket;
+    }
 
     /**
      * Returns address object
