@@ -644,14 +644,14 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Models_Config
         $pm[] = array(
             'name' => 'invoice',
             'description' => 'Kauf auf Rechnung',
-            'template' => 'wcs_invoice.tpl',
+            'template' => '',
             'call' => WirecardCEE_QMore_PaymentType::INVOICE,
             'translation' => Array('description' => 'Wirecard Invoice', 'additionalDescription' => '')
         );
         $pm[] = array(
             'name' => 'installment',
             'description' => 'Kauf auf Raten',
-            'template' => 'wcs_installment.tpl',
+            'template' => '',
             'call' => WirecardCEE_QMore_PaymentType::INSTALLMENT,
             'translation' => Array('description' => 'Wirecard Installment', 'additionalDescription' => '')
         );

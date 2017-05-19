@@ -323,32 +323,6 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
 
         $form->setElement(
             'checkbox',
-            'PAYOLUTION_TERMS',
-            array(
-                'label' => 'Payolution Kondition',
-                'value' => 1,
-                'description' => 'Anzeige der Checkbox mit den payolution-Bedingungen, die vom Kunden während des Bezahlprozesses bestätigt werden müssen, wenn Ihr Onlineshop als "Trusted Shop" zertifiziert ist.',
-                'scope' => \Shopware\Models\Config\Element::SCOPE_SHOP,
-                'required' => false,
-                'order' => ++$i
-            )
-        );
-
-        $form->setElement(
-            'text',
-            'PAYOLUTION_MID',
-            array(
-                'label' => 'Payolution mID',
-                'value' => '',
-                'description' => 'payolution-Händler-ID, bestehend aus dem Base64-enkodierten Firmennamen, die für den Link "Einwilligen" gesetzt werden kann.',
-                'scope' => \Shopware\Models\Config\Element::SCOPE_SHOP,
-                'required' => false,
-                'order' => ++$i
-            )
-        );
-
-        $form->setElement(
-            'checkbox',
             'PCI3_DSS_SAQ_A_ENABLE',
             array(
                 'label' => 'SAQ A konform',
@@ -471,6 +445,49 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
                 'value' => 0,
                 'scope' => \Shopware\Models\Config\Element::SCOPE_SHOP,
                 'description' => 'Weiterleitung des Warenkorbs des Kunden an den Finanzdienstleister.',
+                'required' => false,
+                'order' => ++$i
+            )
+        );
+
+        $form->setElement(
+            'checkbox',
+            'PAYOLUTION_TERMS',
+            array(
+                'label' => 'Payolution Kondition',
+                'value' => 1,
+                'description' => 'Anzeige der Checkbox mit den payolution-Bedingungen, die vom Kunden während des Bezahlprozesses bestätigt werden müssen, wenn Ihr Onlineshop als "Trusted Shop" zertifiziert ist.',
+                'scope' => \Shopware\Models\Config\Element::SCOPE_SHOP,
+                'required' => false,
+                'order' => ++$i
+            )
+        );
+
+        $form->setElement(
+            'text',
+            'PAYOLUTION_MID',
+            array(
+                'label' => 'Payolution mID',
+                'value' => '',
+                'description' => 'payolution-Händler-ID, bestehend aus dem Base64-enkodierten Firmennamen, die für den Link "Einwilligen" gesetzt werden kann.',
+                'scope' => \Shopware\Models\Config\Element::SCOPE_SHOP,
+                'required' => false,
+                'order' => ++$i
+            )
+        );
+
+        $form->setElement(
+            'select',
+            'INVOICE_PROVIDER',
+            array(
+                'label' => 'Provider für Kauf auf Rechnung',
+                'value' => 'payolution',
+                'store' => array(
+                    array('payolution', 'payolution'),
+                    array('ratepay', 'RatePay'),
+                    array('wirecard', 'Wirecard')
+                ),
+                'scope' => \Shopware\Models\Config\Element::SCOPE_SHOP,
                 'required' => false,
                 'order' => ++$i
             )
@@ -616,6 +633,9 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
                 'PAYOLUTION_MID' => Array(
                     'label' => 'Payolution mID',
                     'description' => 'Your payolution merchant ID consisting of the base64-encoded company name which is used in the link for "consent" to the payolution terms.'
+                ),
+                'INVOICE_PROVIDER' => Array(
+                    'label' => 'Invoice Provider'
                 ),
                 'PCI3_DSS_SAQ_A_ENABLE' => Array(
                     'label' => 'SAQ A compliance',
@@ -944,6 +964,18 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
         /** @var Enlight_View_Default $view */
         $view = $controller->View();
 
+        // basket parameter for invoice/installment
+        $basketAmount = Shopware()->Session()->sOrderVariables['sBasket']['sAmount'];
+        $basketQuantity = $this->getBasketQuantity();
+
+        // do pre-check for invoice and installment
+        if(!$this->isActivePayment($basketQuantity, $basketAmount, 'invoice')) {
+            $view->sPayments = $this->hidePayment($view->sPayments, 'wirecard_invoice');
+        }
+        if(!$this->isActivePayment($basketQuantity, $basketAmount, 'installment')) {
+            $view->sPayments = $this->hidePayment($view->sPayments, 'wirecard_installment');
+        }
+
         switch ($args->getSubject()->Request()->getActionName()) {
             case 'shippingPayment':
                 self::init();
@@ -955,34 +987,6 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
                     $view->addTemplateDir($this->Path() . 'Views/');
                     $view->extendsTemplate('frontend/checkout/wirecard.tpl');
                 }
-
-                $view->wcsPayolutionTerms = Shopware()->WirecardCheckoutSeamless()->Config()->PAYOLUTION_TERMS;
-                $user = Shopware()->Session()->sOrderVariables['sUserData'];
-                $birth = null;
-
-                if (!is_null($user) && isset($user['additional']['user']['birthday'])) {
-                    $birth = $user['additional']['user']['birthday'];
-                } else if (!is_null($user) && isset($user['billingaddress']['birthday'])) {
-                    $birth = $user['billingaddress']['birthday'];
-                }
-
-                if ($this->getPayolutionLink()) {
-                    $view->wcsPayolutionLink1 = '<a id="wcs-payolutionlink" href="https://payment.payolution.com/payolution-payment/infoport/dataprivacyconsent?mId=' . $this->getPayolutionLink() . '" target="_blank">';
-                    $view->wcsPayolutionLink2 = '</a>';
-                }
-
-                $view->years = range(date('Y'), date('Y') - 100);
-                $view->days = range(1, 31);
-                $view->months = range(1, 12);
-
-                $birthday = array('-', '-', '-');
-                if ($birth != null) {
-                    $birthday = explode('-', $birth);
-                }
-
-                $view->bYear = $birthday[0];
-                $view->bMonth = $birthday[1];
-                $view->bDay = $birthday[2];
 
                 break;
             case 'confirm':
@@ -1023,6 +1027,11 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
                 }
 
                 $view->paymentTypeName = Shopware()->WirecardCheckoutSeamless()->getPaymentShortName();
+                //redirect to payment choice if not-active payment was chosen (invoice/installment)
+                if (!$this->isActivePayment($basketQuantity, $basketAmount, Shopware()->WirecardCheckoutSeamless()->getPaymentShortName())) {
+                    $controller->forward('shippingPayment');
+                }
+
                 $view->wirecardAdditionalHeadline = Shopware()->WirecardCheckoutSeamless()->getUser('payment')->description;
                 $view->wirecardDatastorageReadUrl = Shopware()->Front()->Router()->assemble(Array(
                     'controller' => 'wirecardcheckoutseamless',
@@ -1074,6 +1083,40 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
                         $view->wirecardAdditional = 'seamless';
                         $view->wirecardJavascript = Shopware()->WirecardCheckoutSeamless()->Datastorage()->getJavascriptUrl();
                         break;
+                    case 'invoice':
+                    case 'installment':
+                        $view->wirecardAdditional = 'seamless';
+                        $user = Shopware()->Session()->sOrderVariables['sUserData'];
+                        $birth = null;
+
+                        if (!is_null($user) && isset($user['additional']['user']['birthday'])) {
+                            $birth = $user['additional']['user']['birthday'];
+                        } else if (!is_null($user) && isset($user['billingaddress']['birthday'])) {
+                            $birth = $user['billingaddress']['birthday'];
+                        }
+
+                        // Values for datefields
+                        $view->years = range(date('Y'), date('Y') - 100);
+                        $view->days = range(1, 31);
+                        $view->months = range(1, 12);
+
+                        $birthday = array('-', '-', '-');
+                        if ($birth != null) {
+                            $birthday = explode('-', $birth);
+                        }
+
+                        $view->bYear = $birthday[0];
+                        $view->bMonth = $birthday[1];
+                        $view->bDay = $birthday[2];
+
+                        if (Shopware()->WirecardCheckoutSeamless()->Config()->INVOICE_PROVIDER) {
+                            $view->payolutionTerms = Shopware()->WirecardCheckoutSeamless()->Config()->PAYOLUTION_TERMS;
+                            if (Shopware()->WirecardCheckoutSeamless()->Config()->PAYOLUTION_TERMS) {
+                                $view->wcsPayolutionLink1 = '<a id="wcs-payolutionlink" href="https://payment.payolution.com/payolution-payment/infoport/dataprivacyconsent?mId=' . $this->getPayolutionLink() . '" target="_blank">';
+                                $view->wcsPayolutionLink2 = '</a>';
+                            }
+                        }
+                        break;
                     default:
                         $view->wirecardAdditional = 'none';
                         break;
@@ -1114,6 +1157,75 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
             self::init();
             Shopware()->WirecardCheckoutSeamless()->financialInstitution = $financialInstitution;
         }
+    }
+
+    /**
+     * Pre-check for invoice and installment payments
+     *
+     * @param $quantity
+     * @param $amount
+     * @param $paymentName
+     *
+     * @return bool
+     */
+    private function isActivePayment($quantity, $amount, $paymentName)
+    {
+        switch ($paymentName) {
+            case 'invoice':
+                if (!($quantity > 8 && $amount > 20)){
+                    return false;
+                }
+                return true;
+
+            case 'installment':
+                if (!($quantity > 2 && $amount > 20)){
+                    return false;
+                }
+                return true;
+            default:
+                return true;
+        }
+    }
+
+    /**
+     * Remove payment from active payments
+     *
+     * @param $payments
+     * @param $paymentName
+     *
+     * @return mixed
+     */
+    protected function hidePayment($payments, $paymentName)
+    {
+        if(is_array($payments)) {
+            foreach ($payments as $key => $value) {
+                if ($value['name'] == $paymentName) {
+                    unset($payments[$key]);
+                    return $payments;
+                }
+            }
+        }
+        return $payments;
+    }
+
+    /**
+     * Returns size of basket including shipping as item
+     *
+     * @return int
+     */
+    private function getBasketQuantity()
+    {
+        $quantity = 0;
+        $basketContent = Shopware()->Session()->sOrderVariables['sBasket'];
+
+        foreach ( $basketContent['content'] as $cart_item) {
+            $quantity += $cart_item['quantity'];
+        }
+        if (isset($basketContent['sShippingcosts']) && $basketContent['sShippingcosts'] > 0) {
+            $quantity++;
+        }
+
+        return $quantity;
     }
 
     /**
