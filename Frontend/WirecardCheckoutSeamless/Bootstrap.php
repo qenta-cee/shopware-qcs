@@ -105,7 +105,7 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
             'label' => $this->getLabel(),
             'support' => 'http://www.wirecard.at/en/get-in-contact/',
             'link' => 'http://www.wirecard.at',
-            'description' => '<div style="line-height: 1.6em"><h1>Wirecard Checkout Seamless</h1>'
+            'description' => '<div style="line-height: 1.6em"><h3>WIRECARD - YOUR FULL SERVICE PAYMENT PROVIDER - COMPREHENSIVE SOLUTIONS FROM ONE SINGLE SOURCE</h3>'
                 . '<p>' . file_get_contents(dirname(__FILE__) . '/info.txt') . '</p>'
                 . '<p>If you have no Wirecard account, please register yourself via ' . $copLink . '.</p></div>'
         );
@@ -246,6 +246,15 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
     {
         $form = $this->Form();
         $i = 0;
+
+        $repository = Shopware()->Models()->getRepository('Shopware\Models\Shop\Shop');
+        $shop = $repository->findOneBy(['id' => 1]);
+        $currencies = array();
+        foreach ($shop->getCurrencies() as $elem) {
+            $currency = array($elem->getCurrency(), $elem->getName());
+            array_push($currencies, $currency);
+        }
+
         $form->setElement(
             'text',
             'CUSTOMERID',
@@ -495,30 +504,6 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
 
 	    $form->setElement(
 		    'text',
-		    'INVOICE_MIN_AMOUNT',
-		    array(
-			    'label' => 'Kauf auf Rechnung Mindestbetrag',
-			    'value' => '',
-			    'scope' => \Shopware\Models\Config\Element::SCOPE_SHOP,
-			    'required' => false,
-			    'order' => ++$i
-		    )
-	    );
-
-	    $form->setElement(
-		    'text',
-		    'INVOICE_MAX_AMOUNT',
-		    array(
-			    'label' => 'Kauf auf Rechnung Höchstbetrag',
-			    'value' => '',
-			    'scope' => \Shopware\Models\Config\Element::SCOPE_SHOP,
-			    'required' => false,
-			    'order' => ++$i
-		    )
-	    );
-
-	    $form->setElement(
-		    'text',
 		    'INVOICE_MIN_BASKET',
 		    array(
 			    'label' => 'Kauf auf Rechnung minimale Warenkorbgröße',
@@ -541,29 +526,35 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
 		    )
 	    );
 
-	    $form->setElement(
-		    'text',
-		    'INSTALLMENT_MIN_AMOUNT',
-		    array(
-			    'label' => 'Kauf auf Raten Mindestbetrag',
-			    'value' => '',
-			    'scope' => \Shopware\Models\Config\Element::SCOPE_SHOP,
-			    'required' => false,
-			    'order' => ++$i
-		    )
-	    );
+        $form->setElement(
+            'select',
+            'INVOICE_CURRENCY',
+            array(
+                'label' => 'Akzeptierte Währungen für Kauf auf Rechnung',
+                'value' => '',
+                'store' => $currencies,
+                'multiSelect' => true,
+                'scope' => \Shopware\Models\Config\Element::SCOPE_SHOP,
+                'required' => false,
+                'order' => ++$i
+            )
+        );
 
-	    $form->setElement(
-		    'text',
-		    'INSTALLMENT_MAX_AMOUNT',
-		    array(
-			    'label' => 'Kauf auf Raten Höchstbetrag',
-			    'value' => '',
-			    'scope' => \Shopware\Models\Config\Element::SCOPE_SHOP,
-			    'required' => false,
-			    'order' => ++$i
-		    )
-	    );
+        $form->setElement(
+            'select',
+            'INSTALLMENT_PROVIDER',
+            array(
+                'label' => 'Provider für Kauf auf Raten',
+                'value' => 'payolution',
+                'store' => array(
+                    array('payolution', 'payolution'),
+                    array('ratepay', 'RatePay')
+                ),
+                'scope' => \Shopware\Models\Config\Element::SCOPE_SHOP,
+                'required' => false,
+                'order' => ++$i
+            )
+        );
 
 	    $form->setElement(
 		    'text',
@@ -588,6 +579,20 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
 			    'order' => ++$i
 		    )
 	    );
+
+        $form->setElement(
+            'select',
+            'INSTALLMENT_CURRENCY',
+            array(
+                'label' => 'Akzeptierte Währungen für Kauf auf Raten',
+                'value' => '',
+                'store' => $currencies,
+                'multiSelect' => true,
+                'scope' => \Shopware\Models\Config\Element::SCOPE_SHOP,
+                'required' => false,
+                'order' => ++$i
+            )
+        );
 
         $form->setElement(
             'select',
@@ -733,29 +738,26 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
                 'INVOICE_PROVIDER' => Array(
                     'label' => 'Invoice Provider'
                 ),
-                'INVOICE_MIN_AMOUNT' => Array(
-                    'label' => 'Invoice minimum amount'
-                ),
-                'INVOICE_MAX_AMOUNT' => Array(
-                    'label' => 'Invoice maximum amount'
-                ),
                 'INVOICE_MIN_BASKET' => Array(
                     'label' => 'Invoice minimum basket size'
                 ),
                 'INVOICE_MAX_BASKET' => Array(
                     'label' => 'Invoice minimum basket size'
                 ),
-                'INSTALLMENT_MIN_AMOUNT' => Array(
-                    'label' => 'Installment maximum amount'
+                'INVOICE_CURRENCY' => Array(
+                    'label' => 'Accepted currencies for Invoice'
                 ),
-                'INSTALLMENT_MAX_AMOUNT' => Array(
-                    'label' => 'Installment maximum amount'
+                'INSTALLMENT_PROVIDER' => Array(
+                    'label' => 'Installment Provider'
                 ),
                 'INSTALLMENT_MIN_BASKET' => Array(
                     'label' => 'Installment minimum basket size'
                 ),
                 'INSTALLMENT_MAX_BASKET' => Array(
                     'label' => 'Installment maximum basket size'
+                ),
+                'INSTALLMENT_CURRENCY' => Array(
+                    'label' => 'Accepted currencies for Installment'
                 ),
                 'PCI3_DSS_SAQ_A_ENABLE' => Array(
                     'label' => 'SAQ A compliance',
@@ -1074,7 +1076,6 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
         ) {
             return;
         }
-
         /**@var $controller Shopware_Controllers_Frontend_Listing */
         $controller = $args->getSubject();
 
@@ -1085,13 +1086,12 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
         $view = $controller->View();
 
         // basket parameter for invoice/installment
-        $basketAmount   = Shopware()->Session()->sOrderVariables['sBasket']['sAmount'];
         $basketQuantity = $this->getBasketQuantity();
         // do pre-check for invoice and installment
-        if ( ! $this->isActivePayment($basketQuantity, $basketAmount, 'invoice')) {
+        if ( ! $this->isActivePayment($basketQuantity, 'invoice')) {
             $view->sPayments = $this->hidePayment($view->sPayments, 'wirecard_invoice');
         }
-        if ( ! $this->isActivePayment($basketQuantity, $basketAmount, 'installment')) {
+        if ( ! $this->isActivePayment($basketQuantity, 'installment')) {
             $view->sPayments = $this->hidePayment($view->sPayments, 'wirecard_installment');
         }
 
@@ -1147,7 +1147,7 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
 
                 $view->paymentTypeName = Shopware()->WirecardCheckoutSeamless()->getPaymentShortName();
                 //redirect to payment choice if not-active payment was chosen (invoice/installment)
-                if ( ! $this->isActivePayment($basketQuantity, $basketAmount,
+                if ( ! $this->isActivePayment($basketQuantity,
                     Shopware()->WirecardCheckoutSeamless()->getPaymentShortName())
                 ) {
                     $controller->forward('shippingPayment');
@@ -1289,20 +1289,14 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
      *
      * @return bool
      */
-    private function isActivePayment($quantity, $amount, $paymentName)
+    private function isActivePayment($quantity, $paymentName)
     {
         switch ($paymentName) {
             case 'invoice':
-                $minAmount = Shopware()->WirecardCheckoutSeamless()->Config()->INVOICE_MIN_AMOUNT;
-                $maxAmount = Shopware()->WirecardCheckoutSeamless()->Config()->INVOICE_MAX_AMOUNT;
                 $minBasket = Shopware()->WirecardCheckoutSeamless()->Config()->INVOICE_MIN_BASKET;
                 $maxBasket = Shopware()->WirecardCheckoutSeamless()->Config()->INVOICE_MAX_BASKET;
-                if ($minAmount != '' && $minAmount > $amount) {
-                    return false;
-                }
-                if ($maxAmount != '' && $maxAmount < $amount) {
-                    return false;
-                }
+                $currencies = Shopware()->WirecardCheckoutSeamless()->Config()->INVOICE_CURRENCY;
+
                 if ($minBasket != '' && $minBasket > $quantity) {
                     return false;
                 }
@@ -1310,23 +1304,43 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
                     return false;
                 }
 
+                if (isset($currencies)) {
+                    $currentCurrency = Shopware()->Shop()->getCurrency()->getCurrency();
+
+                    foreach ($currencies as $currency) {
+                        if ((string)$currency == (string)$currentCurrency) {
+                            return true;
+                        }
+                    }
+                    if ($currencies->count()) {
+                        return false;
+                    }
+                }
+
                 return true;
             case 'installment':
-                $minAmount = Shopware()->WirecardCheckoutSeamless()->Config()->INSTALLMENT_MIN_AMOUNT;
-                $maxAmount = Shopware()->WirecardCheckoutSeamless()->Config()->INSTALLMENT_MAX_AMOUNT;
                 $minBasket = Shopware()->WirecardCheckoutSeamless()->Config()->INSTALLMENT_MIN_BASKET;
                 $maxBasket = Shopware()->WirecardCheckoutSeamless()->Config()->INSTALLMENT_MAX_BASKET;
-                if ($minAmount != '' && $minAmount > $amount) {
-                    return false;
-                }
-                if ($maxAmount != '' && $maxAmount < $amount) {
-                    return false;
-                }
+                $currencies = Shopware()->WirecardCheckoutSeamless()->Config()->INSTALLMENT_CURRENCY;
+
                 if ($minBasket != '' && $minBasket > $quantity) {
                     return false;
                 }
                 if ($maxBasket != '' && $maxBasket < $quantity) {
                     return false;
+                }
+
+                if(isset($currencies)) {
+                    $currentCurrency = Shopware()->Shop()->getCurrency()->getCurrency();
+
+                    foreach ($currencies as $currency) {
+                        if ((string)$currency == (string)$currentCurrency) {
+                            return true;
+                        }
+                    }
+                    if ($currencies->count()) {
+                        return false;
+                    }
                 }
 
                 return true;
