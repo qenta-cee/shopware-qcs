@@ -74,7 +74,7 @@
     {if $wirecardAdditional eq 'financialInstitutions'}
         <div class="panel has--border is--rounded" id="wd_payment_fields">
             <div class="panel--title is--underline">
-                {$wirecardAdditionalHeadline}
+                <img src="{link file={$paymentLogo}}"/>{$wirecardAdditionalHeadline}
             </div>
 
             <div class="panel--body is--wide">
@@ -98,7 +98,7 @@
     {elseif $wirecardAdditional eq 'seamless'}
         <div class="panel has--border is--rounded" id="wd_payment_fields">
             <div class="panel--title is--underline">
-                {$wirecardAdditionalHeadline}
+                <img src="{link file={$paymentLogo}}"/>{$wirecardAdditionalHeadline}
             </div>
             {if 'ccard' eq $paymentTypeName || 'maestro' eq $paymentTypeName || 'ccard-moto' eq $paymentTypeName}
                 <div class="panel--body is--wide">

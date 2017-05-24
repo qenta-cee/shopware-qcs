@@ -98,6 +98,13 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
             . '&pluginversion=' . $this->getVersion()
             . '" target="_blank">Wirecard Checkout Portal</a>';
 
+
+
+        $image = dirname(__FILE__) . '/wirecard-logo.png';
+        $imageData = base64_encode(file_get_contents($image));
+
+        $src = 'data: '.mime_content_type($image).';base64,'.$imageData;
+
         return array(
             'version' => $this->getVersion(),
             'autor' => 'Wirecard',
@@ -105,7 +112,7 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
             'label' => $this->getLabel(),
             'support' => 'http://www.wirecard.at/en/get-in-contact/',
             'link' => 'http://www.wirecard.at',
-            'description' => '<div style="line-height: 1.6em"><h3>WIRECARD - YOUR FULL SERVICE PAYMENT PROVIDER - COMPREHENSIVE SOLUTIONS FROM ONE SINGLE SOURCE</h3>'
+            'description' => '<img src="'.$src.'" /><div style="line-height: 1.6em"><h3>WIRECARD - YOUR FULL SERVICE PAYMENT PROVIDER - COMPREHENSIVE SOLUTIONS FROM ONE SINGLE SOURCE</h3>'
                 . '<p>' . file_get_contents(dirname(__FILE__) . '/info.txt') . '</p>'
                 . '<p>If you have no Wirecard account, please register yourself via ' . $copLink . '.</p></div>'
         );
@@ -460,141 +467,6 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
         );
 
         $form->setElement(
-            'checkbox',
-            'PAYOLUTION_TERMS',
-            array(
-                'label' => 'Payolution Kondition',
-                'value' => 1,
-                'description' => 'Anzeige der Checkbox mit den payolution-Bedingungen, die vom Kunden während des Bezahlprozesses bestätigt werden müssen, wenn Ihr Onlineshop als "Trusted Shop" zertifiziert ist.',
-                'scope' => \Shopware\Models\Config\Element::SCOPE_SHOP,
-                'required' => false,
-                'order' => ++$i
-            )
-        );
-
-        $form->setElement(
-            'text',
-            'PAYOLUTION_MID',
-            array(
-                'label' => 'Payolution mID',
-                'value' => '',
-                'description' => 'payolution-Händler-ID, bestehend aus dem Base64-enkodierten Firmennamen, die für den Link "Einwilligen" gesetzt werden kann.',
-                'scope' => \Shopware\Models\Config\Element::SCOPE_SHOP,
-                'required' => false,
-                'order' => ++$i
-            )
-        );
-
-        $form->setElement(
-            'select',
-            'INVOICE_PROVIDER',
-            array(
-                'label' => 'Provider für Kauf auf Rechnung',
-                'value' => 'payolution',
-                'store' => array(
-                    array('payolution', 'payolution'),
-                    array('ratepay', 'RatePay'),
-                    array('wirecard', 'Wirecard')
-                ),
-                'scope' => \Shopware\Models\Config\Element::SCOPE_SHOP,
-                'required' => false,
-                'order' => ++$i
-            )
-        );
-
-	    $form->setElement(
-		    'text',
-		    'INVOICE_MIN_BASKET',
-		    array(
-			    'label' => 'Kauf auf Rechnung minimale Warenkorbgröße',
-			    'value' => '',
-			    'scope' => \Shopware\Models\Config\Element::SCOPE_SHOP,
-			    'required' => false,
-			    'order' => ++$i
-		    )
-	    );
-
-	    $form->setElement(
-		    'text',
-		    'INVOICE_MAX_BASKET',
-		    array(
-			    'label' => 'Kauf auf Rechnung maximale Warenkorbgröße',
-			    'value' => '',
-			    'scope' => \Shopware\Models\Config\Element::SCOPE_SHOP,
-			    'required' => false,
-			    'order' => ++$i
-		    )
-	    );
-
-        $form->setElement(
-            'select',
-            'INVOICE_CURRENCY',
-            array(
-                'label' => 'Akzeptierte Währungen für Kauf auf Rechnung',
-                'value' => '',
-                'store' => $currencies,
-                'multiSelect' => true,
-                'scope' => \Shopware\Models\Config\Element::SCOPE_SHOP,
-                'required' => false,
-                'order' => ++$i
-            )
-        );
-
-        $form->setElement(
-            'select',
-            'INSTALLMENT_PROVIDER',
-            array(
-                'label' => 'Provider für Kauf auf Raten',
-                'value' => 'payolution',
-                'store' => array(
-                    array('payolution', 'payolution'),
-                    array('ratepay', 'RatePay')
-                ),
-                'scope' => \Shopware\Models\Config\Element::SCOPE_SHOP,
-                'required' => false,
-                'order' => ++$i
-            )
-        );
-
-	    $form->setElement(
-		    'text',
-		    'INSTALLMENT_MIN_BASKET',
-		    array(
-			    'label' => 'Kauf auf Raten minimale Warenkorbgröße',
-			    'value' => '',
-			    'scope' => \Shopware\Models\Config\Element::SCOPE_SHOP,
-			    'required' => false,
-			    'order' => ++$i
-		    )
-	    );
-
-	    $form->setElement(
-		    'text',
-		    'INSTALLMENT_MAX_BASKET',
-		    array(
-			    'label' => 'Kauf auf Raten maximale Warenkorbgröße',
-			    'value' => '',
-			    'scope' => \Shopware\Models\Config\Element::SCOPE_SHOP,
-			    'required' => false,
-			    'order' => ++$i
-		    )
-	    );
-
-        $form->setElement(
-            'select',
-            'INSTALLMENT_CURRENCY',
-            array(
-                'label' => 'Akzeptierte Währungen für Kauf auf Raten',
-                'value' => '',
-                'store' => $currencies,
-                'multiSelect' => true,
-                'scope' => \Shopware\Models\Config\Element::SCOPE_SHOP,
-                'required' => false,
-                'order' => ++$i
-            )
-        );
-
-        $form->setElement(
             'select',
             'WIRECARD_SAVERESPONSE',
             array(
@@ -684,6 +556,141 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
                 'label' => 'Überprüfung auf doppelte Anfragen',
                 'value' => 0,
                 'description' => 'Überprüfung auf mehrfache Anfragen seitens Ihres Kunden.',
+                'scope' => \Shopware\Models\Config\Element::SCOPE_SHOP,
+                'required' => false,
+                'order' => ++$i
+            )
+        );
+
+        $form->setElement(
+            'checkbox',
+            'PAYOLUTION_TERMS',
+            array(
+                'label' => 'Payolution Kondition',
+                'value' => 1,
+                'description' => 'Anzeige der Checkbox mit den payolution-Bedingungen, die vom Kunden während des Bezahlprozesses bestätigt werden müssen, wenn Ihr Onlineshop als "Trusted Shop" zertifiziert ist.',
+                'scope' => \Shopware\Models\Config\Element::SCOPE_SHOP,
+                'required' => false,
+                'order' => ++$i
+            )
+        );
+
+        $form->setElement(
+            'text',
+            'PAYOLUTION_MID',
+            array(
+                'label' => 'Payolution mID',
+                'value' => '',
+                'description' => 'payolution-Händler-ID, bestehend aus dem Base64-enkodierten Firmennamen, die für den Link "Einwilligen" gesetzt werden kann.',
+                'scope' => \Shopware\Models\Config\Element::SCOPE_SHOP,
+                'required' => false,
+                'order' => ++$i
+            )
+        );
+
+        $form->setElement(
+            'select',
+            'INVOICE_PROVIDER',
+            array(
+                'label' => 'Provider für Kauf auf Rechnung',
+                'value' => 'payolution',
+                'store' => array(
+                    array('payolution', 'payolution'),
+                    array('ratepay', 'RatePay'),
+                    array('wirecard', 'Wirecard')
+                ),
+                'scope' => \Shopware\Models\Config\Element::SCOPE_SHOP,
+                'required' => false,
+                'order' => ++$i
+            )
+        );
+
+        $form->setElement(
+            'text',
+            'INVOICE_MIN_BASKET',
+            array(
+                'label' => 'Kauf auf Rechnung minimale Warenkorbgröße',
+                'value' => '',
+                'scope' => \Shopware\Models\Config\Element::SCOPE_SHOP,
+                'required' => false,
+                'order' => ++$i
+            )
+        );
+
+        $form->setElement(
+            'text',
+            'INVOICE_MAX_BASKET',
+            array(
+                'label' => 'Kauf auf Rechnung maximale Warenkorbgröße',
+                'value' => '',
+                'scope' => \Shopware\Models\Config\Element::SCOPE_SHOP,
+                'required' => false,
+                'order' => ++$i
+            )
+        );
+
+        $form->setElement(
+            'select',
+            'INVOICE_CURRENCY',
+            array(
+                'label' => 'Akzeptierte Währungen für Kauf auf Rechnung',
+                'value' => '',
+                'store' => $currencies,
+                'multiSelect' => true,
+                'scope' => \Shopware\Models\Config\Element::SCOPE_SHOP,
+                'required' => false,
+                'order' => ++$i
+            )
+        );
+
+        $form->setElement(
+            'select',
+            'INSTALLMENT_PROVIDER',
+            array(
+                'label' => 'Provider für Kauf auf Raten',
+                'value' => 'payolution',
+                'store' => array(
+                    array('payolution', 'payolution'),
+                    array('ratepay', 'RatePay')
+                ),
+                'scope' => \Shopware\Models\Config\Element::SCOPE_SHOP,
+                'required' => false,
+                'order' => ++$i
+            )
+        );
+
+        $form->setElement(
+            'text',
+            'INSTALLMENT_MIN_BASKET',
+            array(
+                'label' => 'Kauf auf Raten minimale Warenkorbgröße',
+                'value' => '',
+                'scope' => \Shopware\Models\Config\Element::SCOPE_SHOP,
+                'required' => false,
+                'order' => ++$i
+            )
+        );
+
+        $form->setElement(
+            'text',
+            'INSTALLMENT_MAX_BASKET',
+            array(
+                'label' => 'Kauf auf Raten maximale Warenkorbgröße',
+                'value' => '',
+                'scope' => \Shopware\Models\Config\Element::SCOPE_SHOP,
+                'required' => false,
+                'order' => ++$i
+            )
+        );
+
+        $form->setElement(
+            'select',
+            'INSTALLMENT_CURRENCY',
+            array(
+                'label' => 'Akzeptierte Währungen für Kauf auf Raten',
+                'value' => '',
+                'store' => $currencies,
+                'multiSelect' => true,
                 'scope' => \Shopware\Models\Config\Element::SCOPE_SHOP,
                 'required' => false,
                 'order' => ++$i
@@ -1087,17 +1094,18 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
 
         // basket parameter for invoice/installment
         $basketQuantity = $this->getBasketQuantity();
-        // do pre-check for invoice and installment
-        if ( ! $this->isActivePayment($basketQuantity, 'invoice')) {
-            $view->sPayments = $this->hidePayment($view->sPayments, 'wirecard_invoice');
-        }
-        if ( ! $this->isActivePayment($basketQuantity, 'installment')) {
-            $view->sPayments = $this->hidePayment($view->sPayments, 'wirecard_installment');
-        }
 
         switch ($args->getSubject()->Request()->getActionName()) {
             case 'shippingPayment':
                 self::init();
+
+                // do pre-check for invoice and installment
+                if ( ! $this->isActivePayment($basketQuantity, 'invoice')) {
+                    $view->sPayments = $this->hidePayment($view->sPayments, 'wirecard_invoice');
+                }
+                if ( ! $this->isActivePayment($basketQuantity, 'installment')) {
+                    $view->sPayments = $this->hidePayment($view->sPayments, 'wirecard_installment');
+                }
 
                 $view->addTemplateDir($this->Path() . 'Views/common/');
                 if (Shopware()->Shop()->getTemplate()->getVersion() >= 3) {
@@ -1167,6 +1175,7 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
                 /** @var Enlight_Components_Snippet_Namespace ns */
                 $ns = Shopware()->Snippets()->getNamespace('frontend/checkout/confirm');
                 $view->confirmErrorAGB = $ns['ConfirmErrorAGB'];
+                $view->paymentLogo = 'frontend/_public/images/' . $view->paymentTypeName . '.png';
 
                 switch ($view->paymentTypeName) {
                     case 'eps':
@@ -1207,18 +1216,18 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
                     case 'invoice':
                     case 'installment':
                         $view->wirecardAdditional = 'seamless';
-                        $user = Shopware()->Session()->sOrderVariables['sUserData'];
-                        $birth = null;
+                        $user                     = Shopware()->Session()->sOrderVariables['sUserData'];
+                        $birth                    = null;
 
-                        if (!is_null($user) && isset($user['additional']['user']['birthday'])) {
+                        if ( ! is_null($user) && isset($user['additional']['user']['birthday'])) {
                             $birth = $user['additional']['user']['birthday'];
-                        } else if (!is_null($user) && isset($user['billingaddress']['birthday'])) {
+                        } else if ( ! is_null($user) && isset($user['billingaddress']['birthday'])) {
                             $birth = $user['billingaddress']['birthday'];
                         }
 
                         // Values for datefields
-                        $view->years = range(date('Y'), date('Y') - 100);
-                        $view->days = range(1, 31);
+                        $view->years  = range(date('Y'), date('Y') - 100);
+                        $view->days   = range(1, 31);
                         $view->months = range(1, 12);
 
                         $birthday = array('-', '-', '-');
@@ -1226,9 +1235,9 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
                             $birthday = explode('-', $birth);
                         }
 
-                        $view->bYear = $birthday[0];
+                        $view->bYear  = $birthday[0];
                         $view->bMonth = $birthday[1];
-                        $view->bDay = $birthday[2];
+                        $view->bDay   = $birthday[2];
 
                         if (Shopware()->WirecardCheckoutSeamless()->Config()->INVOICE_PROVIDER) {
                             $view->payolutionTerms = Shopware()->WirecardCheckoutSeamless()->Config()->PAYOLUTION_TERMS;
@@ -1330,7 +1339,7 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
                     return false;
                 }
 
-                if(isset($currencies)) {
+                if (isset($currencies)) {
                     $currentCurrency = Shopware()->Shop()->getCurrency()->getCurrency();
 
                     foreach ($currencies as $currency) {
@@ -1342,7 +1351,6 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
                         return false;
                     }
                 }
-
                 return true;
             default:
                 return true;
