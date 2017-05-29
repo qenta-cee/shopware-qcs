@@ -1,5 +1,5 @@
 {namespace name='frontend/plugins/payment/logo'}
-{if $sUserData.additional.payment.name == 'wirecard_ccard' }
+{if $sUserData.additional.payment.name == 'wirecard_ccard' || $sUserData.additional.payment.name == 'wirecard_ccard-moto' }
     <img src="{link file='frontend/_public/images/ccard.png'}"/>
 {/if}
 {if $sUserData.additional.payment.name == 'wirecard_maestro' }

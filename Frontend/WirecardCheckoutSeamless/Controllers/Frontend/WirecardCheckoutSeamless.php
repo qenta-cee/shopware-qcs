@@ -281,6 +281,8 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
                 'billing_lastname' => $userData['billingaddress']['lastname']
             );
 
+            $message = null;
+
             switch ($return->getPaymentState()) {
 
                 case WirecardCEE_QMore_ReturnFactory::STATE_SUCCESS:
@@ -450,18 +452,7 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
                         if(($existingOrder[0] instanceof \Shopware\Models\Order\Order) && $existingOrder[0]->getPaymentStatus()->getId() !== Shopware()->WirecardCheckoutSeamless()->Config()->getPaymentStatusId('pending')) {
                             Shopware()->Pluginlogger()->info('WirecardCheckoutSeamless: '.__METHOD__ . ': failure: do not modify payment status as the order is in a final state');
                             break;
-                        }
-
-                        if(Shopware()->WirecardCheckoutSeamless()->Config()->keep_unsuccessful_orders) {
-                            Shopware()->Pluginlogger()->info('WirecardCheckoutSeamless: '.__METHOD__ . ': failure: update order state: ' . $data['orderId']);
-                            $this->savePaymentStatus(
-                                $data['transactionId'],
-                                $paymentUniqueId,
-                                Shopware()->WirecardCheckoutSeamless()->Config()->getPaymentStatusId('failure'),
-                                false
-                            );
                         } else if($existingOrder[0] instanceof \Shopware\Models\Order\Order) {
-                            Shopware()->Pluginlogger()->info('WirecardCheckoutSeamless: '.__METHOD__ . ': failure: delete order: ' . $data['orderId']);
                             $this->savePaymentStatus(
                                 $data['transactionId'],
                                 $paymentUniqueId,
@@ -470,10 +461,6 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
                             );
 
                             $status = $existingOrder[0]->getPaymentStatus();
-
-                            Shopware()->Models()->remove($existingOrder[0]);
-                            Shopware()->Models()->flush();
-
                             $orderDate = date("d.m.Y");
 
                             if($details != null){
@@ -503,6 +490,13 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
                                 Shopware()->Session()->offsetSet('sOrderVariables', $variables);
                             }
                         }
+
+                        $errors = array();
+                        foreach ( $return->getErrors() as $error ) {
+                            $errors[] = $error->getConsumerMessage();
+                            $message  = $error->getConsumerMessage();
+                        }
+
                         $update['session'] = '';
                     }
                     break;
@@ -523,7 +517,7 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
             return;
         }
 
-        print WirecardCEE_QMore_ReturnFactory::generateConfirmResponseString();
+        print WirecardCEE_QMore_ReturnFactory::generateConfirmResponseString($message);
     }
 
     /**

@@ -241,6 +241,22 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
             Shopware()->Db()->delete('s_core_paymentmeans', 'name = "wirecard_elv"');
             Shopware()->Db()->delete('s_core_paymentmeans', 'name = "wirecard_mpass"');
             Shopware()->Db()->delete('s_core_paymentmeans', 'name = "wirecard_skrilldirect"');
+
+            $em = $this->get('models');
+            $form = $this->Form();
+            $wirecard_keep_orders = $form->getElement('KEEP_UNSUCCESSFUL_ORDERS');
+            if ($wirecard_keep_orders !== null) {
+                $em->remove($wirecard_keep_orders);
+            }
+            $wirecard_restore_basket = $form->getElement('RESTORE_BASKET');
+            if ($wirecard_restore_basket !== null) {
+                $em->remove($wirecard_restore_basket);
+            }
+            $wirecard_shop_prefix = $form->getElement('SHOP_PREFIX');
+            if ($wirecard_shop_prefix !== null) {
+                $em->remove($wirecard_shop_prefix);
+            }
+            $em->flush();
         }
 
         return $this->install();
@@ -309,20 +325,6 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
                 'order' => ++$i
             )
         );
-
-        $form->setElement(
-            'checkbox',
-            'RESTORE_BASKET',
-            array(
-                'label' => 'Warenkorb wiederherstellen',
-                'value' => 0,
-                'description' => 'Falls "Ja" ausgewählt ist, wird der ursprüngliche Warenkorbinhalt wiederhergestellt, wenn der Konsument diesen während des Bezahlprozesses ändert. Falls "Nein" ausgewählt ist, wird die Bestellung nicht durchgeführt und auf den Status "Klärung notwendig" gesetzt.',
-                'scope' => \Shopware\Models\Config\Element::SCOPE_SHOP,
-                'required' => false,
-                'order' => ++$i
-            )
-        );
-
 
         $form->setElement(
             'checkbox',
@@ -428,19 +430,6 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
         );
 
         $form->setElement(
-            'text',
-            'SHOP_PREFIX',
-            array(
-                'label' => 'Shop-Präfix im Buchungstext',
-                'value' => '',
-                'scope' => \Shopware\Models\Config\Element::SCOPE_SHOP,
-                'description' => 'Referenz zu Ihrem Onlineshop im Buchungstext für Ihren Kunden, max. 9 Zeichen (wird zusammen mit der Auftragsnummer zum Erstellen des Parameters customerStatement verwendet).',
-                'required' => false,
-                'order' => ++$i
-            )
-        );
-
-        $form->setElement(
             'checkbox',
             'SEND_ADDITIONAL_DATA',
             array(
@@ -501,19 +490,6 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
                     array(2, 'Gateway reference number')
                 ),
                 'description' => 'Als Shopware Transaction ID wird entweder die shopinterne Bestellnummer oder die Referenznummer des Acquirers verwendet.',
-                'required' => false,
-                'order' => ++$i
-            )
-        );
-
-        $form->setElement(
-            'checkbox',
-            'KEEP_UNSUCCESSFUL_ORDERS',
-            array(
-                'label' => 'Bestellungen immer behalten',
-                'value' => 0,
-                'description' => 'Falls "Ja" gesetzt ist, werden die Bestellungen auch bei fehlgeschlagener Zahlung nicht gelöscht. Falls "Nein" gesetzt ist, werden diese gelöscht und fehlen in der Bestellnummern-Reihenfolge.',
-                'scope' => \Shopware\Models\Config\Element::SCOPE_SHOP,
                 'required' => false,
                 'order' => ++$i
             )
@@ -726,10 +702,6 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
                     'label' => 'URL to imprint page',
                     'description' => 'URL on the payment page which leads to the imprint page of the online shop.'
                 ),
-                'RESTORE_BASKET' => Array(
-                    'label' => 'Restore basket',
-                    'description' => 'If set to "Yes", the original content of the shopping basket is restored if your consumer changed the basket during the payment process. If set to "No", the order is not executed and set to a clarification state.'
-                ),
                 'CONFIRM_MAIL' => Array(
                     'label' => 'Notification e-mail',
                     'description' => 'Receiving notification by e-mail regarding the orders of your consumers if an error occurred in the communication between Wirecard and your online shop. Please contact our sales teams to activate this feature.'
@@ -794,10 +766,6 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
                     'label' => 'Automated deposit',
                     'description' => 'Enabling an automated deposit of payments. Please contact our sales teams to activate this feature.'
                 ),
-                'SHOP_PREFIX' => Array(
-                    'label' => 'Shop prefix in posting text',
-                    'description' => 'Reference to your online shop on your consumer\'s invoice, limited to 9 characters (used together with the order number to create the parameter customerStatement).'
-                ),
                 'SEND_ADDITIONAL_DATA' => Array(
                     'label' => 'Forward consumer data',
                     'description' => 'Forwarding shipping and billing data about your consumer to the respective financial service provider.'
@@ -809,10 +777,6 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
                 'WIRECARD_SAVERESPONSE' => Array(
                     'label' => 'Save payment process results',
                     'description' => 'Save all results regarding the payment process, i.e. each Wirecard Checkout Server response to the confirmation URL to the defined field.'
-                ),
-                'KEEP_UNSUCCESSFUL_ORDERS' => Array(
-                    'label' => 'Keep orders despite of failed payment',
-                    'description' => 'Selecting "Yes", pending orders will remain in the order list even if payment fails. Selecting "No", they are deleted. Note that deleted orders are missing in the order number sequence.'
                 ),
                 'WIRECARD_CONFIRM_HEADER_STYLE' => Array(
                     'label' => 'Header style',

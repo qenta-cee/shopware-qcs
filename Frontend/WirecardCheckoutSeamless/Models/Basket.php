@@ -59,11 +59,6 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Models_Basket
      */
     public function getBasket()
     {
-        if (FALSE == Shopware()->WirecardCheckoutSeamless()->Config()->restoreBasket()) {
-            return NULL;
-        }
-
-        Shopware()->Pluginlogger()->info('WirecardCheckoutSeamless: ID: ' . Shopware()->SessionID());
         $sql = Shopware()->Db()->select()
             ->from('s_order_basket')
             ->where('sessionID = ?', array(Shopware()->SessionID()));
@@ -89,9 +84,6 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Models_Basket
      */
     public function setBasket($basket = array())
     {
-        if (FALSE == Shopware()->WirecardCheckoutSeamless()->Config()->restoreBasket()) {
-            return FALSE;
-        }
         Shopware()->Db()->delete('s_order_basket', array('sessionID = ?' => Shopware()->SessionID()));
         foreach ($basket as $row) {
             Shopware()->Db()->insert('s_order_basket', $row);

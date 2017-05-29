@@ -842,26 +842,6 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Models_Config
     }
 
     /**
-     * Returns shop name
-     *
-     * @return string
-     */
-    public function getShopName()
-    {
-        return $this->SHOP_PREFIX;
-    }
-
-    /**
-     * Returns TRUE if old basket should be restored
-     *
-     * @return bool
-     */
-    public function restoreBasket()
-    {
-        return 1 == $this->RESTORE_BASKET;
-    }
-
-    /**
      * Returns ID of given state
      *
      * @param string $status
