@@ -546,161 +546,161 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Models_Config
         $pm[] = array(
             'name' => 'ccard',
             'description' => 'Kreditkarte',
-            'template' => 'logo.tpl',
+            'template' => 'wirecard_brands.tpl',
             'call' => WirecardCEE_QMore_PaymentType::CCARD,
             'translation' => Array('description' => 'Wirecard Credit Card', 'additionalDescription' => '')
         );
         $pm[] = array(
             'name' => 'maestro',
             'description' => 'Maestro SecureCode',
-            'template' => 'logo.tpl',
+            'template' => 'wirecard_brands.tpl',
             'call' => WirecardCEE_QMore_PaymentType::MAESTRO,
             'translation' => Array('description' => 'Wirecard Maestro SecureCode', 'additionalDescription' => '')
         );
         $pm[] = array(
             'name' => 'eps',
             'description' => 'eps Online-&Uuml;berweisung',
-            'template' => 'logo.tpl',
+            'template' => 'wirecard_brands.tpl',
             'call' => WirecardCEE_QMore_PaymentType::EPS,
             'translation' => Array('description' => 'Wirecard eps Online Bank Transfer', 'additionalDescription' => '')
         );
         $pm[] = array(
             'name' => 'ideal',
             'description' => 'iDEAL',
-            'template' => 'logo.tpl',
+            'template' => 'wirecard_brands.tpl',
             'call' => WirecardCEE_QMore_PaymentType::IDL,
             'translation' => Array('description' => 'Wirecard iDEAL', 'additionalDescription' => '')
         );
         $pm[] = array(
             'name' => 'giropay',
             'description' => 'giropay',
-            'template' => 'logo.tpl',
+            'template' => 'wirecard_brands.tpl',
             'call' => WirecardCEE_QMore_PaymentType::GIROPAY,
             'translation' => Array('description' => 'Wirecard giropay', 'additionalDescription' => '')
         );
         $pm[] = array(
             'name' => 'sofortueberweisung',
             'description' => 'SOFORT &Uuml;berweisung',
-            'template' => 'logo.tpl',
+            'template' => 'wirecard_brands.tpl',
             'call' => WirecardCEE_QMore_PaymentType::SOFORTUEBERWEISUNG,
             'translation' => Array('description' => 'Wirecard SOFORT banking', 'additionalDescription' => '')
         );
         $pm[] = array(
             'name' => 'bancontact_mistercash',
             'description' => 'Bancontact',
-            'template' => 'logo.tpl',
+            'template' => 'wirecard_brands.tpl',
             'call' => WirecardCEE_QMore_PaymentType::BMC,
             'translation' => Array('description' => 'Wirecard Bancontact', 'additionalDescription' => '')
         );
         $pm[] = array(
             'name' => 'przelewy24',
             'description' => 'Przelewy24',
-            'template' => 'logo.tpl',
+            'template' => 'wirecard_brands.tpl',
             'call' => WirecardCEE_QMore_PaymentType::P24,
             'translation' => Array('description' => 'Wirecard Przelewy24', 'additionalDescription' => '')
         );
         $pm[] = array(
             'name' => 'moneta',
             'description' => 'moneta.ru',
-            'template' => 'logo.tpl',
+            'template' => 'wirecard_brands.tpl',
             'call' => WirecardCEE_QMore_PaymentType::MONETA,
             'translation' => Array('description' => 'Wirecard moneta.ru', 'additionalDescription' => '')
         );
         $pm[] = array(
             'name' => 'poli',
             'description' => 'POLi',
-            'template' => 'logo.tpl',
+            'template' => 'wirecard_brands.tpl',
             'call' => WirecardCEE_QMore_PaymentType::POLI,
             'translation' => Array('description' => 'Wirecard POLi', 'additionalDescription' => '')
         );
         $pm[] = array(
             'name' => 'pbx',
             'description' => 'paybox',
-            'template' => 'logo.tpl',
+            'template' => 'wirecard_brands.tpl',
             'call' => WirecardCEE_QMore_PaymentType::PBX,
             'translation' => Array('description' => 'Wirecard paybox', 'additionalDescription' => '')
         );
         $pm[] = array(
             'name' => 'psc',
             'description' => 'paysafecard',
-            'template' => 'logo.tpl',
+            'template' => 'wirecard_brands.tpl',
             'call' => WirecardCEE_QMore_PaymentType::PSC,
             'translation' => Array('description' => 'Wirecard paysafecard', 'additionalDescription' => '')
         );
         $pm[] = array(
             'name' => 'paypal',
             'description' => 'PayPal',
-            'template' => 'logo.tpl',
+            'template' => 'wirecard_brands.tpl',
             'call' => WirecardCEE_QMore_PaymentType::PAYPAL,
             'translation' => Array('description' => 'Wirecard PayPal', 'additionalDescription' => '')
         );
         $pm[] = array(
             'name' => 'sepa-dd',
             'description' => 'SEPA Lastschrift',
-            'template' => 'logo.tpl',
+            'template' => 'wirecard_brands.tpl',
             'call' => WirecardCEE_QMore_PaymentType::SEPADD,
             'translation' => Array('description' => 'Wirecard SEPA Direct Debit', 'additionalDescription' => '')
         );
         $pm[] = array(
             'name' => 'invoice',
             'description' => 'Kauf auf Rechnung',
-            'template' => 'logo.tpl',
+            'template' => 'wirecard_brands.tpl',
             'call' => WirecardCEE_QMore_PaymentType::INVOICE,
             'translation' => Array('description' => 'Wirecard Invoice', 'additionalDescription' => '')
         );
         $pm[] = array(
             'name' => 'installment',
             'description' => 'Kauf auf Raten',
-            'template' => 'logo.tpl',
+            'template' => 'wirecard_brands.tpl',
             'call' => WirecardCEE_QMore_PaymentType::INSTALLMENT,
             'translation' => Array('description' => 'Wirecard Installment', 'additionalDescription' => '')
         );
         $pm[] = array(
             'name' => 'skrillwallet',
             'description' => 'Skrill Digital Wallet',
-            'template' => 'logo.tpl',
+            'template' => 'wirecard_brands.tpl',
             'call' => WirecardCEE_QMore_PaymentType::SKRILLWALLET,
             'translation' => Array('description' => 'Wirecard Skrill Digital Wallet', 'additionalDescription' => '')
         );
         $pm[] = array(
             'name' => 'ekonto',
             'description' => 'eKonto',
-            'template' => 'logo.tpl',
+            'template' => 'wirecard_brands.tpl',
             'call' => WirecardCEE_QMore_PaymentType::EKONTO,
             'translation' => Array('description' => 'Wirecard eKonto', 'additionalDescription' => '')
         );
         $pm[] = array(
             'name' => 'trustly',
             'description' => 'Trustly',
-            'template' => 'logo.tpl',
+            'template' => 'wirecard_brands.tpl',
             'call' => WirecardCEE_QMore_PaymentType::TRUSTLY,
             'translation' => Array('description' => 'Wirecard Trustly', 'additionalDescription' => '')
         );
         $pm[] = array(
             'name' => 'ccard-moto',
             'description' => 'Kreditkarte - Post / Telefonbestellung',
-            'template' => 'logo.tpl',
+            'template' => 'wirecard_brands.tpl',
             'call' => WirecardCEE_QMore_PaymentType::CCARD_MOTO,
             'translation' => Array('description' => 'Wirecard Credit Card - Mail Order and Telephone Order', 'additionalDescription' => '')
         );
         $pm[] = array(
             'name' => 'tatrapay',
             'description' => 'TatraPay',
-            'template' => 'logo.tpl',
+            'template' => 'wirecard_brands.tpl',
             'call' => WirecardCEE_QMore_PaymentType::TATRAPAY,
             'translation' => Array('description' => 'Wirecard TatraPay', 'additionalDescription' => '')
         );
         $pm[] = array(
             'name' => 'epay',
             'description' => 'ePay.bg',
-            'template' => 'logo.tpl',
+            'template' => 'wirecard_brands.tpl',
             'call' => WirecardCEE_QMore_PaymentType::EPAYBG,
             'translation' => Array('description' => 'Wirecard ePay.bg', 'additionalDescription' => '')
         );
         $pm[] = array(
             'name' => 'voucher',
             'description' => 'Gutschein',
-            'template' => 'logo.tpl',
+            'template' => 'wirecard_brands.tpl',
             'call' => WirecardCEE_QMore_PaymentType::VOUCHER,
             'translation' => Array('description' => 'Wirecard Voucher', 'additionalDescription' => '')
         );

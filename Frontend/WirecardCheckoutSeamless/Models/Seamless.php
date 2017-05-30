@@ -134,7 +134,10 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Models_Seamless
             ->createConsumerMerchantCrmId($userData['additional']['user']['email'])
             ->setConsumerData($this->getConsumerData($paymentType));
 
-        if(Shopware()->WirecardCheckoutSeamless()->Config()->SEND_BASKET_DATA) {
+        if (Shopware()->WirecardCheckoutSeamless()->Config()->SEND_BASKET_DATA
+            || ($paymentType == WirecardCEE_QMore_PaymentType::INSTALLMENT && Shopware()->WirecardCheckoutSeamless()->Config()->INSTALLMENT_PROVIDER == 'payolution')
+            || ($paymentType == WirecardCEE_QMore_PaymentType::INVOICE && Shopware()->WirecardCheckoutSeamless()->Config()->INVOICE_PROVIDER == 'payolution')
+        ) {
             $init->setBasket($this->getShoppingBasket());
         }
         if(Shopware()->WirecardCheckoutSeamless()->Config()->ENABLE_DUPLICATE_REQUEST_CHECK)
@@ -167,7 +170,7 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Models_Seamless
     protected function getPluginVersion()
     {
         $shopversion = Shopware::VERSION;
-        if($shopversion == '') {
+        if( ! strlen($shopversion)) {
             $shopversion = '>5.2.21';
         }
 
@@ -204,8 +207,11 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Models_Seamless
         $consumerData = $consumerData->setIpAddress($_SERVER['REMOTE_ADDR']);
         $consumerData = $consumerData->setUserAgent($_SERVER['HTTP_USER_AGENT']);
 
-        if (Shopware()->WirecardCheckoutSeamless()->Config()->send_additional_data || ($paymentType == 'INSTALLMENT' || $paymentType == 'INVOICE' || $paymentType == 'PRZELEWY24'))
-        {
+        if (Shopware()->WirecardCheckoutSeamless()->Config()->send_additional_data
+            || $paymentType == WirecardCEE_QMore_PaymentType::INSTALLMENT
+            || $paymentType == WirecardCEE_QMore_PaymentType::INVOICE
+            || $paymentType == WirecardCEE_QMore_PaymentType::P24
+        ) {
             $consumerData = $consumerData->setEmail(Shopware()->WirecardCheckoutSeamless()->getUser('user')->email);
             $consumerData = $consumerData->addAddressInformation($this->getAddress('billing'));
             $consumerData = $consumerData->addAddressInformation($this->getAddress('shipping'));
@@ -213,7 +219,7 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Models_Seamless
             $userData = Shopware()->Session()->sOrderVariables['sUserData'];
             $birthday = $userData['additional']['user']['birthday'];
             $birthday = $this->getDateObject($birthday);
-            if (FALSE !== $birthday) {
+            if (false !== $birthday) {
                 $consumerData = $consumerData->setBirthDate($birthday);
             }
 
