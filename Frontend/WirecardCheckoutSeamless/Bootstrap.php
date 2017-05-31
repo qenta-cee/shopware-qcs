@@ -1078,7 +1078,7 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
                 /** @var Enlight_Components_Snippet_Namespace ns */
                 $ns = Shopware()->Snippets()->getNamespace('frontend/checkout/confirm');
                 $view->confirmErrorAGB = $ns['ConfirmErrorAGB'];
-                $view->paymentLogo = 'frontend/_public/images/' . $view->paymentTypeName . '.png';
+                $view->paymentLogo = 'frontend/_public/images/' . Shopware()->Session()->sOrderVariables['sUserData']['additional']['payment']['name'] . '.png';
 
                 switch ($view->paymentTypeName) {
                     case 'eps':
