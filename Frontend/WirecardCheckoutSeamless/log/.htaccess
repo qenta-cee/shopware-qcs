@@ -1,4 +1,0 @@
-<FilesMatch ".log$">
-    order allow,deny
-    deny from allow
-</FilesMatch>

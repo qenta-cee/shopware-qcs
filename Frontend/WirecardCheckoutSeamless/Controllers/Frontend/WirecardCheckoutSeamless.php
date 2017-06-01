@@ -83,12 +83,7 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
             )
         );
 
-        if (Shopware()->Shop()->getTemplate()->getVersion() >= 3) {
-            $this->View()->loadTemplate('responsive/frontend/wirecard_checkout_seamless/index.tpl');
-        }
-        else {
-            $this->View()->loadTemplate('frontend/checkout/wirecard_seamless.tpl');
-        }
+        $this->View()->loadTemplate('responsive/frontend/wirecard_checkout_seamless/index.tpl');
 
         $headerStyle = Shopware()->WirecardCheckoutSeamless()->Config()->WIRECARD_CONFIRM_HEADER_STYLE;
         $headerTemplate = $headerStyle == 1 ? 'frontend/index/index.tpl' : 'frontend/checkout/confirm.tpl';
@@ -281,6 +276,8 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
                 'billing_lastname' => $userData['billingaddress']['lastname']
             );
 
+            $message = null;
+
             switch ($return->getPaymentState()) {
 
                 case WirecardCEE_QMore_ReturnFactory::STATE_SUCCESS:
@@ -450,18 +447,7 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
                         if(($existingOrder[0] instanceof \Shopware\Models\Order\Order) && $existingOrder[0]->getPaymentStatus()->getId() !== Shopware()->WirecardCheckoutSeamless()->Config()->getPaymentStatusId('pending')) {
                             Shopware()->Pluginlogger()->info('WirecardCheckoutSeamless: '.__METHOD__ . ': failure: do not modify payment status as the order is in a final state');
                             break;
-                        }
-
-                        if(Shopware()->WirecardCheckoutSeamless()->Config()->keep_unsuccessful_orders) {
-                            Shopware()->Pluginlogger()->info('WirecardCheckoutSeamless: '.__METHOD__ . ': failure: update order state: ' . $data['orderId']);
-                            $this->savePaymentStatus(
-                                $data['transactionId'],
-                                $paymentUniqueId,
-                                Shopware()->WirecardCheckoutSeamless()->Config()->getPaymentStatusId('failure'),
-                                false
-                            );
                         } else if($existingOrder[0] instanceof \Shopware\Models\Order\Order) {
-                            Shopware()->Pluginlogger()->info('WirecardCheckoutSeamless: '.__METHOD__ . ': failure: delete order: ' . $data['orderId']);
                             $this->savePaymentStatus(
                                 $data['transactionId'],
                                 $paymentUniqueId,
@@ -470,10 +456,6 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
                             );
 
                             $status = $existingOrder[0]->getPaymentStatus();
-
-                            Shopware()->Models()->remove($existingOrder[0]);
-                            Shopware()->Models()->flush();
-
                             $orderDate = date("d.m.Y");
 
                             if($details != null){
@@ -503,6 +485,13 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
                                 Shopware()->Session()->offsetSet('sOrderVariables', $variables);
                             }
                         }
+
+                        $errors = array();
+                        foreach ( $return->getErrors() as $error ) {
+                            $errors[] = $error->getConsumerMessage();
+                            $message  = $error->getConsumerMessage();
+                        }
+
                         $update['session'] = '';
                     }
                     break;
@@ -523,7 +512,7 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
             return;
         }
 
-        print WirecardCEE_QMore_ReturnFactory::generateConfirmResponseString();
+        print WirecardCEE_QMore_ReturnFactory::generateConfirmResponseString($message);
     }
 
     /**
@@ -540,12 +529,7 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
             ->where('uniqueId = ?', array(Shopware()->WirecardCheckoutSeamless()->wWirecardCheckoutSeamlessId));
         $result = Shopware()->Db()->fetchRow($sql);
 
-        if (Shopware()->Shop()->getTemplate()->getVersion() >= 3) {
-            $this->View()->loadTemplate('responsive/frontend/wirecard_checkout_seamless/return.tpl');
-        }
-        else {
-            $this->View()->loadTemplate('frontend/checkout/return.tpl');
-        }
+        $this->View()->loadTemplate('responsive/frontend/wirecard_checkout_seamless/return.tpl');
 
         $this->View()->redirectUrl = $this->Front()->Router()->assemble(Array('controller' => 'checkout', 'action' => 'confirm', 'sUseSSL' => true));
 
@@ -677,13 +661,7 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
         );
         Shopware()->WirecardCheckoutSeamless()->wWirecardCheckoutSeamlessId = $this->createTransactionUniqueId();
 
-        if (Shopware()->Shop()->getTemplate()->getVersion() >= 3) {
-            $this->View()->loadTemplate('responsive/frontend/wirecard_checkout_seamless/return.tpl');
-        }
-        else {
-            $this->View()->loadTemplate('frontend/checkout/return.tpl');
-        }
-
+        $this->View()->loadTemplate('responsive/frontend/wirecard_checkout_seamless/return.tpl');
         $this->View()->redirectUrl = $this->Front()->Router()->assemble(Array('controller' => 'checkout', 'action' => 'finish', 'sUseSSL' => true));
     }
 
@@ -761,13 +739,7 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
             die('Parameter not found');
         }
 
-        if (Shopware()->Shop()->getTemplate()->getVersion() >= 3) {
-            $this->View()->loadTemplate('responsive/frontend/wirecard_checkout_seamless/storeReturn.tpl');
-        }
-        else {
-            $this->View()->loadTemplate('frontend/checkout/dsStoreReturn.tpl');
-        }
-
+        $this->View()->loadTemplate('responsive/frontend/wirecard_checkout_seamless/storeReturn.tpl');
         $this->View()->wirecardResponse = (true == get_magic_quotes_gpc()) ? $post['response'] : addslashes(
             $post['response']
         );
