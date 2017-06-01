@@ -126,21 +126,6 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
     {
         self::init();
 
-	    // Shopversion is not available for latest Shopwareversion
-	    if (strlen(Shopware::VERSION)) {
-	        if (!$this->assertMinimumVersion('4.0.0')) {
-                throw new Enlight_Exception('This plugin needs minimum Shopware 4.0.0');
-            }
-
-            if (!$this->assertMinimumVersion('5.2.0')) {
-                if (!$this->assertRequiredPluginsPresent(array('Payment'))) {
-                    throw new Enlight_Exception('This plugin requires the plugin payment');
-                }
-            }
-	    } else {
-	        throw new Enlight_Exception('Unknown/Unsupported Shopware version. Please update to a supported version.');
-        }
-
         $this->createEvents();
         $this->createPayments();
         $this->createForm();
@@ -179,11 +164,9 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
      */
     public function secureUninstall()
     {
-        if ($this->assertMinimumVersion('5')) {
-            /** @var \Shopware\Components\CacheManager $cacheManager */
-            $cacheManager = $this->get('shopware.cache_manager');
-            $cacheManager->clearThemeCache();
-        }
+        /** @var \Shopware\Components\CacheManager $cacheManager */
+        $cacheManager = $this->get('shopware.cache_manager');
+        $cacheManager->clearThemeCache();
 
         return array(
             'success' => true,
@@ -1013,24 +996,14 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
                 }
 
                 $view->addTemplateDir($this->Path() . 'Views/common/');
-                if (Shopware()->Shop()->getTemplate()->getVersion() >= 3) {
-                    $view->addTemplateDir($this->Path() . 'Views/responsive/');
-                } else {
-                    $view->addTemplateDir($this->Path() . 'Views/');
-                    $view->extendsTemplate('frontend/checkout/wirecard.tpl');
-                }
+                $view->addTemplateDir($this->Path() . 'Views/responsive/');
 
                 break;
             case 'confirm':
                 self::init();
 
                 $view->addTemplateDir($this->Path() . 'Views/common/');
-                if (Shopware()->Shop()->getTemplate()->getVersion() >= 3) {
-                    $view->addTemplateDir($this->Path() . 'Views/responsive/');
-                } else {
-                    $view->addTemplateDir($this->Path() . 'Views/');
-                    $view->extendsTemplate('frontend/checkout/wirecard.tpl');
-                }
+                $view->addTemplateDir($this->Path() . 'Views/responsive/');
 
                 // Output of common errors
                 if (null != Shopware()->WirecardCheckoutSeamless()->wirecard_action) {
@@ -1163,12 +1136,7 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
                 $confirmMailFailed = false;
                 $confirmMailFailed = $variables['confirmMailDeliveryFailed'];
                 $view->addTemplateDir($this->Path() . 'Views/common/');
-                if (Shopware()->Shop()->getTemplate()->getVersion() >= 3) {
-                    $view->addTemplateDir($this->Path() . 'Views/responsive/');
-                } else {
-                    $view->addTemplateDir($this->Path() . 'Views/');
-                    $view->extendsTemplate('frontend/checkout/wirecard_finish.tpl');
-                }
+                $view->addTemplateDir($this->Path() . 'Views/responsive/');
 
                 $view->pendingPayment = $args->getSubject()->Request()->get('pending');
                 $view->confirmMailFailed = $confirmMailFailed;
@@ -1289,15 +1257,11 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
         /** @var $cronManager Enlight_Components_Cron_Manager */
         $cronManager = Shopware()->Cron();
         //we have to do a workaround due to a bug in Shopware 5s Cron DBAL Adapter (http://jira.shopware.de/?ticket=SW-11682)
-        if ($this->assertMinimumVersion('5')) {
-            foreach ($cronManager->getAllJobs() AS $job) {
-                if ($job->getName() == $cronName) {
-                    return true;
-                }
+        foreach ($cronManager->getAllJobs() AS $job) {
+            if ($job->getName() == $cronName) {
+                return true;
             }
-            return false;
-        } else {
-            return $cronManager->getJobByName($cronName) ? true : false;
         }
+        return false;
     }
 }

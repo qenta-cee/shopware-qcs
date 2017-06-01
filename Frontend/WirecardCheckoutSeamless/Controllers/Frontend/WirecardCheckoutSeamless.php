@@ -83,12 +83,7 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
             )
         );
 
-        if (Shopware()->Shop()->getTemplate()->getVersion() >= 3) {
-            $this->View()->loadTemplate('responsive/frontend/wirecard_checkout_seamless/index.tpl');
-        }
-        else {
-            $this->View()->loadTemplate('frontend/checkout/wirecard_seamless.tpl');
-        }
+        $this->View()->loadTemplate('responsive/frontend/wirecard_checkout_seamless/index.tpl');
 
         $headerStyle = Shopware()->WirecardCheckoutSeamless()->Config()->WIRECARD_CONFIRM_HEADER_STYLE;
         $headerTemplate = $headerStyle == 1 ? 'frontend/index/index.tpl' : 'frontend/checkout/confirm.tpl';
@@ -534,12 +529,7 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
             ->where('uniqueId = ?', array(Shopware()->WirecardCheckoutSeamless()->wWirecardCheckoutSeamlessId));
         $result = Shopware()->Db()->fetchRow($sql);
 
-        if (Shopware()->Shop()->getTemplate()->getVersion() >= 3) {
-            $this->View()->loadTemplate('responsive/frontend/wirecard_checkout_seamless/return.tpl');
-        }
-        else {
-            $this->View()->loadTemplate('frontend/checkout/return.tpl');
-        }
+        $this->View()->loadTemplate('responsive/frontend/wirecard_checkout_seamless/return.tpl');
 
         $this->View()->redirectUrl = $this->Front()->Router()->assemble(Array('controller' => 'checkout', 'action' => 'confirm', 'sUseSSL' => true));
 
@@ -671,13 +661,7 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
         );
         Shopware()->WirecardCheckoutSeamless()->wWirecardCheckoutSeamlessId = $this->createTransactionUniqueId();
 
-        if (Shopware()->Shop()->getTemplate()->getVersion() >= 3) {
-            $this->View()->loadTemplate('responsive/frontend/wirecard_checkout_seamless/return.tpl');
-        }
-        else {
-            $this->View()->loadTemplate('frontend/checkout/return.tpl');
-        }
-
+        $this->View()->loadTemplate('responsive/frontend/wirecard_checkout_seamless/return.tpl');
         $this->View()->redirectUrl = $this->Front()->Router()->assemble(Array('controller' => 'checkout', 'action' => 'finish', 'sUseSSL' => true));
     }
 
@@ -755,13 +739,7 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
             die('Parameter not found');
         }
 
-        if (Shopware()->Shop()->getTemplate()->getVersion() >= 3) {
-            $this->View()->loadTemplate('responsive/frontend/wirecard_checkout_seamless/storeReturn.tpl');
-        }
-        else {
-            $this->View()->loadTemplate('frontend/checkout/dsStoreReturn.tpl');
-        }
-
+        $this->View()->loadTemplate('responsive/frontend/wirecard_checkout_seamless/storeReturn.tpl');
         $this->View()->wirecardResponse = (true == get_magic_quotes_gpc()) ? $post['response'] : addslashes(
             $post['response']
         );
