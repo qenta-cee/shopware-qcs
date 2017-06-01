@@ -135,8 +135,8 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Models_Seamless
             ->setConsumerData($this->getConsumerData($paymentType));
 
         if (Shopware()->WirecardCheckoutSeamless()->Config()->SEND_BASKET_DATA
-            || ($paymentType == WirecardCEE_QMore_PaymentType::INSTALLMENT && Shopware()->WirecardCheckoutSeamless()->Config()->INSTALLMENT_PROVIDER == 'payolution')
-            || ($paymentType == WirecardCEE_QMore_PaymentType::INVOICE && Shopware()->WirecardCheckoutSeamless()->Config()->INVOICE_PROVIDER == 'payolution')
+            || ($paymentType == WirecardCEE_QMore_PaymentType::INSTALLMENT)
+            || ($paymentType == WirecardCEE_QMore_PaymentType::INVOICE)
         ) {
             $init->setBasket($this->getShoppingBasket());
         }
