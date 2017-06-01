@@ -438,77 +438,89 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Models_Config
                 'value' => 'Your financial institution has not yet approved your payment.'
             ),
             array(
-                'namespace' => 'frontend/WirecardCheckoutSeamless/payment',
+                'namespace' => 'frontend/checkout/wirecard',
                 'locale' => '1',
                 'name' => 'WirecardCheckoutSeamlessPayolutionTermsHeader',
                 'value' => 'Payolution Konditionen'
             ),
             array(
-                'namespace' => 'frontend/WirecardCheckoutSeamless/payment',
+                'namespace' => 'frontend/checkout/wirecard',
                 'locale' => '2',
                 'name' => 'WirecardCheckoutSeamlessPayolutionTermsHeader',
                 'value' => 'Payolution Terms'
             ),
             array(
-                'namespace' => 'frontend/WirecardCheckoutSeamless/payment',
+                'namespace' => 'frontend/checkout/wirecard',
                 'locale' => '1',
                 'name' => 'WirecardCheckoutSeamlessPayolutionConsent1',
                 'value' => 'Mit der Übermittlung jener Daten an payolution, die für die Abwicklung von Zahlungen mit Kauf auf Rechnung und die Identitäts- und Bonitätsprüfung erforderlich sind, bin ich einverstanden. Meine '
             ),
             array(
-                'namespace' => 'frontend/WirecardCheckoutSeamless/payment',
+                'namespace' => 'frontend/checkout/wirecard',
                 'locale' => '2',
                 'name' => 'WirecardCheckoutSeamlessPayolutionConsent1',
                 'value' => 'I agree that the data which are necessary for the liquidation of purchase on account and which are used to complete the identy and credit check are transmitted to payolution. My '
             ),
             array(
-                'namespace' => 'frontend/WirecardCheckoutSeamless/payment',
+                'namespace' => 'frontend/checkout/wirecard',
                 'locale' => '1',
                 'name' => 'WirecardCheckoutSeamlessPayolutionConsent2',
                 'value' => ' kann ich jederzeit mit Wirkung für die Zukunft widerrufen.'
             ),
             array(
-                'namespace' => 'frontend/WirecardCheckoutSeamless/payment',
+                'namespace' => 'frontend/checkout/wirecard',
                 'locale' => '2',
                 'name' => 'WirecardCheckoutSeamlessPayolutionConsent2',
                 'value' => ' can be revoked at any time with effect for the future.'
             ),
             array(
-                'namespace' => 'frontend/WirecardCheckoutSeamless/payment',
+                'namespace' => 'frontend/checkout/wirecard',
                 'locale' => '1',
                 'name' => 'WirecardCheckoutSeamlessPayolutionLink',
                 'value' => 'Bewilligung'
             ),
             array(
-                'namespace' => 'frontend/WirecardCheckoutSeamless/payment',
+                'namespace' => 'frontend/checkout/wirecard',
                 'locale' => '2',
                 'name' => 'WirecardCheckoutSeamlessPayolutionLink',
                 'value' => 'consent'
             ),
             array(
-                'namespace' => 'frontend/WirecardCheckoutSeamless/payment',
+                'namespace' => 'frontend/checkout/wirecard',
                 'locale' => '1',
                 'name' => 'WirecardCheckoutSeamlessBirthday',
                 'value' => 'Geburtsdatum'
             ),
             array(
-                'namespace' => 'frontend/WirecardCheckoutSeamless/payment',
+                'namespace' => 'frontend/checkout/wirecard',
                 'locale' => '2',
                 'name' => 'WirecardCheckoutSeamlessBirthday',
                 'value' => 'Date of birth'
             ),
             array(
-                'namespace' => 'frontend/WirecardCheckoutSeamless/payment',
+                'namespace' => 'frontend/checkout/wirecard',
                 'locale' => '1',
                 'name' => 'WirecardCheckoutSeamlessBirthdayInformation',
                 'value' => 'Sie müssen mindestens 18 Jahre alt sein, um dieses Zahlungsmittel nutzen zu können.'
             ),
             array(
-                'namespace' => 'frontend/WirecardCheckoutSeamless/payment',
+                'namespace' => 'frontend/checkout/wirecard',
                 'locale' => '2',
                 'name' => 'WirecardCheckoutSeamlessBirthdayInformation',
                 'value' => 'You must be at least 18 years of age to use this payment method.'
             ),
+            array(
+                'namespace' => 'frontend/checkout/wirecard',
+                'locale' => '1',
+                'name' => 'WirecardCheckoutSeamlessPayolutionTermsAccept',
+                'value' => 'Bitte akzeptieren Sie die payolution Konditionen.'
+            ),
+            array(
+                'namespace' => 'frontend/checkout/wirecard',
+                'locale' => '2',
+                'name' => 'WirecardCheckoutSeamlessPayolutionTermsAccept',
+                'value' => 'Please accept the payolution terms.'
+            )
         );
     }
 

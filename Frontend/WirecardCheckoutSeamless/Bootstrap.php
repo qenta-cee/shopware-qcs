@@ -1142,7 +1142,8 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
                         $view->bMonth = $birthday[1];
                         $view->bDay   = $birthday[2];
 
-                        if (Shopware()->WirecardCheckoutSeamless()->Config()->INVOICE_PROVIDER) {
+                        if ((Shopware()->WirecardCheckoutSeamless()->Config()->INVOICE_PROVIDER == 'payolution' && $view->paymentTypeName == 'invoice') ||
+                            (Shopware()->WirecardCheckoutSeamless()->Config()->INSTALLMENT_PROVIDER == 'payolution' && $view->paymentTypeName == 'installment')) {
                             $view->payolutionTerms = Shopware()->WirecardCheckoutSeamless()->Config()->PAYOLUTION_TERMS;
                             if (Shopware()->WirecardCheckoutSeamless()->Config()->PAYOLUTION_TERMS) {
                                 $view->wcsPayolutionLink1 = '<a id="wcs-payolutionlink" href="https://payment.payolution.com/payolution-payment/infoport/dataprivacyconsent?mId=' . $this->getPayolutionLink() . '" target="_blank">';
@@ -1203,16 +1204,16 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
      */
     private function isActivePayment($paymentName)
     {
+        $shop = Shopware()->Container()->get('shop');
+        $current_currency = $shop->getCurrency()->getCurrency();
         switch ($paymentName) {
             case 'invoice':
             case 'wirecard_invoice':
                $currencies = Shopware()->WirecardCheckoutSeamless()->Config()->INVOICE_CURRENCY;
 
                 if (isset($currencies)) {
-                    $currentCurrency = Shopware()->Shop()->getCurrency()->getCurrency();
-
                     foreach ($currencies as $currency) {
-                        if ((string)$currency == (string)$currentCurrency) {
+                        if ((string)$currency == (string)$current_currency) {
                             return true;
                         }
                     }
@@ -1227,10 +1228,8 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
                $currencies = Shopware()->WirecardCheckoutSeamless()->Config()->INSTALLMENT_CURRENCY;
 
                 if (isset($currencies)) {
-                    $currentCurrency = Shopware()->Shop()->getCurrency()->getCurrency();
-
                     foreach ($currencies as $currency) {
-                        if ((string)$currency == (string)$currentCurrency) {
+                        if ((string)$currency == (string)$current_currency) {
                             return true;
                         }
                     }

@@ -250,12 +250,52 @@ var wirecardPayment = {
     iframeBreakout: function(redirectUrl)
     {
         parent.location.href = redirectUrl;
+    },
+
+    checkBirthday: function()
+    {
+        var m = $('#wcs-month').val();
+        var d = $('#wcs-day').val();
+
+        var dateStr = $('#wcs-year').val() + '-' + m + '-' + d;
+        var minAge = 18;
+
+        var birthdate = new Date(dateStr);
+        var year = birthdate.getFullYear();
+        var today = new Date();
+        var limit = new Date((today.getFullYear() - minAge), today.getMonth(), today.getDate());
+        if (birthdate < limit) {
+            $('#wcs-birthdate').val(dateStr);
+            $('#wcsPayolutionAging').hide();
+            if ($('#wcsInvoiceTermsChecked').is(':checked'))
+            {
+                $('#wcsPayolutionTermsAccept').hide();
+                $('.is--primary').attr('disabled', false);
+            }
+            else
+            {
+                $('#wcsPayolutionTermsAccept').show();
+            }
+        }
+        else {
+            $('#wcsPayolutionTermsAccept').hide();
+            $('#wcs-birthdate').val("");
+            if ($('#wcs-day').is(":visible") == true) {
+                $('#wcsPayolutionAging').show();
+                $('.is--primary').attr('disabled', true);
+            }
+        }
     }
 
 };
 
 
 $(document).ready(function() {
-    wirecardPayment.init();
+    var paymentType = $('#wd_payment_fields').find('[name="paymentType"]').val();
+    if ( paymentType == 'invoice' || paymentType == 'installment' ) {
+        wirecardPayment.checkBirthday();
+    } else {
+        wirecardPayment.init();
+    }
 });
 
