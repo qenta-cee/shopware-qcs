@@ -93,7 +93,7 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
 
         $copLink = '<a href="https://checkout.wirecard.com/cop/'
             . '?shopsystem=Shopware'
-            . '&shopversion=' . $shopversion
+            . '&shopversion=' . urlencode($shopversion)
             . '&integration=WCS'
             . '&pluginversion=' . $this->getVersion()
             . '" target="_blank">Wirecard Checkout Portal</a>';
