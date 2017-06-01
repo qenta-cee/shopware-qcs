@@ -48,7 +48,7 @@
     {if $wirecardAdditional eq 'financialInstitutions'}
         <div class="panel has--border is--rounded" id="wd_payment_fields">
             <div class="panel--title is--underline">
-                <img src="{link file={$paymentLogo}}"/>{$wirecardAdditionalHeadline}
+                {$wirecardAdditionalHeadline}
             </div>
 
             <div class="panel--body is--wide">
@@ -72,7 +72,7 @@
     {elseif $wirecardAdditional eq 'seamless'}
         <div class="panel has--border is--rounded" id="wd_payment_fields">
             <div class="panel--title is--underline">
-                <img src="{link file={$paymentLogo}}"/>{$wirecardAdditionalHeadline}
+                {$wirecardAdditionalHeadline}
             </div>
             {if 'ccard' eq $paymentTypeName || 'maestro' eq $paymentTypeName || 'ccard-moto' eq $paymentTypeName}
                 <div class="panel--body is--wide">
@@ -198,6 +198,42 @@
                     </div>
                     <div class="wirecard--clearer"></div>
                 </div>
+            {elseif 'elv' eq $paymentTypeName}
+                <div class="panel--body is--wide">
+                    <div class="wirecard--field">
+                        <input name="accountOwner" type="text" id="elv_accountOwner" autocomplete="off"
+                               placeholder="{s name='WirecardELVAccount'}Kontoinhaber{/s}" value=""
+                               class="required text"/>
+                    </div>
+
+                    <div class="wirecard--field">
+                        <input name="bankName" type="text" id="elv_bankName" autocomplete="off"
+                               placeholder="{s name='WirecardELVBank'}Bank{/s}" value=""
+                               class="required text"/>
+                    </div>
+
+                    <div class="wirecard--field">
+                        <select id="elv_bankCountry" name="bankCountry"
+                                paceholder="{s name='WirecardELVCountry'}Land{/s}">
+                            <option value="at">&Ouml;sterreich</option>
+                            <option value="de">Deutschland</option>
+                            <option value="nl">Niederlande</option>
+                        </select>
+                    </div>
+
+                    <div class="wirecard--field">
+                        <input name="bankNumber" type="text" id="elv_bankNumber" autocomplete="off"
+                               placeholder="{s name='WirecardELVBLZ'}Bankleitzahl{/s}" value=""
+                               class="required text"/>
+                    </div>
+
+                    <div class="wirecard--field">
+                        <input name="bankAccount" type="text" id="elv_bankAccount" autocomplete="off"
+                               placeholder="{s name='WirecardELVAccountNumber'}Kontonummer{/s}" value=""
+                               class="required text"/>
+                    </div>
+                    <div class="wirecard--clearer"></div>
+                </div>
             {elseif 'sepa-dd' eq $paymentTypeName}
                 <div class="panel--body is--wide">
                     <div class="wirecard--field">
@@ -250,72 +286,6 @@
                                class="required text"/>
                     </div>
                     <div class="wirecard--clearer"></div>
-                </div>
-            {elseif 'invoice' eq $paymentTypeName || 'installment' eq $paymentTypeName}
-                <div class="panel--body is--wide">
-                    <div class="payment--selection-label is--underline" name="birthdate">{s name="WirecardCheckoutSeamlessBirthday"}Geburtsdatum{/s}</div>
-                    <div class="wirecard--field">
-                            <input type="hidden" name="birthdate" id="wcs-birthdate" value="" />
-                    </div>
-                    <div class="wirecard--field">
-                        <select name="days" id="wcs-day" onchange="wirecardPayment.checkBirthday()" required>
-                            <option value="0">-</option>
-                            {foreach from=$days item=v}
-                                <option value="{$v}" {if ($bDay == $v)}selected="selected"{/if}>{$v}</option>
-                            {/foreach}
-                        </select>
-                    </div>
-                    <div class="wirecard--field">
-                        <select name="months" id="wcs-month" onchange="wirecardPayment.checkBirthday()" required>
-                            <option value="0">-</option>
-                            {foreach from=$months item=v}
-                                <option value="{$v}" {if ($bMonth == $v)}selected="selected"{/if}>{$v}</option>
-                            {/foreach}
-                        </select>
-                    </div>
-                    <div class="wirecard--field">
-                        <select name="years" id="wcs-year"  onchange="wirecardPayment.checkBirthday()" required>
-                            <option value="0">-</option>
-                            {foreach from=$years item=v}
-                                <option value="{$v}" {if ($bYear == $v)}selected="selected"{/if}>{$v}</option>
-                            {/foreach}
-                        </select>
-                    </div>
-                    <div class="clear" style="content:''; clear:both; float:none;"></div>
-                    <span id="wcsPayolutionAging" style="color:red;font-weight:bold;display:none;">
-		                    {s name="WirecardCheckoutSeamlessBirthdayInformation"}Sie müssen mindestens 18 Jahre alt sein, um dieses Zahlungsmittel nutzen zu können.{/s}
-		                </span>
-                    {if $payolutionTerms}
-                        <div class="wirecard--clearer"></div>
-                        <div class="payment--selection-label is--underline">
-                            {s name="WirecardCheckoutSeamlessPayolutionTermsHeader"}Payolution Konditionen{/s}
-                        </div>
-                            <ul class="list--checkbox list--unstyled">
-                                <li class="block-group row--tos">
-					            <span class="column--checkbox">
-						            <input type="checkbox" required="required" aria-required="true" id="wcsInvoiceTermsChecked" onchange="wirecardPayment.checkBirthday()" name="wcsInvoiceTermsChecked">
-					            </span>
-                                <span class="column--checkbox">
-						            <label for="wcsInvoiceTermsChecked">{if $wcsPayolutionLink1}
-                                        {s name="WirecardCheckoutSeamlessPayolutionConsent1"}Mit der Übermittlung jener Daten an payolution, die für die Abwicklung von Zahlungen mit Kauf auf Rechnung und die Identitäts- und Bonitätsprüfung erforderlich sind, bin ich einverstanden. Meine {/s}
-                                        {$wcsPayolutionLink1}
-                                        {s name="WirecardCheckoutSeamlessPayolutionLink"}Bewilligung{/s}
-                                        {$wcsPayolutionLink2}
-                                        {s name="WirecardCheckoutSeamlessPayolutionConsent2"} kann ich jederzeit mit Wirkung für die Zukunft widerrufen.{/s}
-                                    {else}
-                                        {s name="WirecardCheckoutSeamlessPayolutionConsent1"}Mit der Übermittlung jener Daten an payolution, die für die Abwicklung von Zahlungen mit Kauf auf Rechnung und die Identitäts- und Bonitätsprüfung erforderlich sind, bin ich einverstanden. Meine {/s}
-                                        {s name="WirecardCheckoutSeamlessPayolutionLink"}Bewilligung{/s}
-                                        {s name="WirecardCheckoutSeamlessPayolutionConsent2"} kann ich jederzeit mit Wirkung für die Zukunft widerrufen.{/s}
-                                    {/if}
-						            </label>
-					            </span>
-                            </li>
-                            </ul>
-                        <span id="wcsPayolutionTermsAccept" style="color:red;font-weight:bold;display:none;">
-                            {s name="WirecardCheckoutSeamlessPayolutionTermsAccept"}Bitte akzeptieren Sie die payolution Konditionen.{/s}
-                        </span>
-                        <div class="clear" style="content:''; clear:both; float:none;"></div>
-                    {/if}
                 </div>
             {/if}
             <input type="hidden" name="paymentType" value="{$paymentTypeName}">
