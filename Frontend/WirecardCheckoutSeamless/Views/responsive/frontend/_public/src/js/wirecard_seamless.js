@@ -274,6 +274,7 @@ var wirecardPayment = {
             }
             else
             {
+                $('.is--primary').attr('disabled', true);
                 $('#wcsPayolutionTermsAccept').show();
             }
         }
