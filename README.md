@@ -1,7 +1,7 @@
 # Wirecard Checkout Seamless plugin for Shopware
 
 [![License](https://img.shields.io/badge/license-GPLv2-blue.svg)](https://raw.githubusercontent.com/wirecard/Shopware-WCS/master/LICENSE)
-[![Shopware](https://img.shields.io/badge/Shopware-v5.2.24-green.svg)](https://www.shopware.com/)
+[![Shopware](https://img.shields.io/badge/Shopware-v5.2.21-green.svg)](https://www.shopware.com/)
 [![PHP v7](https://img.shields.io/badge/php-v7-yellow.svg)](http://www.php.net)
 [![PHP v5.6](https://img.shields.io/badge/php-v5.6-yellow.svg)](http://www.php.net)
 
@@ -15,7 +15,6 @@ Our [Online Guides](https://guides.wirecard.at/shop_plugins:shopware_wcs:start "
 Be careful after installing/updating the plugin from the GitHub master branch. Your Shopware installation will notify you about an upgrade at the [Shopware store](http://store.shopware.com/wdcee00444/wirecard-checkout-seamless.html). **This upgrade will revert the plugin to the latest version on the Shopware store.**
 
 **For Shopware versions higher than 5.2.8 our plugin is incompatible with the _statistics plugin_ from Shopware AG.**
-**For Shopware versions 5.2.22 - 5.2.24 there can be problems with the shopversion from Shopware AG.**
 
 
 ## Wirecard Checkout Seamless
