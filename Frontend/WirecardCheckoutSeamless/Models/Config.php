@@ -477,7 +477,7 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Models_Config
                 'namespace' => 'frontend/checkout/wirecard',
                 'locale' => '1',
                 'name' => 'WirecardCheckoutSeamlessPayolutionLink',
-                'value' => 'Bewilligung'
+                'value' => 'Einwilligung'
             ),
             array(
                 'namespace' => 'frontend/checkout/wirecard',
