@@ -64,7 +64,7 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
      */
     public function getVersion()
     {
-        return '1.10.0';
+        return '1.10.1';
     }
 
     /**
@@ -1177,7 +1177,7 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
         switch ($paymentName) {
             case 'invoice':
             case 'wirecard_invoice':
-               $currencies = Shopware()->WirecardCheckoutSeamless()->Config()->INVOICE_CURRENCY;
+                $currencies = Shopware()->WirecardCheckoutSeamless()->Config()->INVOICE_CURRENCY;
 
                 if (isset($currencies)) {
                     foreach ($currencies as $currency) {
@@ -1185,15 +1185,14 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
                             return true;
                         }
                     }
-                    if ($currencies->count()) {
+                    if(count($currencies)){
                         return false;
                     }
                 }
-
                 return true;
             case 'installment':
             case 'wirecard_installment':
-               $currencies = Shopware()->WirecardCheckoutSeamless()->Config()->INSTALLMENT_CURRENCY;
+                $currencies = Shopware()->WirecardCheckoutSeamless()->Config()->INSTALLMENT_CURRENCY;
 
                 if (isset($currencies)) {
                     foreach ($currencies as $currency) {
@@ -1201,7 +1200,7 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
                             return true;
                         }
                     }
-                    if ($currencies->count()) {
+                    if(count($currencies)){
                         return false;
                     }
                 }
