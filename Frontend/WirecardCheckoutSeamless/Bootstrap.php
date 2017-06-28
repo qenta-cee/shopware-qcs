@@ -253,14 +253,6 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
         $form = $this->Form();
         $i = 0;
 
-        $repository = Shopware()->Models()->getRepository('Shopware\Models\Shop\Shop');
-        $shop = $repository->findOneBy(['id' => 1]);
-        $currencies = array();
-        foreach ($shop->getCurrencies() as $elem) {
-            $currency = array($elem->getCurrency(), $elem->getName());
-            array_push($currencies, $currency);
-        }
-
         $form->setElement(
             'text',
             'CUSTOMERID',
@@ -570,7 +562,8 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
             array(
                 'label' => 'Akzeptierte Währungen für Kauf auf Rechnung',
                 'value' => '',
-                'store' => $currencies,
+                'store' => 'base.Currency',
+                'valueField' => 'currency',
                 'multiSelect' => true,
                 'description' => 'Bitte wählen Sie mindestens eine gültige Währung für Kauf auf Rechnung.',
                 'scope' => \Shopware\Models\Config\Element::SCOPE_SHOP,
@@ -601,7 +594,8 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
             array(
                 'label' => 'Akzeptierte Währungen für Kauf auf Raten',
                 'value' => '',
-                'store' => $currencies,
+                'store' => 'base.Currency',
+                'valueField' => 'currency',
                 'multiSelect' => true,
                 'description' => 'Bitte wählen Sie mindestens eine gültige Währung für Kauf auf Raten.',
                 'scope' => \Shopware\Models\Config\Element::SCOPE_SHOP,
