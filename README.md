@@ -14,7 +14,6 @@ Our [Online Guides](https://guides.wirecard.at/shop_plugins:shopware_wcs:start "
 
 Be careful after installing/updating the plugin from the GitHub master branch. Your Shopware installation will notify you about an upgrade at the [Shopware store](http://store.shopware.com/wdcee00444/wirecard-checkout-seamless.html). **This upgrade will revert the plugin to the latest version on the Shopware store.**
 
-**For Shopware versions higher than 5.2.8 our plugin is incompatible with the _statistics plugin_ from Shopware AG.**
 **For Shopware versions 5.2.22 - 5.2.24 there can be problems with the shopversion from Shopware AG.**
 
 

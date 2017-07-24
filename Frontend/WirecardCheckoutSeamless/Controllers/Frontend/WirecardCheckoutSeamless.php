@@ -235,8 +235,7 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
 
             if (!$return->validate()) {
                 Shopware()->Pluginlogger()->info('WirecardCheckoutSeamless: '. __METHOD__ . ':Validation error: invalid response');
-                print \WirecardCEE_QMore_ReturnFactory::generateConfirmResponseString('Validation error: invalid response');
-                return;
+                die(\WirecardCEE_QMore_ReturnFactory::generateConfirmResponseString('Validation error: invalid response'));
             }
 
             $sql = Shopware()->Db()->select()
@@ -249,8 +248,7 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
             $sessionData = unserialize(base64_decode($data['session']));
             if(!is_array($sessionData)) {
                 Shopware()->Pluginlogger()->info('WirecardCheckoutSeamless: '. __METHOD__ . ':Validation error: invalid session data');
-                print \WirecardCEE_QMore_ReturnFactory::generateConfirmResponseString('Validation error: invalid session data');
-                return;
+                die(\WirecardCEE_QMore_ReturnFactory::generateConfirmResponseString('Validation error: invalid session data'));
             }
 
             // restore session
@@ -508,11 +506,10 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
 
         } catch (Exception $e) {
             Shopware()->Pluginlogger()->info('WirecardCheckoutSeamless: '.__METHOD__ . ':' . $e->getMessage());
-            print WirecardCEE_QMore_ReturnFactory::generateConfirmResponseString(htmlspecialchars($e->getMessage()));
-            return;
+            die(WirecardCEE_QMore_ReturnFactory::generateConfirmResponseString(htmlspecialchars($e->getMessage())));
         }
 
-        print WirecardCEE_QMore_ReturnFactory::generateConfirmResponseString($message);
+        die(WirecardCEE_QMore_ReturnFactory::generateConfirmResponseString($message));
     }
 
     /**
