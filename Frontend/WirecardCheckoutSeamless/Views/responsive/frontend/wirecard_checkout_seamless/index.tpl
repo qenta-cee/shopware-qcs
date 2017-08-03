@@ -9,12 +9,9 @@
         var wirecardCheckoutConfirmUrl = {$checkoutConfirmUrl|json_encode};
     </script>
     <script type="text/javascript">
-        (function ($) {
-            $(document).ready(function () {
-                wirecardPayment.saveOrder();
-                $.loadingIndicator.open();
-            });
-        })(jQuery);
+        window.onload = function() {
+            wirecardPayment.saveOrder();
+        };
     </script>
 {/block}
 
