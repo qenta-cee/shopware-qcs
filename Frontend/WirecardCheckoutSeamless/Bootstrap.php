@@ -91,14 +91,23 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
     		$shopversion = '>5.2.21';
 	    }
 
-        $copLink = '<a href="https://checkout.wirecard.com/cop/'
-            . '?shopsystem=Shopware'
-            . '&shopversion=' . urlencode($shopversion)
-            . '&integration=WCS'
-            . '&pluginversion=' . $this->getVersion()
-            . '" target="_blank">Wirecard Checkout Portal</a>';
+        $language = Shopware()->Locale()->getLanguage();
 
-
+        switch ($language) {
+            case 'en':
+                $copLink = '<a href="https://checkoutportal.com/gb/shopware/" target="_blank">Wirecard Checkout Portal</a>';
+                break;
+            case 'it':
+                $copLink = '<a href="https://checkoutportal.com/it/shopware/" target="_blank">Wirecard Checkout Portal</a>';
+                break;
+            case 'nl':
+                $copLink = '<a href="https://checkoutportal.com/nl/shopware/" target="_blank">Wirecard Checkout Portal</a>';
+                break;
+            case 'de':
+            default:
+                $copLink = '<a href="https://checkoutportal.com/de/shopware/" target="_blank">Wirecard Checkout Portal</a>';
+                break;
+        }
 
         $image = dirname(__FILE__) . '/wirecard-logo.png';
         $imageData = base64_encode(file_get_contents($image));
