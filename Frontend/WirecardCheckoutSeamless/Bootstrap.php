@@ -64,7 +64,7 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
      */
     public function getVersion()
     {
-        return '1.10.3';
+        return '1.10.4';
     }
 
     /**
@@ -848,7 +848,7 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
                     'active' => (isset($pm['active'])) ? (int)$pm['active'] : 0,
                     'position' => self::STARTPOSITION + $pos,
                     'pluginID' => $this->getId(),
-                    'additionalDescription' => ''
+                    'additionalDescription' => $pm['additionalDescription']
                 );
                 if (isset($pm['template']) && !is_null($pm['template'])) {
                     $payment['template'] = $pm['template'];
@@ -857,6 +857,15 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
             } else {
                 if (isset($pm['template']) && !is_null($pm['template'])) {
                     $oPayment->setTemplate($pm['template']);
+                }
+                if (isset($pm['additionalDescription']) && $pm['additionalDescription'] != '') {
+                    $additional = $oPayment->getAdditionalDescription();
+                    if ( $additional === '' ) {
+                        if ($oPayment->getTemplate() == 'wirecard_brands.tpl') {
+                            $oPayment->setTemplate(null);
+                        }
+                        $oPayment->setAdditionalDescription($pm['additionalDescription']);
+                    }
                 }
             }
 

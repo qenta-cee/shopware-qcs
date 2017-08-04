@@ -37,7 +37,7 @@
 {block name="frontend_index_content"}
 <div id="payment" class="grid_20" style="margin:10px 0 10px 20px;width:959px;">
     <h2 class="headingbox_dark largesize">{s name="WirecardCheckoutSeamlessPaymentHeader"}Bitte f&uuml;hren Sie nun die Zahlung durch:{/s}</h2>
-    <div id="payment_loader" class="ajaxSlider" style="height:500px;border:0 none;display:none">
+    <div id="payment_loader" class="ajaxSlider" style="height:780px;border:0 none;display:none">
         <div class="loader" style="width:80px;margin-left:-50px;">{s name="WirecardCheckoutSeamlessPaymentInfoWait"}Bitte warten...{/s}</div>
         <div id="innerpayment_loader"></div>
     </div>

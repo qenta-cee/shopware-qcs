@@ -30,11 +30,9 @@
 
 {block name="frontend_index_header_javascript_jquery_lib" append}
     <script type="text/javascript">
-        (function($) {
-            $(document).ready(function() {
-                wirecardPayment.iframeBreakout('{$redirectUrl}');
-            });
-        })(jQuery);
+        window.onload = function() {
+            wirecardPayment.iframeBreakout('{$redirectUrl}');
+        };
     </script>
 {/block}
 
