@@ -78,6 +78,11 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Models_Seamless
 
         $init->setConfirmUrl($confirmUrl);
         $init->setOrderReference(Shopware()->WirecardCheckoutSeamless()->wWirecardCheckoutSeamlessId);
+        if(Shopware()->Session()->offsetGet('wcsConsumerDeviceId') != null) {
+            $init->consumerDeviceId = Shopware()->Session()->offsetGet('wcsConsumerDeviceId');
+            //default set to null, but no effect
+            Shopware()->Session()->offsetSet('wcsConsumerDeviceId', null);
+        }
 
         foreach ($cfg->wirecardCheckoutSeamlessParameters() as $action => $value) {
             if (!is_null($value)) {

@@ -14,6 +14,9 @@
             oldShopVersion = {$oldShopVersion|json_encode};
         }
     </script>
+    {if isset($ratePayScript)}
+        {$ratePayScript}
+    {/if}
 {/block}
 
 
