@@ -43,6 +43,12 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
      */
     public function indexAction()
     {
+        $basket = Shopware()->Modules()->Basket();
+        $basketQuantities = $basket->sCheckBasketQuantities();
+        if (!empty($basketQuantities['hideBasket'])) {
+            return $this->redirect(array('controller' => 'checkout'));
+        }
+
         // Create new unique Id for the customer
         Shopware()->WirecardCheckoutSeamless()->wWirecardCheckoutSeamlessId = $this->createTransactionUniqueId();
 
