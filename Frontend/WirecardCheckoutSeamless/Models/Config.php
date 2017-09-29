@@ -592,10 +592,10 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Models_Config
         );
         $pm[] = array(
             'name' => 'sofortueberweisung',
-            'description' => 'SOFORT &Uuml;berweisung',
+            'description' => 'Sofort.',
             'additionalDescription' => '<img src="{link file=\'frontend/_public/images/wirecard_sofortueberweisung.png\'}" class="wirecard-brand"/>&nbsp;',
             'call' => WirecardCEE_QMore_PaymentType::SOFORTUEBERWEISUNG,
-            'translation' => Array('description' => 'Wirecard SOFORT banking', 'additionalDescription' => '')
+            'translation' => Array('description' => 'Wirecard Online bank transfer.', 'additionalDescription' => '')
         );
         $pm[] = array(
             'name' => 'bancontact_mistercash',
