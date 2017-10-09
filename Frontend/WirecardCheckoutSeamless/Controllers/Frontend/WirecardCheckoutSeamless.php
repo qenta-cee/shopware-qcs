@@ -250,7 +250,6 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
 
                 foreach ($reservedItems as $articleId => $quantity) {
                     $query = "UPDATE s_articles_details SET instock = instock + $quantity WHERE articleID = $articleId LIMIT 1";
-                    Shopware()->Pluginlogger()->error($query);
                     Shopware()->Db()->query($query);
                 }
             }
@@ -306,9 +305,7 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
             );
 
             $message = null;
-
-
-
+            
             switch ($return->getPaymentState()) {
 
                 case WirecardCEE_QMore_ReturnFactory::STATE_SUCCESS:
