@@ -49,6 +49,21 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
             return $this->redirect(array('controller' => 'checkout'));
         }
 
+        $reservedItems = array();
+
+        $basketContent = Shopware()->Session()->sOrderVariables['sBasket'];
+        foreach ($basketContent['content'] as $cart_item_key => $cart_item) {
+            $articleId = (int)$cart_item['articleID'];
+            $quantity = (int)$cart_item['quantity'];
+
+            $query = "update s_articles_details set instock = instock - $quantity where articleID = $articleId LIMIT 1";
+
+            Shopware()->Db()->query($query);
+            $reservedItems[$articleId] = $quantity;
+        }
+
+        Shopware()->Session()->offsetSet('WirecardWCSReservedBasketItems', $reservedItems);
+
         // Create new unique Id for the customer
         Shopware()->WirecardCheckoutSeamless()->wWirecardCheckoutSeamlessId = $this->createTransactionUniqueId();
 
@@ -230,6 +245,15 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
                 Shopware()->WirecardCheckoutSeamless()->Config()->SECRET
             );
 
+            if( strlen($this->Request()->getParam('reservedItems'))) {
+                $reservedItems = unserialize(base64_decode($this->Request()->getParam('reservedItems')));
+
+                foreach ($reservedItems as $articleId => $quantity) {
+                    $query = "UPDATE s_articles_details SET instock = instock + $quantity WHERE articleID = $articleId LIMIT 1";
+                    Shopware()->Db()->query($query);
+                }
+            }
+
             $paymentUniqueId = $this->Request()->getParam('wWirecardCheckoutSeamlessId');
             if (Shopware()->WirecardCheckoutSeamless()->Config()->setAsTransactionID() == 'gatewayReferenceNumber') {
                 $sTransactionIdField = 'gatewayReferenceNumber';
@@ -281,7 +305,7 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
             );
 
             $message = null;
-
+            
             switch ($return->getPaymentState()) {
 
                 case WirecardCEE_QMore_ReturnFactory::STATE_SUCCESS:

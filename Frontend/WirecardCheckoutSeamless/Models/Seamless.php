@@ -139,6 +139,13 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Models_Seamless
             ->createConsumerMerchantCrmId($userData['additional']['user']['email'])
             ->setConsumerData($this->getConsumerData($paymentType));
 
+        $reservedItems = Shopware()->Session()->offsetGet('WirecardWCSReservedBasketItems');
+
+        if (is_array($reservedItems) && count($reservedItems) > 0) {
+            $init->reservedItems = base64_encode(serialize($reservedItems));
+            Shopware()->Session()->offsetUnset('WirecardWCSReservedBasketItems');
+        }
+
         if (Shopware()->WirecardCheckoutSeamless()->Config()->SEND_BASKET_DATA
             || ($paymentType == WirecardCEE_QMore_PaymentType::INSTALLMENT && Shopware()->WirecardCheckoutSeamless()->Config()->INSTALLMENT_PROVIDER != 'payolution')
             || ($paymentType == WirecardCEE_QMore_PaymentType::INVOICE && Shopware()->WirecardCheckoutSeamless()->Config()->INVOICE_PROVIDER != 'payolution')
