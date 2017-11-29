@@ -161,7 +161,6 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
             'failure' => $returnUrl,
             'confirm' => $confirmUrl
         );
-        Shopware()->Pluginlogger()->info('WirecardCheckoutSeamless: '. __METHOD__ . ':' . print_r($paymentType, 1));
         if(strlen($_SESSION["wcs_redirect_url"])) {
             if ($paymentType == WirecardCEE_Stdlib_PaymentTypeAbstract::SOFORTUEBERWEISUNG) {
                 die(json_encode(array('redirectUrl' => $_SESSION["wcs_redirect_url"], 'useIframe' => false)));
