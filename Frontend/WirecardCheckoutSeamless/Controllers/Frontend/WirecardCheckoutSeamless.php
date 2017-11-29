@@ -161,9 +161,14 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
             'failure' => $returnUrl,
             'confirm' => $confirmUrl
         );
-
-        if(strlen($_SESSION["wcs_redirect_url"]))
-            die(json_encode(array('redirectUrl' => $_SESSION["wcs_redirect_url"], 'useIframe' => true)));
+        Shopware()->Pluginlogger()->info('WirecardCheckoutSeamless: '. __METHOD__ . ':' . print_r($paymentType, 1));
+        if(strlen($_SESSION["wcs_redirect_url"])) {
+            if ($paymentType == WirecardCEE_Stdlib_PaymentTypeAbstract::SOFORTUEBERWEISUNG) {
+                die(json_encode(array('redirectUrl' => $_SESSION["wcs_redirect_url"], 'useIframe' => false)));
+            } else {
+                die(json_encode(array('redirectUrl' => $_SESSION["wcs_redirect_url"], 'useIframe' => true)));
+            }
+        }
 
         // Set customer data like name, address
         $response = Shopware()->WirecardCheckoutSeamless()->Seamless()->getResponse(
@@ -198,7 +203,11 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
             die($dataFail);
         }
         $_SESSION["wcs_redirect_url"] = $response->getRedirectUrl();
-        die(json_encode(array('redirectUrl' => $response->getRedirectUrl(), 'useIframe' => true)));
+        if ($paymentType == WirecardCEE_Stdlib_PaymentTypeAbstract::SOFORTUEBERWEISUNG) {
+            die(json_encode(array('redirectUrl' => $response->getRedirectUrl(), 'useIframe' => false)));
+        } else {
+            die(json_encode(array('redirectUrl' => $response->getRedirectUrl(), 'useIframe' => true)));
+        }
     }
 
     public function datastorageReadAction()
