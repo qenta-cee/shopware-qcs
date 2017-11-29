@@ -161,9 +161,13 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
             'failure' => $returnUrl,
             'confirm' => $confirmUrl
         );
-
-        if(strlen($_SESSION["wcs_redirect_url"]))
-            die(json_encode(array('redirectUrl' => $_SESSION["wcs_redirect_url"], 'useIframe' => true)));
+        if(strlen($_SESSION["wcs_redirect_url"])) {
+            if ($paymentType == WirecardCEE_Stdlib_PaymentTypeAbstract::SOFORTUEBERWEISUNG) {
+                die(json_encode(array('redirectUrl' => $_SESSION["wcs_redirect_url"], 'useIframe' => false)));
+            } else {
+                die(json_encode(array('redirectUrl' => $_SESSION["wcs_redirect_url"], 'useIframe' => true)));
+            }
+        }
 
         // Set customer data like name, address
         $response = Shopware()->WirecardCheckoutSeamless()->Seamless()->getResponse(
@@ -198,7 +202,11 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
             die($dataFail);
         }
         $_SESSION["wcs_redirect_url"] = $response->getRedirectUrl();
-        die(json_encode(array('redirectUrl' => $response->getRedirectUrl(), 'useIframe' => true)));
+        if ($paymentType == WirecardCEE_Stdlib_PaymentTypeAbstract::SOFORTUEBERWEISUNG) {
+            die(json_encode(array('redirectUrl' => $response->getRedirectUrl(), 'useIframe' => false)));
+        } else {
+            die(json_encode(array('redirectUrl' => $response->getRedirectUrl(), 'useIframe' => true)));
+        }
     }
 
     public function datastorageReadAction()
@@ -236,16 +244,14 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
 
             Shopware()->Plugins()->Controller()->ViewRenderer()->setNoRender();
 
-            $post = $this->processHTTPRequest();
-
-            Shopware()->Pluginlogger()->info('WirecardCheckoutSeamless: '. __METHOD__ . ':' . print_r($post, 1));
+            Shopware()->Pluginlogger()->info('WirecardCheckoutSeamless: '. __METHOD__ . ':' . print_r($_POST, 1));
 
             $return = WirecardCEE_QMore_ReturnFactory::getInstance(
-                $post,
+                $_POST,
                 Shopware()->WirecardCheckoutSeamless()->Config()->SECRET
             );
 
-            if( strlen($this->Request()->getParam('reservedItems'))) {
+            if (strlen($this->Request()->getParam('reservedItems'))) {
                 $reservedItems = unserialize(base64_decode($this->Request()->getParam('reservedItems')));
 
                 foreach ($reservedItems as $articleId => $quantity) {
@@ -526,7 +532,7 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
                 default:
             }
 
-            $update['data'] = serialize($post);
+            $update['data'] = serialize($_POST);
 
             Shopware()->Db()->update(
                 'wirecard_checkout_seamless',
@@ -693,17 +699,6 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
     }
 
     /**
-     * Returns array with post parameters
-     * fix for Shopware input filter
-     */
-    public static function processHTTPRequest()
-    {
-        $get_string = file_get_contents('php://input');
-        parse_str($get_string, $post);
-        return $post;
-    }
-
-    /**
      * Save return data
      *
      * @param WirecardCEE_QMore_Return_Success $return
@@ -760,15 +755,14 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
     public function dsStoreReturnAction()
     {
         Shopware()->Pluginlogger()->info('WirecardCheckoutSeamless: Called: dsStoreReturnAction');
-        $post = $this->processHTTPRequest();
-        if (empty($post['response'])) {
+        if (empty($_POST['response'])) {
             Shopware()->Pluginlogger()->error('WirecardCheckoutSeamless: dsStoreReturnAction: Parameter not found');
             die('Parameter not found');
         }
 
         $this->View()->loadTemplate('responsive/frontend/wirecard_checkout_seamless/storeReturn.tpl');
-        $this->View()->wirecardResponse = (true == get_magic_quotes_gpc()) ? $post['response'] : addslashes(
-            $post['response']
+        $this->View()->wirecardResponse = (true == get_magic_quotes_gpc()) ? $_POST['response'] : addslashes(
+            $_POST['response']
         );
         Shopware()->Pluginlogger()->info(
             'WirecardCheckoutSeamless: Response: ' . print_r($this->View()->wirecardResponse, 1)
