@@ -244,10 +244,12 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
 
             Shopware()->Plugins()->Controller()->ViewRenderer()->setNoRender();
 
-            Shopware()->Pluginlogger()->info('WirecardCheckoutSeamless: '. __METHOD__ . ':' . print_r($_POST, 1));
+            $post = $this->Request()->getPost();
+
+            Shopware()->Pluginlogger()->info('WirecardCheckoutSeamless: '. __METHOD__ . ':' . print_r($post, 1));
 
             $return = WirecardCEE_QMore_ReturnFactory::getInstance(
-                $_POST,
+                $post,
                 Shopware()->WirecardCheckoutSeamless()->Config()->SECRET
             );
 
@@ -532,7 +534,7 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
                 default:
             }
 
-            $update['data'] = serialize($_POST);
+            $update['data'] = serialize($post);
 
             Shopware()->Db()->update(
                 'wirecard_checkout_seamless',
@@ -754,15 +756,17 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
      */
     public function dsStoreReturnAction()
     {
+        $post = $this->Request()->getPost();
+
         Shopware()->Pluginlogger()->info('WirecardCheckoutSeamless: Called: dsStoreReturnAction');
-        if (empty($_POST['response'])) {
+        if (empty($post['response'])) {
             Shopware()->Pluginlogger()->error('WirecardCheckoutSeamless: dsStoreReturnAction: Parameter not found');
             die('Parameter not found');
         }
 
         $this->View()->loadTemplate('responsive/frontend/wirecard_checkout_seamless/storeReturn.tpl');
-        $this->View()->wirecardResponse = (true == get_magic_quotes_gpc()) ? $_POST['response'] : addslashes(
-            $_POST['response']
+        $this->View()->wirecardResponse = (true == get_magic_quotes_gpc()) ? $post['response'] : addslashes(
+            $post['response']
         );
         Shopware()->Pluginlogger()->info(
             'WirecardCheckoutSeamless: Response: ' . print_r($this->View()->wirecardResponse, 1)
