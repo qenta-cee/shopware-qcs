@@ -64,7 +64,7 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
      */
     public function getVersion()
     {
-        return '1.10.10';
+        return '1.10.11';
     }
 
     /**
@@ -612,6 +612,19 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
                 'order' => ++$i
             )
         );
+
+        $form->setElement(
+            'checkbox',
+            'BASKET_RESERVE',
+            array(
+                'label' => 'Warenkorb Reservierung',
+                'value' => 0,
+                'description' => 'Artikel während des Zahlungsprozesses reservieren. Lagerbestand wird reduziert.',
+                'scope' => \Shopware\Models\Config\Element::SCOPE_SHOP,
+                'required' => false,
+                'order' => ++$i
+            )
+        );
     }
 
     /**
@@ -719,6 +732,10 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
                 'ENABLE_DUPLICATE_REQUEST_CHECK' => Array(
                     'label' => 'Check for duplicate requests',
                     'description' => 'Checking duplicate requests made by your consumer.'
+                ),
+                'BASKET_RESERVE' => Array(
+                    'label' => 'Basket items reservation',
+                    'description' => 'Reserve basket items during checkout process. Items are reduced from stock.'
                 )
             )
         );
