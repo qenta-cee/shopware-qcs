@@ -1,7 +1,8 @@
 {namespace name='frontend/checkout/wirecard'}
 {extends file="parent:frontend/checkout/confirm.tpl"}
 
-{block name="frontend_index_header_javascript" append}
+{block name="frontend_index_header_javascript"}
+{$smarty.block.parent}
     {if $wirecardAdditional eq 'seamless'}
         <script type='text/javascript' src="{$wirecardJavascript}"></script>
     {/if}
@@ -20,7 +21,8 @@
 {/block}
 
 
-{block name="frontend_index_content_top" append}
+{block name="frontend_index_content_top" }
+{$smarty.block.parent}
     <div class="grid_20">
 
         <div id="errorContainer" style="display:none;">
@@ -47,7 +49,7 @@
     </div>
 {/block}
 
-{block name='frontend_checkout_confirm_product_table' prepend}
+{block name='frontend_checkout_confirm_product_table'}
     {if $wirecardAdditional eq 'financialInstitutions'}
         <div class="panel has--border is--rounded" id="wd_payment_fields">
             <div class="panel--title is--underline">
@@ -328,5 +330,5 @@
         <input type="hidden" name="paymentType" value="{$paymentTypeName}">
         </span>
     {/if}
-
+{$smarty.block.parent}
 {/block}
