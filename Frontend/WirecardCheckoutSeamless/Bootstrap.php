@@ -1044,7 +1044,7 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
                 }
                 $paymentName = Shopware()->WirecardCheckoutSeamless()->getPaymentShortName();
                 if ((Shopware()->WirecardCheckoutSeamless()->Config()->INVOICE_PROVIDER == 'ratepay' && $paymentName == 'invoice') ||
-                    Shopware()->WirecardCheckoutSeamless()->Config()->INSTALLMENT_PROVIDER == 'ratepay' && $paymentName == 'installment') {
+                    (Shopware()->WirecardCheckoutSeamless()->Config()->INSTALLMENT_PROVIDER == 'ratepay' && $paymentName == 'installment')) {
                     $ratepay = '<script language="JavaScript">var di = {t:"' . $consumerDeviceId . '",v:"WDWL",l:"Checkout"};</script>';
                     $ratepay .= '<script type="text/javascript" src="//d.ratepay.com/' . $consumerDeviceId . '/di.js"></script>';
                     $ratepay .= '<noscript><link rel="stylesheet" type="text/css" href="//d.ratepay.com/di.css?t=' . $consumerDeviceId . '&v=WDWL&l=Checkout"></noscript>';
