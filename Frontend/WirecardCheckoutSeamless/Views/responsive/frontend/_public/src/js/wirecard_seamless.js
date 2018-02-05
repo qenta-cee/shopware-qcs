@@ -267,18 +267,19 @@ var wirecardPayment = {
         if (birthdate < limit) {
             $('#wcs-birthdate').val(dateStr);
             $('#wcsPayolutionAging').hide();
-            if ($('#wcsInvoiceTermsChecked').is(':checked'))
-            {
+            if ($('#wcsInvoiceTermsChecked').length) {
+                if ($('#wcsInvoiceTermsChecked').is(':checked')) {
+                    $('#wcsPayolutionTermsAccept').hide();
+                    $('.is--primary').attr('disabled', false);
+                } else {
+                    $('.is--primary').attr('disabled', true);
+                    $('#wcsPayolutionTermsAccept').show();
+                }
+            } else {
                 $('#wcsPayolutionTermsAccept').hide();
                 $('.is--primary').attr('disabled', false);
             }
-            else
-            {
-                $('.is--primary').attr('disabled', true);
-                $('#wcsPayolutionTermsAccept').show();
-            }
-        }
-        else {
+        } else {
             $('#wcsPayolutionTermsAccept').hide();
             $('#wcs-birthdate').val("");
             if ($('#wcs-day').is(":visible") == true) {
