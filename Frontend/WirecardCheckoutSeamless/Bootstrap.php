@@ -64,7 +64,7 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
      */
     public function getVersion()
     {
-        return '1.10.12';
+        return '1.10.13';
     }
 
     /**
@@ -1035,18 +1035,22 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
                 $view->addTemplateDir($this->Path() . 'Views/responsive/');
                 $customerId = Shopware()->WirecardCheckoutSeamless()->Config()->customerid;
 
-                if(Shopware()->Session()->offsetGet('wcsConsumerDeviceId') != null) {
+                if (Shopware()->Session()->offsetGet('wcsConsumerDeviceId') != null) {
                     $consumerDeviceId = Shopware()->Session()->offsetGet('wcsConsumerDeviceId');
                 } else {
                     $timestamp = microtime();
                     $consumerDeviceId = md5($customerId . "_" . $timestamp);
                     Shopware()->Session()->offsetSet('wcsConsumerDeviceId', $consumerDeviceId);
                 }
-                $ratepay = '<script language="JavaScript">var di = {t:"'.$consumerDeviceId.'",v:"WDWL",l:"Checkout"};</script>';
-                $ratepay .= '<script type="text/javascript" src="//d.ratepay.com/'.$consumerDeviceId.'/di.js"></script>';
-                $ratepay .= '<noscript><link rel="stylesheet" type="text/css" href="//d.ratepay.com/di.css?t='.$consumerDeviceId.'&v=WDWL&l=Checkout"></noscript>';
-                $ratepay .= '<object type="application/x-shockwave-flash" data="//d.ratepay.com/WDWL/c.swf" width="0" height="0"><param name="movie" value="//d.ratepay.com/WDWL/c.swf" /><param name="flashvars" value="t='.$consumerDeviceId.'&v=WDWL"/><param name="AllowScriptAccess" value="always"/></object>';
-                $view->ratePayScript = $ratepay;
+                $paymentName = Shopware()->WirecardCheckoutSeamless()->getPaymentShortName();
+                if ((Shopware()->WirecardCheckoutSeamless()->Config()->INVOICE_PROVIDER == 'ratepay' && $paymentName == 'invoice') ||
+                    (Shopware()->WirecardCheckoutSeamless()->Config()->INSTALLMENT_PROVIDER == 'ratepay' && $paymentName == 'installment')) {
+                    $ratepay = '<script language="JavaScript">var di = {t:"' . $consumerDeviceId . '",v:"WDWL",l:"Checkout"};</script>';
+                    $ratepay .= '<script type="text/javascript" src="//d.ratepay.com/' . $consumerDeviceId . '/di.js"></script>';
+                    $ratepay .= '<noscript><link rel="stylesheet" type="text/css" href="//d.ratepay.com/di.css?t=' . $consumerDeviceId . '&v=WDWL&l=Checkout"></noscript>';
+                        $ratepay .= '<object type="application/x-shockwave-flash" data="//d.ratepay.com/WDWL/c.swf" width="0" height="0"><param name="movie" value="//d.ratepay.com/WDWL/c.swf" /><param name="flashvars" value="t=' . $consumerDeviceId . '&v=WDWL"/><param name="AllowScriptAccess" value="always"/></object>';
+                    $view->ratePayScript = $ratepay;
+                }
 
                 // Output of common errors
                 if (null != Shopware()->WirecardCheckoutSeamless()->wirecard_action) {
