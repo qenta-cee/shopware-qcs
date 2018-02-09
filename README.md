@@ -1,7 +1,7 @@
 # Wirecard Checkout Seamless plugin for Shopware
 
 [![License](https://img.shields.io/badge/license-GPLv2-blue.svg)](https://raw.githubusercontent.com/wirecard/Shopware-WCS/master/LICENSE)
-[![Shopware](https://img.shields.io/badge/Shopware-v5.4.0-green.svg)](https://www.shopware.com/)
+[![Shopware](https://img.shields.io/badge/Shopware-v5.3.7-green.svg)](https://www.shopware.com/)
 [![PHP v7](https://img.shields.io/badge/php-v7-yellow.svg)](http://www.php.net)
 [![PHP v5.6](https://img.shields.io/badge/php-v5.6-yellow.svg)](http://www.php.net)
 
