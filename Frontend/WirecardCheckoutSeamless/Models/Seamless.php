@@ -230,11 +230,12 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Models_Seamless
 
             $userData = Shopware()->Session()->sOrderVariables['sUserData'];
             $birthday = $userData['additional']['user']['birthday'];
-            $birthday = $this->getDateObject($birthday);
-            if (false !== $birthday) {
-                $consumerData = $consumerData->setBirthDate($birthday);
+            if (!empty($birthday)) {
+                $birthday = $this->getDateObject($birthday);
+                if (false !== $birthday) {
+                    $consumerData = $consumerData->setBirthDate($birthday);
+                }
             }
-
         }
         Shopware()->Pluginlogger()->info('WirecardCheckoutSeamless: '.__METHOD__ . ':' . print_r($consumerData,true));
         return $consumerData;

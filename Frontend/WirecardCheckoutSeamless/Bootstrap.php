@@ -1208,6 +1208,12 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
             self::init();
             Shopware()->WirecardCheckoutSeamless()->financialInstitution = $financialInstitution;
         }
+
+        $birthDate = $args->getSubject()->Request()->get('birthdate');
+        if (!empty($birthDate)) {
+            self::init();
+            Shopware()->Session()->sOrderVariables['sUserData']['additional']['user']['birthday'] = $birthDate;
+        }
     }
 
     /**
