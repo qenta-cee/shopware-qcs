@@ -295,6 +295,7 @@ var wirecardPayment = {
 $(document).ready(function() {
     var paymentType = $('#wd_payment_fields').find('[name="paymentType"]').val();
     if ( paymentType == 'invoice' || paymentType == 'installment' ) {
+        $('#confirm--form').append('<input type="hidden" name="birthdate" id="wcs-birthdate" value="" />');
         wirecardPayment.checkBirthday();
     } else {
         wirecardPayment.init();

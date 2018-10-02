@@ -260,9 +260,6 @@
                 <div class="panel--body is--wide">
                     <div class="payment--selection-label is--underline" name="birthdate">{s name="WirecardCheckoutSeamlessBirthday"}Geburtsdatum{/s}</div>
                     <div class="wirecard--field">
-                            <input type="hidden" name="birthdate" id="wcs-birthdate" value="" />
-                    </div>
-                    <div class="wirecard--field">
                         <select name="days" id="wcs-day" onchange="wirecardPayment.checkBirthday()" required>
                             <option value="0">-</option>
                             {foreach from=$days item=v}
