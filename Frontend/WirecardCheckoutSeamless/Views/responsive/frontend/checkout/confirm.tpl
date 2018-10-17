@@ -50,11 +50,18 @@
 {/block}
 
 {block name='frontend_checkout_confirm_product_table'}
+
+    {capture name="wcHeadline"}
+	{{block name='frontend_checkout_confirm_product_table_headline'}
+            <img src="{link file={$paymentLogo}}"/>{$wirecardAdditionalHeadline}
+        {/block}
+    {/capture}
+
     {if $wirecardAdditional eq 'financialInstitutions'}
         <div class="panel has--border is--rounded" id="wd_payment_fields">
             <div class="panel--title is--underline">
-                <img src="{link file={$paymentLogo}}"/>{$wirecardAdditionalHeadline}
-            </div>
+		{$smarty.capture.wcHeadline}
+	    </div>
 
             <div class="panel--body is--wide">
                 <div class="wirecard--field">
@@ -77,7 +84,7 @@
     {elseif $wirecardAdditional eq 'seamless'}
         <div class="panel has--border is--rounded" id="wd_payment_fields">
             <div class="panel--title is--underline">
-                <img src="{link file={$paymentLogo}}"/>{$wirecardAdditionalHeadline}
+                {$smarty.capture.wcHeadline}
             </div>
             {if 'ccard' eq $paymentTypeName || 'maestro' eq $paymentTypeName || 'ccard-moto' eq $paymentTypeName}
                 <div class="panel--body is--wide">
