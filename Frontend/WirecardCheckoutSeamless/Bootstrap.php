@@ -64,7 +64,7 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
      */
     public function getVersion()
     {
-        return '1.10.14';
+        return '1.10.15';
     }
 
     /**
@@ -1162,6 +1162,7 @@ class Shopware_Plugins_Frontend_WirecardCheckoutSeamless_Bootstrap extends Shopw
                         $view->bMonth = $birthday[1];
                         $view->bDay   = $birthday[2];
 
+                        $view->payolutionTerms = false;
                         if ((Shopware()->WirecardCheckoutSeamless()->Config()->INVOICE_PROVIDER == 'payolution' && $view->paymentTypeName == 'invoice') ||
                             (Shopware()->WirecardCheckoutSeamless()->Config()->INSTALLMENT_PROVIDER == 'payolution' && $view->paymentTypeName == 'installment')) {
                             $view->payolutionTerms = Shopware()->WirecardCheckoutSeamless()->Config()->PAYOLUTION_TERMS;
