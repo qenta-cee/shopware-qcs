@@ -144,8 +144,7 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
         $confirmUrl = $router->assemble(
             array(
                 'action'      => 'confirm',
-                'forceSecure' => true,
-                'appendSession' => true
+                'forceSecure' => true
             )
         );
 
@@ -326,7 +325,6 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
 
                     Shopware()->Session()->offsetSet('sPaymentstate', 'success');
 
-                    $orderNumber = 0;
                     // pending url, we already have an order id, just update the payment state
                     if ($data['orderId']) {
                         $this->saveOrder(
@@ -530,13 +528,13 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
                             $message  = $error->getConsumerMessage();
                         }
 
-                        $update['session'] = '';
                     }
                     break;
                 default:
             }
 
             $update['data'] = serialize($post);
+            $update['session'] = base64_encode(serialize($_SESSION)); // save back ev. modified sessiondata
 
             Shopware()->Db()->update(
                 'wirecard_checkout_seamless',
@@ -571,6 +569,13 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
         $this->View()->redirectUrl = $this->Front()->Router()->assemble(Array('controller' => 'checkout', 'action' => 'confirm', 'sUseSSL' => true));
 
         $responseData = unserialize($result['data']);
+
+        // write back modified sessiondata, might be modified by the confirm (server2server) request
+        $savedSessionData = unserialize(base64_decode($result['session']));
+        if (is_array($savedSessionData) && isset($savedSessionData['Shopware'])) {
+            Shopware()->Session()->offsetSet('sOrderVariables', $savedSessionData['Shopware']['sOrderVariables']);
+        }
+
         try {
 
             $return = WirecardCEE_QMore_ReturnFactory::getInstance(
