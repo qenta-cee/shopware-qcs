@@ -443,7 +443,10 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
                             }
                             $sOrder = array(
                                 'ordernumber' => $sOrderVariables['sOrderNumber'],
-                                'status_description' => $status->getName(),
+                                'status_description' => Shopware()->Snippets()->getNamespace('backend/static/order_status')->get(
+                                    $status->getName(),
+                                    $status->getDescription()
+                                ),
                                 'ordertime' => $orderDate
                             );
 
@@ -499,7 +502,10 @@ class Shopware_Controllers_Frontend_WirecardCheckoutSeamless extends Shopware_Co
                             }
                             $sOrder = array(
                                 'ordernumber' => $sOrderVariables['sOrderNumber'],
-                                'status_description' => $status->getName(),
+                                'status_description' => Shopware()->Snippets()->getNamespace('backend/static/order_status')->get(
+                                    $status->getName(),
+                                    $status->getDescription()
+                                ),
                                 'ordertime' => $orderDate
                             );
 
