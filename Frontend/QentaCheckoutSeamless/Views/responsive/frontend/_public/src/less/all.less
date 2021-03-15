@@ -1,0 +1,65 @@
+
+.qenta--row {
+
+    .unitize-margin(10, 0, 0, 0);
+    //.clearfix();
+    display: inline-block;
+    width: 80%;
+
+  .qenta--field {
+    float: left;
+    width: 40%;
+    .unitize(margin-right, 10);
+  }
+}
+
+.qenta--field {
+  float: left;
+  .unitize(margin-bottom, 15);
+  .unitize(margin-right, 10);
+}
+
+.qenta--clearer {
+  .clearfix();
+}
+
+.qenta--cvc {
+  width: 40%;
+}
+
+.qenta--expiration {
+  display: inline-block;
+  width: 200px;
+
+  .qenta--expiration--month {
+    width: 80px;
+  }
+  
+  .js--fancy-select {
+    .unitize(margin-bottom, 15);
+    .unitize(margin-right, 10);
+    width: 80px;
+    float: left;
+  }
+
+  .qenta--expiration--year,
+  .qenta--expiration--year .js--fancy-select {
+    .unitize(margin-right, 0);
+    width: 100px;
+    float: left;
+  }
+
+}
+
+#paymentIframe {
+  min-width: 320px;
+  width:100%;
+  height: 780px;
+  border: none;
+}
+
+#iframeContainer {
+  text-align: center;
+}
+
+

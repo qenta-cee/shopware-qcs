@@ -1,4 +1,4 @@
-# Wirecard Checkout Seamless plugin for Shopware
+# Qenta Checkout Seamless plugin for Shopware
 
 [![License](https://img.shields.io/badge/license-GPLv2-blue.svg)](https://raw.githubusercontent.com/wirecard/Shopware-WCS/master/LICENSE)
 [![Shopware](https://img.shields.io/badge/Shopware-v5.5.7-green.svg)](https://www.shopware.com/)
@@ -14,7 +14,7 @@ If you have any questions, please contact shop-systems-support@wirecard.com
 
 ----
 
-Wirecard Checkout Seamless plugin for Shopware. 
+Qenta Checkout Seamless plugin for Shopware. 
 
 Our [Online Guides](https://guides.wirecard.at/) provide further information on payment methods and additional features. Please observe our [terms of use](https://guides.wirecard.at/shop_plugins:info#terms_of_use) regarding plugins.
 
@@ -26,10 +26,10 @@ Be careful after installing/updating the plugin from the GitHub master branch. Y
 **For Shopware versions 5.2.22 - 5.2.24 there can be problems with the shopversion from Shopware AG.**
 
 
-## Wirecard Checkout Seamless
-Wirecard Checkout Seamless is designed to meet the ambitious demands of merchants offering a wide range of payment methods while at the same time fulfilling PCI DSS compliance. The interface is integrated seamlessly into the online shop and allows a customized configuration of the payment process (cross-selling and up-selling) based on your business. 
+## Qenta Checkout Seamless
+Qenta Checkout Seamless is designed to meet the ambitious demands of merchants offering a wide range of payment methods while at the same time fulfilling PCI DSS compliance. The interface is integrated seamlessly into the online shop and allows a customized configuration of the payment process (cross-selling and up-selling) based on your business. 
 
-Wirecard Checkout Seamless offers:
+Qenta Checkout Seamless offers:
 - National and international payment methods: credit cards, debit cards, online banking payments, mobile payment solutions and alternative payment methods.
 - One interface for all payment methods.
 - More than 120 currencies.
@@ -40,5 +40,5 @@ Wirecard Checkout Seamless offers:
 - PCI DSS 3 SAQ A or SAQ A-EP compliant.
 - Easy to add new payment methods, additional features, languages and currencies, etc.
 - Web interface for managing payments (approvals, cancelations, credits, etc.).
-- Benefit from Wirecard Bank´s license to conclude credit card acceptance contracts (acquiring) and issue credit cards.
-- With Wirecard Collecting only a single contract is required for payouts within various payment methods.
+- Benefit from Qenta Bank´s license to conclude credit card acceptance contracts (acquiring) and issue credit cards.
+- With Qenta Collecting only a single contract is required for payouts within various payment methods.
