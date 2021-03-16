@@ -2,7 +2,7 @@
 /**
  * Shop System Plugins - Terms of Use
  *
- * The plugins offered are provided free of charge by Qenta Central Eastern Europe GmbH
+ * The plugins offered are provided free of charge by Qenta Payment CEE GmbH
  * (abbreviated to Qenta CEE) and are explicitly not part of the Qenta CEE range of
  * products and services.
  *
@@ -31,9 +31,9 @@
  */
 
 return Array(
-    'DATA_STORAGE_URL' => 'https://checkout.wirecard.com/seamless/dataStorage',
-    'FRONTEND_URL'     => 'https://checkout.wirecard.com/seamless/frontend',
-    'BACKEND_URL'      => 'https://checkout.wirecard.com/seamless/backend',
+    'DATA_STORAGE_URL' => 'https://api.qenta.com/seamless/dataStorage',
+    'FRONTEND_URL'     => 'https://api.qenta.com/seamless/frontend',
+    'BACKEND_URL'      => 'https://api.qenta.com/seamless/backend',
     'MODULE_NAME'      => 'QentaCEE_QMore',
     'MODULE_VERSION'   => '3.3.0',
     'DEPENDENCIES'     => array(),
