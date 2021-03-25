@@ -64,7 +64,7 @@ class Shopware_Plugins_Frontend_QentaCheckoutSeamless_Bootstrap extends Shopware
      */
     public function getVersion()
     {
-        return '1.10.15';
+        return '2.0.0';
     }
 
     /**
@@ -74,7 +74,7 @@ class Shopware_Plugins_Frontend_QentaCheckoutSeamless_Bootstrap extends Shopware
      */
     public function getLabel()
     {
-        return "Qenta Checkout Seamless";
+        return "QENTA Checkout Seamless";
     }
 
     /**
@@ -84,12 +84,18 @@ class Shopware_Plugins_Frontend_QentaCheckoutSeamless_Bootstrap extends Shopware
      */
     public function getInfo()
     {
-    	$shopversion = Shopware::VERSION;
+        $shopversion = '';
+	    
+        if(defined('Shopware::VERSION')){
+            $shopversion = Shopware::VERSION;
+        } else {
+            $shopversion = \PackageVersions\Versions::getVersion('shopware/shopware');
+        }
 
-	    // In Shopware 5.2.22 there is no possibility getting shopware version
-    	if ( ! strlen($shopversion)) {
-    		$shopversion = '>5.2.21';
-	    }
+        // In Shopware 5.2.22 there is no possibility getting shopware version
+        if ( ! strlen($shopversion)) {
+            $shopversion = '>5.2.21';
+        }
 
         $language = Shopware()->Locale()->getLanguage();
 
@@ -862,7 +868,23 @@ class Shopware_Plugins_Frontend_QentaCheckoutSeamless_Bootstrap extends Shopware
             'name'
         );
 
-        $translation = new Shopware_Components_Translation();
+        /** @since 2.0.0
+         * @var $reflectedMethod
+         * added checks for the presence of parameters in the constructor of Shopware_Components_Translation as
+         * Shopware 5.6 uses a new class which requires explicit DBAL connection and container as parameters
+         */
+        $reflectedMethod = new ReflectionMethod('Shopware_Components_Translation', '__construct');
+        $translation     = null;
+        if (count($reflectedMethod->getParameters()) == 2) {
+            // Shopware >= 5.6
+            $translation = new Shopware_Components_Translation(
+                Shopware()->Container()->get('dbal_connection'),
+                Shopware()->Container()
+            );
+        } else {
+            // Shopware < 5.6
+            $translation = new Shopware_Components_Translation();
+        }
         $aTranslations = array();
         foreach (Shopware_Plugins_Frontend_QentaCheckoutSeamless_Models_Config::getSingleton()->getPaymentMethods() as $pos => $pm) {
             $oPayment = $this->Payments()->findOneBy(array('name' => $prefixName . $pm['name']));
