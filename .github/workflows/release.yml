@@ -14,7 +14,7 @@ jobs:
         uses: actions/checkout@v2
       - name: Pack release zip
         run: |
-          zip -r shopware-qcp.zip Frontend
+          zip -r shopware-qcs.zip Frontend
       - name: Get the tag name
         id: get_tag
         run: echo ::set-output name=TAG::${GITHUB_REF/refs\/tags\//}
