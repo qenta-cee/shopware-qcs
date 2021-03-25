@@ -35,6 +35,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./shopware-qcp.zip
-          asset_name: shopware-qcp-v${{ steps.get_tag.outputs.TAG }}.zip
+          asset_path: ./shopware-qcs.zip
+          asset_name: shopware-qcs-v${{ steps.get_tag.outputs.TAG }}.zip
           asset_content_type: application/zip
