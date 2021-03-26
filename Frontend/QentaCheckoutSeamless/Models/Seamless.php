@@ -181,8 +181,17 @@ class Shopware_Plugins_Frontend_QentaCheckoutSeamless_Models_Seamless
      */
     protected function getPluginVersion()
     {
-        $shopversion = Shopware::VERSION;
-        if( ! strlen($shopversion)) {
+        $shopversion = '';
+
+        if(defined('Shopware::VERSION')){
+            $shopversion = Shopware::VERSION;
+        } else {
+            $shopversion = \PackageVersions\Versions::getVersion('shopware/shopware');
+        }
+
+
+	    // In Shopware 5.2.22 there is no possibility getting shopware version
+    	if ( ! strlen($shopversion)) {
             $shopversion = '>5.2.21';
         }
 
