@@ -502,10 +502,7 @@ class Shopware_Controllers_Frontend_QentaCheckoutSeamless extends Shopware_Contr
                             }
                             $sOrder = array(
                                 'ordernumber' => $sOrderVariables['sOrderNumber'],
-                                'status_description' => Shopware()->Snippets()->getNamespace('backend/static/order_status')->get(
-                                    $status->getName(),
-                                    $status->getDescription()
-                                ),
+                                'status_description' => $status->getName(),
                                 'ordertime' => $orderDate
                             );
 
