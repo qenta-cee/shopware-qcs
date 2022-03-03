@@ -6,9 +6,9 @@
         <script type="text/javascript">
             function setResponse(response)
             {
-                if(typeof parent.WirecardCEE_Fallback_Request_Object == 'object')
+                if(typeof parent.QentaCEE_Fallback_Request_Object == 'object')
                 {
-                    parent.WirecardCEE_Fallback_Request_Object.setResponseText(response);
+                    parent.QentaCEE_Fallback_Request_Object.setResponseText(response);
                 }
                 else
                 {

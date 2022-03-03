@@ -9,8 +9,8 @@ var qentaPayment = {
         });
 
 
-        if (typeof WirecardCEE_DataStorage !== "undefined") {
-            var wdcee = new WirecardCEE_DataStorage();
+        if (typeof QentaCEE_DataStorage !== "undefined") {
+            var wdcee = new QentaCEE_DataStorage();
             if ($('#qentaccardIframeContainer').length > 0) {
                 this.pci3Iframes.ccard = wdcee.buildIframeCreditCard('qentaccardIframeContainer', '700px', '200px');
             } else if ($('#qentaccard-motoIframeContainer').length > 0) {
@@ -48,7 +48,7 @@ var qentaPayment = {
 
     qpaySeamlessRequest: function (paymentInformation, callback)
     {
-        var DataStorage = new WirecardCEE_DataStorage();
+        var DataStorage = new QentaCEE_DataStorage();
         return DataStorage.storePaymentInformation(paymentInformation, function(responseObject) {
             if(responseObject.getStatus() == 0)
             {
