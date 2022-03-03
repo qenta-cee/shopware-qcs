@@ -1,0 +1,30 @@
+services:
+  shopware_db:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${SHOPWARE_DB_ROOTPASS:-ABC123}
+      MYSQL_DATABASE: ${SHOPWARE_DB_NAME:-shopware}
+      MYSQL_USER: ${SHOPWARE_DB_USER:-shopware}
+      MYSQL_PASSWORD: ${SHOPWARE_DB_PASS:-shopware}
+    cap_add:
+      - SYS_NICE  # CAP_SYS_NICE
+  shopware:
+    container_name: shopware
+    build:
+      context: docker/shopware/
+      dockerfile: ${SHOPWARE_VERSION:-v5-6-9}/Dockerfile
+    depends_on:
+      - shopware_db
+    ports:
+      - ${PORT_HTTP:-9800}:80
+      - ${PORT_SSL:-8443}:443
+    volumes:
+      - ./:/tmp/plugin:ro
+    environment:
+      SHOPWARE_DB_HOST: ${SHOPWARE_DB_HOST:-shopware_db}
+      SHOPWARE_DB_NAME: ${SHOPWARE_DB_NAME:-shopware}
+      SHOPWARE_DB_USER: ${SHOPWARE_DB_USER:-shopware}
+      SHOPWARE_DB_PASS: ${SHOPWARE_DB_PASS:-shopware}
+      SHOPWARE_URL: ${SHOPWARE_URL:-localhost}
+      NGROK_TOKEN: ${SHOPWARE_NGROK_TOKEN:-1vG3hzDLvtET960jZckDPnm966F_5E2EAQuTtrXDwcgRaDdEw}
